@@ -38,11 +38,11 @@ const Login = () => {
     <div className="min-h-screen flex">
       {/* Left side - Blue background with logo */}
       <div className="hidden lg:flex lg:w-1/2 bg-[#1850E5] text-white p-12 flex-col justify-between">
-        <div>
-          <h1 className="text-3xl font-bold mb-4">
+        <div className="flex flex-col justify-center h-full">
+          <h1 className="text-4xl font-bold mb-4">
             Somali National Bureau of Statistics
           </h1>
-          <p className="text-lg opacity-90">
+          <p className="text-xl opacity-90">
             Centralized platform for managing and analyzing statistical data for
             informed decision-making.
           </p>
@@ -70,6 +70,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="w-full px-4 py-2"
               />
             </div>
 
@@ -82,6 +83,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="w-full px-4 py-2"
               />
             </div>
 
@@ -90,7 +92,7 @@ const Login = () => {
                 <input
                   type="checkbox"
                   id="remember"
-                  className="h-4 w-4 rounded border-gray-300"
+                  className="h-4 w-4 rounded border-gray-300 text-[#1850E5] focus:ring-[#1850E5]"
                 />
                 <label htmlFor="remember" className="ml-2 text-sm text-gray-600">
                   Remember me
@@ -106,19 +108,23 @@ const Login = () => {
 
             <Button
               type="submit"
-              className="w-full bg-[#1850E5] hover:bg-[#1040C0]"
+              className="w-full bg-[#1850E5] hover:bg-[#1040C0] text-white py-2 px-4 rounded transition-colors"
               disabled={loading}
             >
               {loading ? "Signing in..." : "Sign In"}
             </Button>
 
-            <p className="text-center text-sm text-gray-600">
+            <div className="text-center text-sm text-gray-600">
               Need an account?{" "}
               <a href="#" className="text-[#1850E5] hover:underline">
                 Contact administrator
               </a>
-            </p>
+            </div>
           </form>
+
+          <div className="text-center text-xs text-gray-500">
+            © 2024 Somali National Bureau of Statistics. All rights reserved.
+          </div>
         </div>
       </div>
     </div>
