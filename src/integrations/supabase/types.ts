@@ -1,0 +1,440 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  public: {
+    Tables: {
+      agriculture: {
+        Row: {
+          crop_production: Json | null
+          id: string
+          irrigation_coverage: number | null
+          land_under_cultivation: number | null
+          region: string
+          total_farmers: number
+          updated_at: string | null
+        }
+        Insert: {
+          crop_production?: Json | null
+          id?: string
+          irrigation_coverage?: number | null
+          land_under_cultivation?: number | null
+          region: string
+          total_farmers: number
+          updated_at?: string | null
+        }
+        Update: {
+          crop_production?: Json | null
+          id?: string
+          irrigation_coverage?: number | null
+          land_under_cultivation?: number | null
+          region?: string
+          total_farmers?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      api_integrations: {
+        Row: {
+          api_key: string
+          api_url: string
+          id: string
+          last_sync: string | null
+          system_name: string
+        }
+        Insert: {
+          api_key: string
+          api_url: string
+          id?: string
+          last_sync?: string | null
+          system_name: string
+        }
+        Update: {
+          api_key?: string
+          api_url?: string
+          id?: string
+          last_sync?: string | null
+          system_name?: string
+        }
+        Relationships: []
+      }
+      demographics: {
+        Row: {
+          female_population: number
+          household_count: number
+          id: string
+          literacy_rate: number | null
+          male_population: number
+          population: number
+          poverty_rate: number | null
+          region: string
+          updated_at: string | null
+        }
+        Insert: {
+          female_population: number
+          household_count: number
+          id?: string
+          literacy_rate?: number | null
+          male_population: number
+          population: number
+          poverty_rate?: number | null
+          region: string
+          updated_at?: string | null
+        }
+        Update: {
+          female_population?: number
+          household_count?: number
+          id?: string
+          literacy_rate?: number | null
+          male_population?: number
+          population?: number
+          poverty_rate?: number | null
+          region?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      education: {
+        Row: {
+          dropout_rate: number | null
+          id: string
+          literacy_rate: number | null
+          region: string
+          total_schools: number
+          total_students: number
+          total_teachers: number
+          updated_at: string | null
+        }
+        Insert: {
+          dropout_rate?: number | null
+          id?: string
+          literacy_rate?: number | null
+          region: string
+          total_schools: number
+          total_students: number
+          total_teachers: number
+          updated_at?: string | null
+        }
+        Update: {
+          dropout_rate?: number | null
+          id?: string
+          literacy_rate?: number | null
+          region?: string
+          total_schools?: number
+          total_students?: number
+          total_teachers?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      health: {
+        Row: {
+          disease_incidence: Json | null
+          id: string
+          infant_mortality_rate: number | null
+          life_expectancy: number | null
+          region: string
+          total_clinics: number
+          total_doctors: number
+          total_hospitals: number
+          updated_at: string | null
+        }
+        Insert: {
+          disease_incidence?: Json | null
+          id?: string
+          infant_mortality_rate?: number | null
+          life_expectancy?: number | null
+          region: string
+          total_clinics: number
+          total_doctors: number
+          total_hospitals: number
+          updated_at?: string | null
+        }
+        Update: {
+          disease_incidence?: Json | null
+          id?: string
+          infant_mortality_rate?: number | null
+          life_expectancy?: number | null
+          region?: string
+          total_clinics?: number
+          total_doctors?: number
+          total_hospitals?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      infrastructure: {
+        Row: {
+          electricity_coverage: number | null
+          id: string
+          region: string
+          total_hospitals: number
+          total_roads_km: number | null
+          total_schools: number
+          updated_at: string | null
+          water_access_rate: number | null
+        }
+        Insert: {
+          electricity_coverage?: number | null
+          id?: string
+          region: string
+          total_hospitals: number
+          total_roads_km?: number | null
+          total_schools: number
+          updated_at?: string | null
+          water_access_rate?: number | null
+        }
+        Update: {
+          electricity_coverage?: number | null
+          id?: string
+          region?: string
+          total_hospitals?: number
+          total_roads_km?: number | null
+          total_schools?: number
+          updated_at?: string | null
+          water_access_rate?: number | null
+        }
+        Relationships: []
+      }
+      labor_employment: {
+        Row: {
+          average_income: number | null
+          employment_rate: number | null
+          id: string
+          industry_distribution: Json | null
+          region: string
+          total_workforce: number
+          unemployment_rate: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          average_income?: number | null
+          employment_rate?: number | null
+          id?: string
+          industry_distribution?: Json | null
+          region: string
+          total_workforce: number
+          unemployment_rate?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          average_income?: number | null
+          employment_rate?: number | null
+          id?: string
+          industry_distribution?: Json | null
+          region?: string
+          total_workforce?: number
+          unemployment_rate?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      logs: {
+        Row: {
+          action: string
+          id: string
+          record_id: string | null
+          table_name: string
+          timestamp: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          id?: string
+          record_id?: string | null
+          table_name: string
+          timestamp?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          id?: string
+          record_id?: string | null
+          table_name?: string
+          timestamp?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trade_economy: {
+        Row: {
+          gdp: number | null
+          id: string
+          inflation_rate: number | null
+          major_exports: Json | null
+          major_imports: Json | null
+          region: string
+          updated_at: string | null
+        }
+        Insert: {
+          gdp?: number | null
+          id?: string
+          inflation_rate?: number | null
+          major_exports?: Json | null
+          major_imports?: Json | null
+          region: string
+          updated_at?: string | null
+        }
+        Update: {
+          gdp?: number | null
+          id?: string
+          inflation_rate?: number | null
+          major_exports?: Json | null
+          major_imports?: Json | null
+          region?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          password: string
+          role: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          password: string
+          role: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          password?: string
+          role?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+type PublicSchema = Database[Extract<keyof Database, "public">]
+
+export type Tables<
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
+  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = PublicEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
