@@ -48,7 +48,7 @@ const Login = () => {
           </p>
         </div>
         <div className="text-sm opacity-70">
-          © 2024 Somali National Bureau of Statistics. All rights reserved.
+          © 2025 Somali National Bureau of Statistics. All rights reserved.
         </div>
       </div>
 
@@ -123,7 +123,7 @@ const Login = () => {
           </form>
 
           <div className="text-center text-xs text-gray-500">
-            © 2024 Somali National Bureau of Statistics. All rights reserved.
+            © 2025 Somali National Bureau of Statistics. All rights reserved.
           </div>
         </div>
       </div>
