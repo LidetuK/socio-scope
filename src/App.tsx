@@ -1,52 +1,17 @@
-import React from "react"; // Add explicit React import
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import Unauthorized from "./pages/Unauthorized";
 
-// Move queryClient inside the component to ensure React context is available
 const App = () => {
-  const queryClient = new QueryClient(); // Move this inside the component
-
-  // Protected Route wrapper component
-  const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-    const [session, setSession] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-      // Get initial session
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session);
-        setLoading(false);
-      });
-
-      // Listen for auth changes
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session);
-        setLoading(false);
-      });
-
-      return () => subscription.unsubscribe();
-    }, []);
-
-    if (loading) {
-      return <div>Loading...</div>;
-    }
-
-    if (!session) {
-      return <Navigate to="/login" replace />;
-    }
-
-    return <>{children}</>;
-  };
+  const queryClient = new QueryClient();
 
   return (
     <React.StrictMode>
@@ -57,70 +22,88 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/unauthorized" element={<Unauthorized />} />
+              
+              {/* Admin Route */}
               <Route
                 path="/"
                 element={
-                  <ProtectedRoute>
+                  <RoleBasedRoute allowedRoles={["admin"]}>
                     <Index />
-                  </ProtectedRoute>
+                  </RoleBasedRoute>
                 }
               />
+
+              {/* Demographics Routes */}
               <Route
                 path="/demographics"
                 element={
-                  <ProtectedRoute>
+                  <RoleBasedRoute allowedRoles={["admin", "demographics"]}>
                     <Index />
-                  </ProtectedRoute>
+                  </RoleBasedRoute>
                 }
               />
+
+              {/* Health Routes */}
               <Route
                 path="/health"
                 element={
-                  <ProtectedRoute>
+                  <RoleBasedRoute allowedRoles={["admin", "health"]}>
                     <Index />
-                  </ProtectedRoute>
+                  </RoleBasedRoute>
                 }
               />
+
+              {/* Education Routes */}
               <Route
                 path="/education"
                 element={
-                  <ProtectedRoute>
+                  <RoleBasedRoute allowedRoles={["admin", "education"]}>
                     <Index />
-                  </ProtectedRoute>
+                  </RoleBasedRoute>
                 }
               />
+
+              {/* Labor Routes */}
               <Route
                 path="/labor"
                 element={
-                  <ProtectedRoute>
+                  <RoleBasedRoute allowedRoles={["admin", "labor"]}>
                     <Index />
-                  </ProtectedRoute>
+                  </RoleBasedRoute>
                 }
               />
+
+              {/* Agriculture Routes */}
               <Route
                 path="/agriculture"
                 element={
-                  <ProtectedRoute>
+                  <RoleBasedRoute allowedRoles={["admin", "agriculture"]}>
                     <Index />
-                  </ProtectedRoute>
+                  </RoleBasedRoute>
                 }
               />
+
+              {/* Economy Routes */}
               <Route
                 path="/economy"
                 element={
-                  <ProtectedRoute>
+                  <RoleBasedRoute allowedRoles={["admin", "economy"]}>
                     <Index />
-                  </ProtectedRoute>
+                  </RoleBasedRoute>
                 }
               />
+
+              {/* Infrastructure Routes */}
               <Route
                 path="/infrastructure"
                 element={
-                  <ProtectedRoute>
+                  <RoleBasedRoute allowedRoles={["admin", "infrastructure"]}>
                     <Index />
-                  </ProtectedRoute>
+                  </RoleBasedRoute>
                 }
               />
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

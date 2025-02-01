@@ -17,12 +17,29 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      if (error) throw error;
-      navigate("/");
+
+      if (authError) throw authError;
+
+      // Fetch user role
+      const { data: roleData, error: roleError } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", authData.user?.id)
+        .single();
+
+      if (roleError) throw roleError;
+
+      // Redirect based on role
+      const role = roleData?.role;
+      if (role === "admin") {
+        navigate("/");
+      } else {
+        navigate(`/${role}`);
+      }
     } catch (error: any) {
       toast({
         title: "Error",
