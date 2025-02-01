@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
 import Index from "./pages/Index";
 import Demographics from "./pages/Demographics";
+import Health from "./pages/Health";
+import Education from "./pages/Education";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
@@ -50,7 +52,7 @@ const App = () => {
                 path="/health"
                 element={
                   <RoleBasedRoute allowedRoles={["admin", "health"]}>
-                    <Index />
+                    <Health />
                   </RoleBasedRoute>
                 }
               />
@@ -60,7 +62,7 @@ const App = () => {
                 path="/education"
                 element={
                   <RoleBasedRoute allowedRoles={["admin", "education"]}>
-                    <Index />
+                    <Education />
                   </RoleBasedRoute>
                 }
               />
