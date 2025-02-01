@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
 import Index from "./pages/Index";
+import Demographics from "./pages/Demographics";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
@@ -39,7 +40,7 @@ const App = () => {
                 path="/demographics"
                 element={
                   <RoleBasedRoute allowedRoles={["admin", "demographics"]}>
-                    <Index />
+                    <Demographics />
                   </RoleBasedRoute>
                 }
               />
