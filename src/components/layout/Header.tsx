@@ -1,6 +1,25 @@
-import { Bell, Search, Settings } from "lucide-react";
+import { Bell, Search, Settings, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate("/login");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <header className="h-16 bg-white shadow-sm fixed top-0 right-0 left-0 lg:left-64 z-30">
       <div className="h-full px-6 flex items-center justify-between">
@@ -21,6 +40,12 @@ const Header = () => {
           </button>
           <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
             <Settings size={20} className="text-gray-600" />
+          </button>
+          <button 
+            onClick={handleLogout}
+            className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+          >
+            <LogOut size={20} className="text-gray-600" />
           </button>
           <div className="h-8 w-8 rounded-full bg-accent text-white flex items-center justify-center">
             <span className="text-sm font-medium">JD</span>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
   Users,
@@ -12,20 +12,22 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const menuItems = [
-  { icon: BarChart3, label: "Dashboard", path: "/" },
-  { icon: Users, label: "Demographics", path: "/demographics" },
-  { icon: Heart, label: "Health", path: "/health" },
-  { icon: GraduationCap, label: "Education", path: "/education" },
-  { icon: Briefcase, label: "Labor & Employment", path: "/labor" },
-  { icon: Sprout, label: "Agriculture", path: "/agriculture" },
-  { icon: LineChart, label: "Trade & Economy", path: "/economy" },
-  { icon: Building2, label: "Infrastructure", path: "/infrastructure" },
+  { icon: BarChart3, label: "Dashboard", path: "/", role: "admin" },
+  { icon: Users, label: "Demographics", path: "/demographics", role: "demographics" },
+  { icon: Heart, label: "Health", path: "/health", role: "health" },
+  { icon: GraduationCap, label: "Education", path: "/education", role: "education" },
+  { icon: Briefcase, label: "Labor & Employment", path: "/labor", role: "labor" },
+  { icon: Sprout, label: "Agriculture", path: "/agriculture", role: "agriculture" },
+  { icon: LineChart, label: "Trade & Economy", path: "/economy", role: "economy" },
+  { icon: Building2, label: "Infrastructure", path: "/infrastructure", role: "infrastructure" },
 ];
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const location = useLocation();
 
   return (
     <>
@@ -48,7 +50,10 @@ const Sidebar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-primary transition-colors duration-200"
+                className={cn(
+                  "flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-primary transition-colors duration-200",
+                  location.pathname === item.path && "bg-gray-50 text-primary"
+                )}
               >
                 <item.icon size={20} />
                 <span>{item.label}</span>
