@@ -46,16 +46,27 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
         .from("user_roles")
         .select("role")
         .eq("user_id", userId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
-      setUserRole(data?.role || null);
+      
+      if (!data) {
+        toast({
+          title: "No Role Assigned",
+          description: "You don't have any role assigned. Please contact an administrator.",
+          variant: "destructive",
+        });
+        setUserRole(null);
+      } else {
+        setUserRole(data.role);
+      }
     } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to fetch user role",
+        description: error.message || "Failed to fetch user role",
         variant: "destructive",
       });
+      setUserRole(null);
     } finally {
       setLoading(false);
     }
