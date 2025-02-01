@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Building2, Road, Zap, Droplet } from "lucide-react";
+import { Building2, Map, Zap, Droplet } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import StatCard from "@/components/dashboard/StatCard";
 import ChartCard from "@/components/dashboard/ChartCard";
@@ -55,7 +55,7 @@ const Infrastructure = () => {
           <StatCard
             title="Total Roads"
             value={`${infrastructureData?.total_roads_km?.toLocaleString() || 0} km`}
-            icon={<Road size={24} />}
+            icon={<Map size={24} />}
             trend={{ value: 2.4, isPositive: true }}
           />
           <StatCard

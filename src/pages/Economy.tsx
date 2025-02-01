@@ -32,6 +32,19 @@ const Economy = () => {
     },
   });
 
+  // Parse JSON data safely
+  const exportsData = economyData?.major_exports 
+    ? typeof economyData.major_exports === 'string'
+      ? JSON.parse(economyData.major_exports)
+      : economyData.major_exports
+    : { totalValue: 0 };
+
+  const importsData = economyData?.major_imports
+    ? typeof economyData.major_imports === 'string'
+      ? JSON.parse(economyData.major_imports)
+      : economyData.major_imports
+    : { totalValue: 0 };
+
   // Sample trend data (replace with real data later)
   const gdpTrends = [
     { year: "2019", gdp: 100 },
@@ -66,13 +79,13 @@ const Economy = () => {
           />
           <StatCard
             title="Exports"
-            value={`$${economyData?.major_exports?.total || 0}M`}
+            value={`$${exportsData.totalValue || 0}M`}
             icon={<ArrowUpDown size={24} />}
             trend={{ value: 3.2, isPositive: true }}
           />
           <StatCard
             title="Imports"
-            value={`$${economyData?.major_imports?.total || 0}M`}
+            value={`$${importsData.totalValue || 0}M`}
             icon={<LineChart size={24} />}
             trend={{ value: 1.8, isPositive: false }}
           />
@@ -102,11 +115,11 @@ const Economy = () => {
                 data={[
                   {
                     category: "Exports",
-                    value: economyData?.major_exports?.total || 0,
+                    value: exportsData.totalValue || 0,
                   },
                   {
                     category: "Imports",
-                    value: economyData?.major_imports?.total || 0,
+                    value: importsData.totalValue || 0,
                   },
                 ]}
               >

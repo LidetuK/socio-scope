@@ -41,6 +41,13 @@ const Agriculture = () => {
     { year: "2023", production: 1800 },
   ];
 
+  // Parse crop production data safely
+  const cropProductionData = agricultureData?.crop_production 
+    ? typeof agricultureData.crop_production === 'string' 
+      ? JSON.parse(agricultureData.crop_production)
+      : agricultureData.crop_production
+    : { totalProduction: 0 };
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -66,7 +73,7 @@ const Agriculture = () => {
           />
           <StatCard
             title="Crop Production"
-            value={`${agricultureData?.crop_production?.total || 0} tons`}
+            value={`${cropProductionData.totalProduction || 0} tons`}
             icon={<TreePine size={24} />}
             trend={{ value: 3.2, isPositive: true }}
           />
