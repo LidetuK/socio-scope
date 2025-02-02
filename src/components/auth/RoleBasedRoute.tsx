@@ -78,7 +78,6 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
           title: "No Role Assigned",
           description: "You don't have any role assigned. Please contact an administrator.",
           variant: "destructive",
-          icon: <ShieldAlert className="h-5 w-5" />,
         });
         setUserRole(null);
       } else {
@@ -86,7 +85,6 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
         toast({
           title: "Role Verified",
           description: `Logged in as: ${data.role}`,
-          icon: <Shield className="h-5 w-5" />,
         });
         setUserRole(data.role);
       }
