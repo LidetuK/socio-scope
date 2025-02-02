@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { Shield, ShieldAlert } from "lucide-react";
 
 interface RoleBasedRouteProps {
   children: ReactNode;
@@ -17,7 +18,10 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log("Initial session:", session);
+      console.log("Initial session check:", { 
+        hasSession: !!session,
+        userId: session?.user?.id 
+      });
       setSession(session);
       if (session?.user) {
         getUserRole(session.user.id);
@@ -30,7 +34,11 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("Auth state changed:", _event, session);
+      console.log("Auth state changed:", { 
+        event: _event, 
+        hasSession: !!session,
+        userId: session?.user?.id 
+      });
       setSession(session);
       if (session?.user) {
         getUserRole(session.user.id);
@@ -56,6 +64,11 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
 
       if (error) {
         console.error("Error fetching role:", error);
+        toast({
+          title: "Error Fetching Role",
+          description: error.message,
+          variant: "destructive",
+        });
         throw error;
       }
       
@@ -65,14 +78,20 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
           title: "No Role Assigned",
           description: "You don't have any role assigned. Please contact an administrator.",
           variant: "destructive",
+          icon: <ShieldAlert className="h-5 w-5" />,
         });
         setUserRole(null);
       } else {
         console.log("Role found:", data.role);
+        toast({
+          title: "Role Verified",
+          description: `Logged in as: ${data.role}`,
+          icon: <Shield className="h-5 w-5" />,
+        });
         setUserRole(data.role);
       }
     } catch (error: any) {
-      console.error("Error fetching user role:", error);
+      console.error("Error in getUserRole:", error);
       toast({
         title: "Error",
         description: error.message || "Failed to fetch user role",
@@ -86,7 +105,11 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
 
   if (loading) {
     console.log("Still loading...");
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
   }
 
   if (!session) {
@@ -94,8 +117,11 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
     return <Navigate to="/login" replace />;
   }
 
-  console.log("Current user role:", userRole);
-  console.log("Allowed roles:", allowedRoles);
+  console.log("Access check:", {
+    userRole,
+    allowedRoles,
+    hasAccess: userRole && allowedRoles.includes(userRole)
+  });
   
   if (!userRole || !allowedRoles.includes(userRole)) {
     console.log("User role not allowed, redirecting to unauthorized");
