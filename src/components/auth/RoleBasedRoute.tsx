@@ -35,6 +35,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
       if (session?.user) {
         getUserRole(session.user.id);
       } else {
+        setUserRole(null);
         setLoading(false);
       }
     });
@@ -53,7 +54,10 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
 
       console.log("Role query result:", { data, error });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching role:", error);
+        throw error;
+      }
       
       if (!data) {
         console.log("No role found for user");
