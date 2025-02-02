@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
@@ -13,21 +13,57 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 const menuItems = [
-  { icon: BarChart3, label: "Dashboard", path: "/", role: "admin" },
-  { icon: Users, label: "Demographics", path: "/demographics", role: "demographics" },
-  { icon: Heart, label: "Health", path: "/health", role: "health" },
-  { icon: GraduationCap, label: "Education", path: "/education", role: "education" },
-  { icon: Briefcase, label: "Labor & Employment", path: "/labor", role: "labor" },
-  { icon: Sprout, label: "Agriculture", path: "/agriculture", role: "agriculture" },
-  { icon: LineChart, label: "Trade & Economy", path: "/economy", role: "economy" },
-  { icon: Building2, label: "Infrastructure", path: "/infrastructure", role: "infrastructure" },
+  { icon: BarChart3, label: "Dashboard", path: "/", roles: ["admin"] },
+  { icon: Users, label: "Demographics", path: "/demographics", roles: ["admin", "demographics"] },
+  { icon: Heart, label: "Health", path: "/health", roles: ["admin", "health"] },
+  { icon: GraduationCap, label: "Education", path: "/education", roles: ["admin", "education"] },
+  { icon: Briefcase, label: "Labor & Employment", path: "/labor", roles: ["admin", "labor"] },
+  { icon: Sprout, label: "Agriculture", path: "/agriculture", roles: ["admin", "agriculture"] },
+  { icon: LineChart, label: "Trade & Economy", path: "/economy", roles: ["admin", "economy"] },
+  { icon: Building2, label: "Infrastructure", path: "/infrastructure", roles: ["admin", "infrastructure"] },
 ];
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const location = useLocation();
+
+  useEffect(() => {
+    const getUserRole = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.id) {
+        const { data, error } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", session.user.id)
+          .maybeSingle();
+
+        if (data && !error) {
+          setUserRole(data.role);
+        }
+      }
+    };
+
+    getUserRole();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user?.id) {
+        getUserRole();
+      } else {
+        setUserRole(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Filter menu items based on user role
+  const filteredMenuItems = menuItems.filter(item => 
+    userRole && item.roles.includes(userRole)
+  );
 
   return (
     <>
@@ -46,7 +82,7 @@ const Sidebar = () => {
         <div className="p-6">
           <h1 className="text-2xl font-bold text-primary mb-8">Analytics Hub</h1>
           <nav className="space-y-2">
-            {menuItems.map((item) => (
+            {filteredMenuItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
