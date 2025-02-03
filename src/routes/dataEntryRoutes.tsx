@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
 import DataEntryIndex from "@/pages/data-entry/Index";
+import DataEntryDemographics from "@/pages/data-entry/Demographics";
 import DataEntryHouseholds from "@/pages/data-entry/Households";
 import DataEntryPopulation from "@/pages/data-entry/Population";
 import DataEntryMigration from "@/pages/data-entry/Migration";
@@ -14,6 +15,14 @@ export const dataEntryRoutes: RouteObject[] = [
     element: (
       <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <DataEntryIndex />
+      </RoleBasedRoute>
+    ),
+  },
+  {
+    path: "/data-entry/demographics",
+    element: (
+      <RoleBasedRoute allowedRoles={dataEntryRoles}>
+        <DataEntryDemographics />
       </RoleBasedRoute>
     ),
   },
