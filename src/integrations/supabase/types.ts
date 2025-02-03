@@ -63,6 +63,36 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_logs: {
+        Row: {
+          action: string
+          changes: Json | null
+          created_at: string | null
+          id: string
+          record_id: string | null
+          table_name: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          changes?: Json | null
+          created_at?: string | null
+          id?: string
+          record_id?: string | null
+          table_name: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changes?: Json | null
+          created_at?: string | null
+          id?: string
+          record_id?: string | null
+          table_name?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       demographics: {
         Row: {
           female_population: number
@@ -168,6 +198,51 @@ export type Database = {
         }
         Relationships: []
       }
+      households: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          district: string
+          head_age: number | null
+          head_employment_status: string | null
+          head_gender: string | null
+          household_size: number
+          household_type: string
+          id: string
+          locality: string | null
+          region: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          district: string
+          head_age?: number | null
+          head_employment_status?: string | null
+          head_gender?: string | null
+          household_size: number
+          household_type: string
+          id?: string
+          locality?: string | null
+          region: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          district?: string
+          head_age?: number | null
+          head_employment_status?: string | null
+          head_gender?: string | null
+          household_size?: number
+          household_type?: string
+          id?: string
+          locality?: string | null
+          region?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       infrastructure: {
         Row: {
           electricity_coverage: number | null
@@ -269,6 +344,114 @@ export type Database = {
           },
         ]
       }
+      metadata_fields: {
+        Row: {
+          created_at: string | null
+          data_type: string
+          field_name: string
+          id: string
+          last_updated: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          data_type: string
+          field_name: string
+          id?: string
+          last_updated?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          data_type?: string
+          field_name?: string
+          id?: string
+          last_updated?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      migration_data: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          displaced_persons_count: number | null
+          id: string
+          internal_migration_count: number | null
+          international_migration_count: number | null
+          region: string
+          time_period: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          displaced_persons_count?: number | null
+          id?: string
+          internal_migration_count?: number | null
+          international_migration_count?: number | null
+          region: string
+          time_period: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          displaced_persons_count?: number | null
+          id?: string
+          internal_migration_count?: number | null
+          international_migration_count?: number | null
+          region?: string
+          time_period?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      population_distribution: {
+        Row: {
+          age_groups: Json
+          created_at: string | null
+          created_by: string | null
+          district: string
+          female_population: number
+          id: string
+          locality: string | null
+          male_population: number
+          other_population: number | null
+          region: string
+          total_population: number
+          updated_at: string | null
+        }
+        Insert: {
+          age_groups: Json
+          created_at?: string | null
+          created_by?: string | null
+          district: string
+          female_population: number
+          id?: string
+          locality?: string | null
+          male_population: number
+          other_population?: number | null
+          region: string
+          total_population: number
+          updated_at?: string | null
+        }
+        Update: {
+          age_groups?: Json
+          created_at?: string | null
+          created_by?: string | null
+          district?: string
+          female_population?: number
+          id?: string
+          locality?: string | null
+          male_population?: number
+          other_population?: number | null
+          region?: string
+          total_population?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       trade_economy: {
         Row: {
           gdp: number | null
@@ -347,6 +530,54 @@ export type Database = {
         }
         Relationships: []
       }
+      vital_statistics: {
+        Row: {
+          birth_rate: number | null
+          created_at: string | null
+          created_by: string | null
+          death_rate: number | null
+          divorce_rate: number | null
+          fertility_rate: number | null
+          id: string
+          infant_mortality_rate: number | null
+          marriage_rate: number | null
+          maternal_mortality_rate: number | null
+          region: string
+          time_period: string
+          updated_at: string | null
+        }
+        Insert: {
+          birth_rate?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          death_rate?: number | null
+          divorce_rate?: number | null
+          fertility_rate?: number | null
+          id?: string
+          infant_mortality_rate?: number | null
+          marriage_rate?: number | null
+          maternal_mortality_rate?: number | null
+          region: string
+          time_period: string
+          updated_at?: string | null
+        }
+        Update: {
+          birth_rate?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          death_rate?: number | null
+          divorce_rate?: number | null
+          fertility_rate?: number | null
+          id?: string
+          infant_mortality_rate?: number | null
+          marriage_rate?: number | null
+          maternal_mortality_rate?: number | null
+          region?: string
+          time_period?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -370,6 +601,7 @@ export type Database = {
         | "agriculture"
         | "economy"
         | "infrastructure"
+      user_role: "admin" | "data_entry" | "enumerator" | "analyst"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -5,12 +5,21 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
-import Index from "./pages/Index";
-import Demographics from "./pages/Demographics";
-import Health from "./pages/Health";
-import Education from "./pages/Education";
-import NotFound from "./pages/NotFound";
+
+// Pages
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import DataEntryHouseholds from "./pages/data-entry/Households";
+import DataEntryPopulation from "./pages/data-entry/Population";
+import DataEntryMigration from "./pages/data-entry/Migration";
+import DataEntryVitalStats from "./pages/data-entry/VitalStatistics";
+import AnalyticsPopulation from "./pages/analytics/Population";
+import AnalyticsDemographics from "./pages/analytics/Demographics";
+import AnalyticsReports from "./pages/analytics/Reports";
+import Metadata from "./pages/Metadata";
+import UserManagement from "./pages/UserManagement";
+import Settings from "./pages/Settings";
+import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 
 const App = () => {
@@ -27,82 +36,98 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               
-              {/* Admin Route */}
+              {/* Dashboard Route */}
               <Route
                 path="/"
                 element={
+                  <RoleBasedRoute allowedRoles={["admin", "analyst"]}>
+                    <Dashboard />
+                  </RoleBasedRoute>
+                }
+              />
+
+              {/* Data Entry Routes */}
+              <Route
+                path="/data-entry/households"
+                element={
+                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "enumerator"]}>
+                    <DataEntryHouseholds />
+                  </RoleBasedRoute>
+                }
+              />
+              <Route
+                path="/data-entry/population"
+                element={
+                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "enumerator"]}>
+                    <DataEntryPopulation />
+                  </RoleBasedRoute>
+                }
+              />
+              <Route
+                path="/data-entry/migration"
+                element={
+                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "enumerator"]}>
+                    <DataEntryMigration />
+                  </RoleBasedRoute>
+                }
+              />
+              <Route
+                path="/data-entry/vital-statistics"
+                element={
+                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "enumerator"]}>
+                    <DataEntryVitalStats />
+                  </RoleBasedRoute>
+                }
+              />
+
+              {/* Analytics Routes */}
+              <Route
+                path="/analytics/population"
+                element={
+                  <RoleBasedRoute allowedRoles={["admin", "analyst"]}>
+                    <AnalyticsPopulation />
+                  </RoleBasedRoute>
+                }
+              />
+              <Route
+                path="/analytics/demographics"
+                element={
+                  <RoleBasedRoute allowedRoles={["admin", "analyst"]}>
+                    <AnalyticsDemographics />
+                  </RoleBasedRoute>
+                }
+              />
+              <Route
+                path="/analytics/reports"
+                element={
+                  <RoleBasedRoute allowedRoles={["admin", "analyst"]}>
+                    <AnalyticsReports />
+                  </RoleBasedRoute>
+                }
+              />
+
+              {/* Management Routes */}
+              <Route
+                path="/metadata"
+                element={
                   <RoleBasedRoute allowedRoles={["admin"]}>
-                    <Index />
+                    <Metadata />
                   </RoleBasedRoute>
                 }
               />
-
-              {/* Demographics Routes */}
               <Route
-                path="/demographics"
+                path="/users"
                 element={
-                  <RoleBasedRoute allowedRoles={["admin", "demographics"]}>
-                    <Demographics />
+                  <RoleBasedRoute allowedRoles={["admin"]}>
+                    <UserManagement />
                   </RoleBasedRoute>
                 }
               />
-
-              {/* Health Routes */}
               <Route
-                path="/health"
+                path="/settings"
                 element={
-                  <RoleBasedRoute allowedRoles={["admin", "health"]}>
-                    <Health />
-                  </RoleBasedRoute>
-                }
-              />
-
-              {/* Education Routes */}
-              <Route
-                path="/education"
-                element={
-                  <RoleBasedRoute allowedRoles={["admin", "education"]}>
-                    <Education />
-                  </RoleBasedRoute>
-                }
-              />
-
-              {/* Labor Routes */}
-              <Route
-                path="/labor"
-                element={
-                  <RoleBasedRoute allowedRoles={["admin", "labor"]}>
-                    <Index />
-                  </RoleBasedRoute>
-                }
-              />
-
-              {/* Agriculture Routes */}
-              <Route
-                path="/agriculture"
-                element={
-                  <RoleBasedRoute allowedRoles={["admin", "agriculture"]}>
-                    <Index />
-                  </RoleBasedRoute>
-                }
-              />
-
-              {/* Economy Routes */}
-              <Route
-                path="/economy"
-                element={
-                  <RoleBasedRoute allowedRoles={["admin", "economy"]}>
-                    <Index />
-                  </RoleBasedRoute>
-                }
-              />
-
-              {/* Infrastructure Routes */}
-              <Route
-                path="/infrastructure"
-                element={
-                  <RoleBasedRoute allowedRoles={["admin", "infrastructure"]}>
-                    <Index />
+                  <RoleBasedRoute allowedRoles={["admin"]}>
+                    <Settings />
                   </RoleBasedRoute>
                 }
               />
