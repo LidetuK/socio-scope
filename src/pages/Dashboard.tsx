@@ -65,10 +65,14 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <ChartCard title="Recent Data Entries">
-            {/* Chart implementation will go here */}
+            <div className="flex items-center justify-center h-full">
+              <p className="text-gray-500">Chart coming soon...</p>
+            </div>
           </ChartCard>
           <ChartCard title="Population Distribution">
-            {/* Chart implementation will go here */}
+            <div className="flex items-center justify-center h-full">
+              <p className="text-gray-500">Chart coming soon...</p>
+            </div>
           </ChartCard>
         </div>
       </div>
