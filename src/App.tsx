@@ -44,13 +44,25 @@ const App = () => {
 
               {/* Feature Routes */}
               {dataEntryRoutes.map((route) => (
-                <Route key={route.path} {...route} />
+                <Route 
+                  key={route.path} 
+                  path={route.path}
+                  element={route.element}
+                />
               ))}
               {analyticsRoutes.map((route) => (
-                <Route key={route.path} {...route} />
+                <Route 
+                  key={route.path} 
+                  path={route.path}
+                  element={route.element}
+                />
               ))}
               {managementRoutes.map((route) => (
-                <Route key={route.path} {...route} />
+                <Route 
+                  key={route.path} 
+                  path={route.path}
+                  element={route.element}
+                />
               ))}
 
               {/* Catch-all Route */}
