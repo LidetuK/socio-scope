@@ -61,20 +61,22 @@ const Login = () => {
       {/* Left side - Blue background with logo */}
       <div className="hidden lg:flex lg:w-1/2 bg-[#1850E5] text-white p-12 flex-col justify-between">
         <div className="flex flex-col justify-center h-full">
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-12">
             <img 
               src="/lovable-uploads/85ddb6a9-a7f3-4b74-a4b3-867d490e6043.png" 
               alt="SNBS Logo" 
-              className="w-32 h-32 object-contain"
+              className="w-40 h-40 object-contain"
             />
           </div>
-          <h1 className="text-4xl font-bold mb-4">
-            Somali National Bureau of Statistics
-          </h1>
-          <p className="text-xl opacity-90">
-            Centralized platform for managing and analyzing statistical data for
-            informed decision-making.
-          </p>
+          <div className="max-w-lg mx-auto text-center">
+            <h1 className="text-3xl font-bold mb-4">
+              Somali National Bureau of Statistics
+            </h1>
+            <p className="text-lg opacity-90">
+              Centralized platform for managing and analyzing statistical data for
+              informed decision-making.
+            </p>
+          </div>
         </div>
         <div className="text-sm opacity-70">
           © 2025 Somali National Bureau of Statistics. All rights reserved.
@@ -85,11 +87,11 @@ const Login = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <div className="flex justify-center mb-6 lg:hidden">
+            <div className="flex justify-center mb-8 lg:hidden">
               <img 
                 src="/lovable-uploads/85ddb6a9-a7f3-4b74-a4b3-867d490e6043.png" 
                 alt="SNBS Logo" 
-                className="w-24 h-24 object-contain"
+                className="w-32 h-32 object-contain"
               />
             </div>
             <h2 className="text-2xl font-bold">Welcome Back</h2>

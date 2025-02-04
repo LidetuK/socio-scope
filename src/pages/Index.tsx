@@ -109,16 +109,18 @@ const Index = () => {
   return (
     <Layout className="bg-[#F6F7F9]">
       <div className="space-y-8">
-        <div className="flex flex-col items-center mb-8">
+        <div className="flex flex-col items-center mb-12">
           <img 
             src="/lovable-uploads/85ddb6a9-a7f3-4b74-a4b3-867d490e6043.png" 
             alt="SNBS Logo" 
-            className="w-24 h-24 object-contain mb-4"
+            className="w-36 h-36 object-contain mb-6"
           />
-          <h1 className="text-3xl font-bold text-[#1A1F2C]">SNBS ANALYSIS</h1>
-          <p className="mt-2 text-[#8E9196]">
-            Comprehensive view of all key indicators across sectors
-          </p>
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-[#1A1F2C]">SNBS ANALYSIS</h1>
+            <p className="mt-2 text-[#8E9196] max-w-2xl mx-auto">
+              Comprehensive view of all key indicators across sectors
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
