@@ -61,6 +61,13 @@ const Login = () => {
       {/* Left side - Blue background with logo */}
       <div className="hidden lg:flex lg:w-1/2 bg-[#1850E5] text-white p-12 flex-col justify-between">
         <div className="flex flex-col justify-center h-full">
+          <div className="flex justify-center mb-8">
+            <img 
+              src="/lovable-uploads/85ddb6a9-a7f3-4b74-a4b3-867d490e6043.png" 
+              alt="SNBS Logo" 
+              className="w-32 h-32 object-contain"
+            />
+          </div>
           <h1 className="text-4xl font-bold mb-4">
             Somali National Bureau of Statistics
           </h1>
@@ -78,6 +85,13 @@ const Login = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
+            <div className="flex justify-center mb-6 lg:hidden">
+              <img 
+                src="/lovable-uploads/85ddb6a9-a7f3-4b74-a4b3-867d490e6043.png" 
+                alt="SNBS Logo" 
+                className="w-24 h-24 object-contain"
+              />
+            </div>
             <h2 className="text-2xl font-bold">Welcome Back</h2>
             <p className="text-gray-600 mt-2">Please sign in to your account</p>
           </div>
