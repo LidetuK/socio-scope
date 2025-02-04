@@ -3,12 +3,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { populationFormSchema, type PopulationFormValues } from "./types";
-import RegionSelector from "./RegionSelector";
-import DistrictSelector from "./DistrictSelector";
+import PopulationFormFields from "./PopulationFormFields";
 import { supabase } from "@/integrations/supabase/client";
 
 const PopulationForm = () => {
@@ -31,7 +29,6 @@ const PopulationForm = () => {
 
   const onSubmit = async (values: PopulationFormValues) => {
     try {
-      // Transform the form values to match the database schema
       const dbValues = {
         region: values.region,
         district: values.district,
@@ -46,7 +43,7 @@ const PopulationForm = () => {
 
       const { error } = await supabase
         .from('population_distribution')
-        .insert([dbValues]);
+        .insert(dbValues);
 
       if (error) throw error;
 
@@ -62,94 +59,8 @@ const PopulationForm = () => {
     <Card className="p-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <RegionSelector form={form} />
-            <DistrictSelector form={form} />
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="locality" className="block text-sm font-medium text-gray-700">
-                Locality
-              </label>
-              <Input
-                id="locality"
-                placeholder="Enter locality name"
-                {...form.register("locality")}
-              />
-            </div>
-
-            <div>
-              <label htmlFor="totalPopulation" className="block text-sm font-medium text-gray-700">
-                Total Population
-              </label>
-              <Input
-                id="totalPopulation"
-                type="number"
-                {...form.register("totalPopulation", { valueAsNumber: true })}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="malePopulation" className="block text-sm font-medium text-gray-700">
-                  Male
-                </label>
-                <Input
-                  id="malePopulation"
-                  type="number"
-                  {...form.register("malePopulation", { valueAsNumber: true })}
-                />
-              </div>
-              <div>
-                <label htmlFor="femalePopulation" className="block text-sm font-medium text-gray-700">
-                  Female
-                </label>
-                <Input
-                  id="femalePopulation"
-                  type="number"
-                  {...form.register("femalePopulation", { valueAsNumber: true })}
-                />
-              </div>
-              <div>
-                <label htmlFor="otherPopulation" className="block text-sm font-medium text-gray-700">
-                  Other
-                </label>
-                <Input
-                  id="otherPopulation"
-                  type="number"
-                  {...form.register("otherPopulation", { valueAsNumber: true })}
-                />
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-medium mb-4">Age Groups</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="age0-4" className="block text-sm font-medium text-gray-700">
-                    0-4 years
-                  </label>
-                  <Input
-                    id="age0-4"
-                    type="number"
-                    {...form.register("ageGroups.0-4", { valueAsNumber: true })}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="age5-9" className="block text-sm font-medium text-gray-700">
-                    5-9 years
-                  </label>
-                  <Input
-                    id="age5-9"
-                    type="number"
-                    {...form.register("ageGroups.5-9", { valueAsNumber: true })}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <PopulationFormFields form={form} />
+          
           <div className="flex gap-4">
             <Button type="submit" className="bg-primary hover:bg-primary/90">
               Submit Data
