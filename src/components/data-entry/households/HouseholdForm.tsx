@@ -15,6 +15,9 @@ const formSchema = z.object({
   headAge: z.number().min(18, "Head must be at least 18 years old"),
   headGender: z.string().min(1, "Gender is required"),
   headEmploymentStatus: z.string().min(1, "Employment status is required"),
+  region: z.string().min(1, "Region is required"),
+  district: z.string().min(1, "District is required"),
+  locality: z.string().optional(),
 });
 
 const HouseholdForm = () => {
@@ -26,17 +29,29 @@ const HouseholdForm = () => {
       headAge: 18,
       headGender: "",
       headEmploymentStatus: "",
+      region: "",
+      district: "",
+      locality: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const dbValues = {
+        household_size: values.householdSize,
+        household_type: values.householdType,
+        head_age: values.headAge,
+        head_gender: values.headGender,
+        head_employment_status: values.headEmploymentStatus,
+        region: values.region,
+        district: values.district,
+        locality: values.locality,
+        created_by: (await supabase.auth.getUser()).data.user?.id
+      };
+
       const { error } = await supabase
         .from('households')
-        .insert({
-          ...values,
-          created_by: (await supabase.auth.getUser()).data.user?.id
-        });
+        .insert(dbValues);
 
       if (error) throw error;
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
-import { NumberField } from "../shared/FormFields";
+import { NumberField, TextField } from "../shared/FormFields";
 
 interface VitalStatsFormFieldsProps {
   form: UseFormReturn<any>;
@@ -9,6 +9,12 @@ interface VitalStatsFormFieldsProps {
 const VitalStatsFormFields = ({ form }: VitalStatsFormFieldsProps) => {
   return (
     <div className="space-y-6">
+      <TextField
+        form={form}
+        name="region"
+        label="Region"
+      />
+
       <div className="grid grid-cols-2 gap-4">
         <NumberField
           form={form}

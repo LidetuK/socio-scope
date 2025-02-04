@@ -30,6 +30,25 @@ const HouseholdFormFields = ({ form }: HouseholdFormFieldsProps) => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
+        <TextField
+          form={form}
+          name="region"
+          label="Region"
+        />
+        <TextField
+          form={form}
+          name="district"
+          label="District"
+        />
+      </div>
+
+      <TextField
+        form={form}
+        name="locality"
+        label="Locality (Optional)"
+      />
+
+      <div className="grid grid-cols-2 gap-4">
         <NumberField
           form={form}
           name="householdSize"

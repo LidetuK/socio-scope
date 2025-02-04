@@ -17,6 +17,7 @@ const formSchema = z.object({
   fertilityRate: z.number().min(0, "Fertility rate must be a positive number"),
   marriageRate: z.number().min(0, "Marriage rate must be a positive number"),
   divorceRate: z.number().min(0, "Divorce rate must be a positive number"),
+  region: z.string().min(1, "Region is required"),
 });
 
 const VitalStatsForm = () => {
@@ -30,18 +31,28 @@ const VitalStatsForm = () => {
       fertilityRate: 0,
       marriageRate: 0,
       divorceRate: 0,
+      region: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const dbValues = {
+        birth_rate: values.birthRate,
+        death_rate: values.deathRate,
+        infant_mortality_rate: values.infantMortalityRate,
+        maternal_mortality_rate: values.maternalMortalityRate,
+        fertility_rate: values.fertilityRate,
+        marriage_rate: values.marriageRate,
+        divorce_rate: values.divorceRate,
+        region: values.region,
+        time_period: new Date().toISOString(),
+        created_by: (await supabase.auth.getUser()).data.user?.id
+      };
+
       const { error } = await supabase
         .from('vital_statistics')
-        .insert({
-          ...values,
-          created_by: (await supabase.auth.getUser()).data.user?.id,
-          time_period: new Date().toISOString()
-        });
+        .insert(dbValues);
 
       if (error) throw error;
 
