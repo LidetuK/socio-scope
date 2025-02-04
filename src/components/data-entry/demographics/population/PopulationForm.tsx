@@ -31,12 +31,22 @@ const PopulationForm = () => {
 
   const onSubmit = async (values: PopulationFormValues) => {
     try {
+      // Transform the form values to match the database schema
+      const dbValues = {
+        region: values.region,
+        district: values.district,
+        locality: values.locality,
+        total_population: values.totalPopulation,
+        male_population: values.malePopulation,
+        female_population: values.femalePopulation,
+        other_population: values.otherPopulation,
+        age_groups: values.ageGroups,
+        created_by: (await supabase.auth.getUser()).data.user?.id
+      };
+
       const { error } = await supabase
         .from('population_distribution')
-        .insert([{
-          ...values,
-          created_by: (await supabase.auth.getUser()).data.user?.id
-        }]);
+        .insert([dbValues]);
 
       if (error) throw error;
 
