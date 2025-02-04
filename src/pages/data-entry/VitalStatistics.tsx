@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import VitalStatsForm from "@/components/data-entry/vital-statistics/VitalStatsForm";
+import BulkUpload from "@/components/data-entry/demographics/BulkUpload";
 import Breadcrumb from "@/components/data-entry/demographics/shared/Breadcrumb";
 
 const VitalStatisticsEntry = () => {
@@ -12,8 +13,9 @@ const VitalStatisticsEntry = () => {
           <Breadcrumb currentPage="Vital Statistics" />
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <VitalStatsForm />
+          <BulkUpload />
         </div>
       </div>
     </Layout>

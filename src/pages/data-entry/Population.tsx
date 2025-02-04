@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import PopulationForm from "@/components/data-entry/demographics/population/PopulationForm";
+import BulkUpload from "@/components/data-entry/demographics/BulkUpload";
 import Breadcrumb from "@/components/data-entry/demographics/shared/Breadcrumb";
 
 const PopulationEntry = () => {
@@ -12,8 +13,9 @@ const PopulationEntry = () => {
           <Breadcrumb currentPage="Population Distribution" />
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <PopulationForm />
+          <BulkUpload />
         </div>
       </div>
     </Layout>
