@@ -62,7 +62,7 @@ const PopulationForm = () => {
           <PopulationFormFields form={form} />
           
           <div className="flex gap-4">
-            <Button type="submit" className="bg-primary hover:bg-primary/90">
+            <Button type="submit" className="bg-[#9b87f5] hover:bg-[#8b77e5]">
               Submit Data
             </Button>
             <Button 
