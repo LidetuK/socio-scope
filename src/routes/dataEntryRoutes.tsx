@@ -27,7 +27,7 @@ export const dataEntryRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "/data-entry/households",
+    path: "/data-entry/demographics/households",
     element: (
       <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <DataEntryHouseholds />
@@ -35,7 +35,7 @@ export const dataEntryRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "/data-entry/population",
+    path: "/data-entry/demographics/population",
     element: (
       <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <DataEntryPopulation />
@@ -43,7 +43,7 @@ export const dataEntryRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "/data-entry/migration",
+    path: "/data-entry/demographics/migration",
     element: (
       <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <DataEntryMigration />
@@ -51,7 +51,7 @@ export const dataEntryRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "/data-entry/vital-statistics",
+    path: "/data-entry/demographics/vital-statistics",
     element: (
       <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <DataEntryVitalStats />
