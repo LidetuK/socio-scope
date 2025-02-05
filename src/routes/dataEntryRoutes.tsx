@@ -4,10 +4,10 @@ import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
 // Pages
 import DataEntryIndex from "@/pages/data-entry/Index";
 import DataEntryDemographics from "@/pages/data-entry/Demographics";
-import PopulationEntry from "@/pages/data-entry/Population";
-import HouseholdEntry from "@/pages/data-entry/Households";
-import VitalStatsEntry from "@/pages/data-entry/VitalStatistics";
-import MigrationEntry from "@/pages/data-entry/Migration";
+import PopulationEntry from "@/pages/data-entry/demographics/Population";
+import HouseholdEntry from "@/pages/data-entry/demographics/Households";
+import VitalStatsEntry from "@/pages/data-entry/demographics/VitalStatistics";
+import MigrationEntry from "@/pages/data-entry/demographics/Migration";
 
 // Population roles
 const populationRoles = [
