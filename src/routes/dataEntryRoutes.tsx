@@ -10,6 +10,7 @@ import VitalStatsEntry from "@/pages/data-entry/demographics/VitalStatistics";
 import MigrationEntry from "@/pages/data-entry/demographics/Migration";
 
 const dataEntryRoles = ["admin", "data_entry", "enumerator"];
+const adminDataEntryRoles = ["admin", "data_entry"];
 
 export const dataEntryRoutes: RouteObject[] = [
   {
@@ -47,7 +48,7 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics/vital-statistics",
     element: (
-      <RoleBasedRoute allowedRoles={["admin", "data_entry"]}>
+      <RoleBasedRoute allowedRoles={adminDataEntryRoles}>
         <VitalStatsEntry />
       </RoleBasedRoute>
     ),
@@ -55,7 +56,7 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics/migration",
     element: (
-      <RoleBasedRoute allowedRoles={["admin", "data_entry"]}>
+      <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <MigrationEntry />
       </RoleBasedRoute>
     ),

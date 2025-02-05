@@ -28,10 +28,26 @@ const menuItems = [
     path: "/data-entry",
     roles: ["admin", "data_entry", "enumerator"],
     subItems: [
-      { label: "Households", path: "/data-entry/households" },
-      { label: "Population", path: "/data-entry/population" },
-      { label: "Migration", path: "/data-entry/migration" },
-      { label: "Vital Statistics", path: "/data-entry/vital-statistics" },
+      { 
+        label: "Households", 
+        path: "/data-entry/demographics/households",
+        roles: ["admin", "data_entry", "enumerator"]
+      },
+      { 
+        label: "Population", 
+        path: "/data-entry/demographics/population",
+        roles: ["admin", "data_entry", "enumerator"]
+      },
+      { 
+        label: "Migration", 
+        path: "/data-entry/demographics/migration",
+        roles: ["admin", "data_entry", "enumerator"]
+      },
+      { 
+        label: "Vital Statistics", 
+        path: "/data-entry/demographics/vital-statistics",
+        roles: ["admin", "data_entry"]
+      },
     ],
   },
   {
@@ -139,18 +155,20 @@ const Sidebar = () => {
                 
                 {item.subItems && expandedItem === item.path && (
                   <div className="ml-12 mt-1 space-y-1">
-                    {item.subItems.map((subItem) => (
-                      <Link
-                        key={subItem.path}
-                        to={subItem.path}
-                        className={cn(
-                          "block px-4 py-2 text-sm text-gray-600 hover:text-primary rounded-md transition-colors",
-                          location.pathname === subItem.path && "text-primary font-medium"
-                        )}
-                      >
-                        {subItem.label}
-                      </Link>
-                    ))}
+                    {item.subItems
+                      .filter(subItem => !subItem.roles || (userRole && subItem.roles.includes(userRole)))
+                      .map((subItem) => (
+                        <Link
+                          key={subItem.path}
+                          to={subItem.path}
+                          className={cn(
+                            "block px-4 py-2 text-sm text-gray-600 hover:text-primary rounded-md transition-colors",
+                            location.pathname === subItem.path && "text-primary font-medium"
+                          )}
+                        >
+                          {subItem.label}
+                        </Link>
+                      ))}
                   </div>
                 )}
               </div>
