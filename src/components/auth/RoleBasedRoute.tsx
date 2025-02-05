@@ -2,7 +2,6 @@ import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import { Shield, ShieldAlert } from "lucide-react";
 
 interface RoleBasedRouteProps {
   children: ReactNode;
@@ -57,8 +56,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
       const { data, error } = await supabase
         .from("user_roles")
         .select("role")
-        .eq("user_id", userId)
-        .maybeSingle();
+        .eq("user_id", userId);
 
       console.log("Role query result:", { data, error });
 
@@ -72,7 +70,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
         throw error;
       }
       
-      if (!data) {
+      if (!data || data.length === 0) {
         console.log("No role found for user");
         toast({
           title: "No Role Assigned",
@@ -81,12 +79,27 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
         });
         setUserRole(null);
       } else {
-        console.log("Role found:", data.role);
-        toast({
-          title: "Role Verified",
-          description: `Logged in as: ${data.role}`,
-        });
-        setUserRole(data.role);
+        // Map the roles to an array of role strings
+        const userRoles = data.map(role => role.role);
+        console.log("Roles found:", userRoles);
+        
+        // Check if user has any of the allowed roles
+        const hasAllowedRole = userRoles.some(role => allowedRoles.includes(role));
+        
+        if (hasAllowedRole) {
+          setUserRole(userRoles[0]); // Set the first role for backwards compatibility
+          toast({
+            title: "Role Verified",
+            description: `Logged in with roles: ${userRoles.join(", ")}`,
+          });
+        } else {
+          setUserRole(null);
+          toast({
+            title: "Unauthorized",
+            description: "You don't have the required role to access this page.",
+            variant: "destructive",
+          });
+        }
       }
     } catch (error: any) {
       console.error("Error in getUserRole:", error);
@@ -121,8 +134,8 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
     hasAccess: userRole && allowedRoles.includes(userRole)
   });
   
-  if (!userRole || !allowedRoles.includes(userRole)) {
-    console.log("User role not allowed, redirecting to unauthorized");
+  if (!userRole) {
+    console.log("No user role, redirecting to unauthorized");
     return <Navigate to="/unauthorized" replace />;
   }
 
