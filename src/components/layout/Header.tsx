@@ -9,30 +9,21 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      // First clear any existing session
-      const { error: sessionError } = await supabase.auth.getSession();
-      if (sessionError) throw sessionError;
-
-      // Then sign out
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-
-      // Only navigate after successful logout
-      navigate("/login");
       
+      // If we get a session_not_found error, that's okay - the user is already logged out
+      if (error && !error.message?.includes("session_not_found")) {
+        throw error;
+      }
+
+      // Always navigate to login page and show success message
+      navigate("/login");
       toast({
         title: "Success",
         description: "Logged out successfully",
       });
     } catch (error: any) {
       console.error("Logout error:", error);
-      
-      // If we get a session_not_found error, we can still redirect to login
-      if (error.message?.includes("session_not_found")) {
-        navigate("/login");
-        return;
-      }
-
       toast({
         title: "Error",
         description: "Failed to sign out properly. Please try again.",
