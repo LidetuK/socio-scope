@@ -39,7 +39,7 @@ const App = () => {
               <Route
                 path="/dashboard"
                 element={
-                  <RoleBasedRoute allowedRoles={["admin", "analyst"]}>
+                  <RoleBasedRoute allowedRoles={["admin_population", "admin_household", "analyst_population"]}>
                     <Dashboard />
                   </RoleBasedRoute>
                 }
