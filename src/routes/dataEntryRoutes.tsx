@@ -1,19 +1,39 @@
 import { RouteObject } from "react-router-dom";
 import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
+
+// Pages
 import DataEntryIndex from "@/pages/data-entry/Index";
 import DataEntryDemographics from "@/pages/data-entry/Demographics";
-import DataEntryHouseholds from "@/pages/data-entry/Households";
-import DataEntryPopulation from "@/pages/data-entry/Population";
-import DataEntryMigration from "@/pages/data-entry/Migration";
-import DataEntryVitalStats from "@/pages/data-entry/VitalStatistics";
+import PopulationEntry from "@/pages/data-entry/demographics/Population";
+import HouseholdEntry from "@/pages/data-entry/demographics/Households";
+import VitalStatsEntry from "@/pages/data-entry/demographics/VitalStatistics";
+import MigrationEntry from "@/pages/data-entry/demographics/Migration";
 
-const dataEntryRoles = ["admin", "data_entry", "enumerator"];
+// Population roles
+const populationRoles = [
+  "admin_population",
+  "data_entry_population",
+  "field_enumerator_population"
+];
+
+// Household roles
+const householdRoles = [
+  "admin_household",
+  "data_entry_household",
+  "field_enumerator_household"
+];
+
+// Vital statistics roles
+const vitalStatsRoles = [
+  "admin_population",
+  "vital_stats_registrar"
+];
 
 export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry",
     element: (
-      <RoleBasedRoute allowedRoles={dataEntryRoles}>
+      <RoleBasedRoute allowedRoles={[...populationRoles, ...householdRoles, "vital_stats_registrar"]}>
         <DataEntryIndex />
       </RoleBasedRoute>
     ),
@@ -21,40 +41,40 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics",
     element: (
-      <RoleBasedRoute allowedRoles={dataEntryRoles}>
+      <RoleBasedRoute allowedRoles={[...populationRoles, ...householdRoles, "vital_stats_registrar"]}>
         <DataEntryDemographics />
-      </RoleBasedRoute>
-    ),
-  },
-  {
-    path: "/data-entry/demographics/households",
-    element: (
-      <RoleBasedRoute allowedRoles={dataEntryRoles}>
-        <DataEntryHouseholds />
       </RoleBasedRoute>
     ),
   },
   {
     path: "/data-entry/demographics/population",
     element: (
-      <RoleBasedRoute allowedRoles={dataEntryRoles}>
-        <DataEntryPopulation />
+      <RoleBasedRoute allowedRoles={populationRoles}>
+        <PopulationEntry />
       </RoleBasedRoute>
     ),
   },
   {
-    path: "/data-entry/demographics/migration",
+    path: "/data-entry/demographics/households",
     element: (
-      <RoleBasedRoute allowedRoles={dataEntryRoles}>
-        <DataEntryMigration />
+      <RoleBasedRoute allowedRoles={householdRoles}>
+        <HouseholdEntry />
       </RoleBasedRoute>
     ),
   },
   {
     path: "/data-entry/demographics/vital-statistics",
     element: (
-      <RoleBasedRoute allowedRoles={dataEntryRoles}>
-        <DataEntryVitalStats />
+      <RoleBasedRoute allowedRoles={vitalStatsRoles}>
+        <VitalStatsEntry />
+      </RoleBasedRoute>
+    ),
+  },
+  {
+    path: "/data-entry/demographics/migration",
+    element: (
+      <RoleBasedRoute allowedRoles={populationRoles}>
+        <MigrationEntry />
       </RoleBasedRoute>
     ),
   },
