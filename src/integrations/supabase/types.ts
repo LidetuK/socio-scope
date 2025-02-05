@@ -592,24 +592,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role:
-        | "admin"
-        | "demographics"
-        | "health"
-        | "education"
-        | "labor"
-        | "agriculture"
-        | "economy"
-        | "infrastructure"
-        | "data_entry_population"
-        | "admin_population"
-        | "analyst_population"
-        | "policy_maker_population"
-        | "vital_stats_registrar"
-        | "field_enumerator_population"
-        | "data_entry_household"
-        | "field_enumerator_household"
-        | "admin_household"
+      app_role: "admin" | "data_entry" | "enumerator" | "analyst"
       user_role: "admin" | "data_entry" | "enumerator" | "analyst"
     }
     CompositeTypes: {
