@@ -124,17 +124,22 @@ const Login = () => {
 
       if (roleError) throw roleError;
 
-      const role = roleData?.role;
-      if (role === "admin") {
-        navigate("/");
-      } else {
-        navigate(`/${role}`);
-      }
-
       toast({
         title: "Success",
         description: "Logged in successfully",
       });
+
+      // Redirect based on role
+      const role = roleData?.role;
+      if (role === "admin") {
+        navigate("/dashboard");
+      } else if (role?.includes("data_entry") || role?.includes("field_enumerator")) {
+        navigate("/data-entry");
+      } else if (role?.includes("analyst")) {
+        navigate("/analytics");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error: any) {
       toast({
         title: "Error",

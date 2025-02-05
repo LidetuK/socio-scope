@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
 
 // Routes
@@ -32,9 +32,12 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               
-              {/* Dashboard Route */}
+              {/* Redirect root to login */}
+              <Route path="/" element={<Navigate to="/login" replace />} />
+
+              {/* Protected Dashboard Route */}
               <Route
-                path="/"
+                path="/dashboard"
                 element={
                   <RoleBasedRoute allowedRoles={["admin", "analyst"]}>
                     <Dashboard />
