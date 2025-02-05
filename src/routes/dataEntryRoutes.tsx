@@ -9,31 +9,13 @@ import HouseholdEntry from "@/pages/data-entry/demographics/Households";
 import VitalStatsEntry from "@/pages/data-entry/demographics/VitalStatistics";
 import MigrationEntry from "@/pages/data-entry/demographics/Migration";
 
-// Population roles
-const populationRoles = [
-  "admin_population",
-  "data_entry_population",
-  "field_enumerator_population"
-];
-
-// Household roles
-const householdRoles = [
-  "admin_household",
-  "data_entry_household",
-  "field_enumerator_household"
-];
-
-// Vital statistics roles
-const vitalStatsRoles = [
-  "admin_population",
-  "vital_stats_registrar"
-];
+const dataEntryRoles = ["admin", "data_entry", "enumerator"];
 
 export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry",
     element: (
-      <RoleBasedRoute allowedRoles={[...populationRoles, ...householdRoles, "vital_stats_registrar"]}>
+      <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <DataEntryIndex />
       </RoleBasedRoute>
     ),
@@ -41,7 +23,7 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics",
     element: (
-      <RoleBasedRoute allowedRoles={[...populationRoles, ...householdRoles, "vital_stats_registrar"]}>
+      <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <DataEntryDemographics />
       </RoleBasedRoute>
     ),
@@ -49,7 +31,7 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics/population",
     element: (
-      <RoleBasedRoute allowedRoles={populationRoles}>
+      <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <PopulationEntry />
       </RoleBasedRoute>
     ),
@@ -57,7 +39,7 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics/households",
     element: (
-      <RoleBasedRoute allowedRoles={householdRoles}>
+      <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <HouseholdEntry />
       </RoleBasedRoute>
     ),
@@ -65,7 +47,7 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics/vital-statistics",
     element: (
-      <RoleBasedRoute allowedRoles={vitalStatsRoles}>
+      <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <VitalStatsEntry />
       </RoleBasedRoute>
     ),
@@ -73,7 +55,7 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics/migration",
     element: (
-      <RoleBasedRoute allowedRoles={populationRoles}>
+      <RoleBasedRoute allowedRoles={dataEntryRoles}>
         <MigrationEntry />
       </RoleBasedRoute>
     ),

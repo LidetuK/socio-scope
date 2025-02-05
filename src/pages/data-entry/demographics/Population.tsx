@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
-import DemographicsForm from "@/components/data-entry/demographics/DemographicsForm";
+import PopulationForm from "@/components/data-entry/demographics/population/PopulationForm";
 import BulkUpload from "@/components/data-entry/demographics/BulkUpload";
 import Breadcrumb from "@/components/data-entry/demographics/shared/Breadcrumb";
 
@@ -14,7 +14,7 @@ const PopulationEntry = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <DemographicsForm />
+          <PopulationForm />
           <BulkUpload />
         </div>
       </div>

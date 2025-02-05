@@ -9,25 +9,25 @@ const options = [
     title: "Population Distribution",
     description: "Record and manage population statistics by region and demographics",
     icon: Users,
-    path: "/data-entry/population",
+    path: "/data-entry/demographics/population",
   },
   {
     title: "Household Composition",
     description: "Track household sizes, types, and characteristics",
     icon: Home,
-    path: "/data-entry/households",
+    path: "/data-entry/demographics/households",
   },
   {
     title: "Vital Statistics",
     description: "Record births, deaths, marriages, and other vital events",
     icon: FileSpreadsheet,
-    path: "/data-entry/vital-statistics",
+    path: "/data-entry/demographics/vital-statistics",
   },
   {
     title: "Migration Data",
     description: "Track population movement and migration patterns",
     icon: ArrowRight,
-    path: "/data-entry/migration",
+    path: "/data-entry/demographics/migration",
   },
 ];
 
