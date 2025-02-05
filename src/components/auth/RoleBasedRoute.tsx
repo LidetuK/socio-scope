@@ -56,7 +56,8 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
       const { data: roleData, error } = await supabase
         .from("user_roles")
         .select("role")
-        .eq("user_id", userId);
+        .eq("user_id", userId)
+        .single();
 
       console.log("Role query result:", { roleData, error });
 
@@ -68,7 +69,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
           variant: "destructive",
         });
         setUserRole(null);
-      } else if (!roleData || roleData.length === 0) {
+      } else if (!roleData) {
         console.log("No role found");
         toast({
           title: "No Role Found",
@@ -77,24 +78,22 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
         });
         setUserRole(null);
       } else {
-        const roles = roleData.map(r => r.role);
-        console.log("Found roles:", roles);
+        const userRole = roleData.role;
+        console.log("Found role:", userRole);
         
-        // Check if user has any of the allowed roles
-        const hasAllowedRole = roles.some(role => 
-          allowedRoles.includes(role) || 
-          allowedRoles.includes(role.toLowerCase()) ||
-          allowedRoles.includes(role.toUpperCase())
-        );
+        // Convert both the user's role and allowed roles to lowercase for comparison
+        const hasAllowedRole = allowedRoles
+          .map(role => role.toLowerCase())
+          .includes(userRole.toLowerCase());
         
         if (hasAllowedRole) {
-          setUserRole(roles[0]);
+          setUserRole(userRole);
           toast({
             title: "Access Granted",
-            description: `Logged in with roles: ${roles.join(", ")}`,
+            description: `Logged in as ${userRole}`,
           });
         } else {
-          console.log("User roles not allowed:", roles);
+          console.log("User role not allowed:", userRole);
           console.log("Allowed roles:", allowedRoles);
           setUserRole(null);
           toast({
