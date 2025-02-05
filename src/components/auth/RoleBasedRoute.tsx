@@ -53,46 +53,49 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
   const getUserRole = async (userId: string) => {
     try {
       console.log("Fetching role for user:", userId);
-      const { data, error } = await supabase
+      const { data: roleData, error } = await supabase
         .from("user_roles")
         .select("role")
         .eq("user_id", userId);
 
-      console.log("Role query result:", { data, error });
+      console.log("Role query result:", { roleData, error });
 
       if (error) {
         console.error("Error fetching role:", error);
         toast({
-          title: "Error Fetching Role",
+          title: "Error",
           description: error.message,
           variant: "destructive",
         });
-        throw error;
-      }
-      
-      if (!data || data.length === 0) {
-        console.log("No role found for user");
+        setUserRole(null);
+      } else if (!roleData || roleData.length === 0) {
+        console.log("No role found");
         toast({
-          title: "No Role Assigned",
-          description: "You don't have any role assigned. Please contact an administrator.",
+          title: "No Role Found",
+          description: "You don't have any assigned roles.",
           variant: "destructive",
         });
         setUserRole(null);
       } else {
-        // Map the roles to an array of role strings
-        const userRoles = data.map(role => role.role);
-        console.log("Roles found:", userRoles);
+        const roles = roleData.map(r => r.role);
+        console.log("Found roles:", roles);
         
         // Check if user has any of the allowed roles
-        const hasAllowedRole = userRoles.some(role => allowedRoles.includes(role));
+        const hasAllowedRole = roles.some(role => 
+          allowedRoles.includes(role) || 
+          allowedRoles.includes(role.toLowerCase()) ||
+          allowedRoles.includes(role.toUpperCase())
+        );
         
         if (hasAllowedRole) {
-          setUserRole(userRoles[0]); // Set the first role for backwards compatibility
+          setUserRole(roles[0]);
           toast({
-            title: "Role Verified",
-            description: `Logged in with roles: ${userRoles.join(", ")}`,
+            title: "Access Granted",
+            description: `Logged in with roles: ${roles.join(", ")}`,
           });
         } else {
+          console.log("User roles not allowed:", roles);
+          console.log("Allowed roles:", allowedRoles);
           setUserRole(null);
           toast({
             title: "Unauthorized",
@@ -105,7 +108,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
       console.error("Error in getUserRole:", error);
       toast({
         title: "Error",
-        description: error.message || "Failed to fetch user role",
+        description: error.message,
         variant: "destructive",
       });
       setUserRole(null);
@@ -115,7 +118,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
   };
 
   if (loading) {
-    console.log("Still loading...");
+    console.log("Loading...");
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -128,12 +131,6 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
     return <Navigate to="/login" replace />;
   }
 
-  console.log("Access check:", {
-    userRole,
-    allowedRoles,
-    hasAccess: userRole && allowedRoles.includes(userRole)
-  });
-  
   if (!userRole) {
     console.log("No user role, redirecting to unauthorized");
     return <Navigate to="/unauthorized" replace />;

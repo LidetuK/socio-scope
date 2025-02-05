@@ -39,7 +39,7 @@ const App = () => {
               <Route
                 path="/dashboard"
                 element={
-                  <RoleBasedRoute allowedRoles={["admin_population", "admin_household", "analyst_population"]}>
+                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst", "enumerator"]}>
                     <Dashboard />
                   </RoleBasedRoute>
                 }
@@ -50,21 +50,33 @@ const App = () => {
                 <Route 
                   key={route.path} 
                   path={route.path}
-                  element={route.element}
+                  element={
+                    <RoleBasedRoute allowedRoles={["data_entry", "enumerator"]}>
+                      {route.element}
+                    </RoleBasedRoute>
+                  }
                 />
               ))}
               {analyticsRoutes.map((route) => (
                 <Route 
                   key={route.path} 
                   path={route.path}
-                  element={route.element}
+                  element={
+                    <RoleBasedRoute allowedRoles={["admin", "analyst"]}>
+                      {route.element}
+                    </RoleBasedRoute>
+                  }
                 />
               ))}
               {managementRoutes.map((route) => (
                 <Route 
                   key={route.path} 
                   path={route.path}
-                  element={route.element}
+                  element={
+                    <RoleBasedRoute allowedRoles={["admin"]}>
+                      {route.element}
+                    </RoleBasedRoute>
+                  }
                 />
               ))}
 
