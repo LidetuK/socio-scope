@@ -38,8 +38,9 @@ const App = () => {
                 element={
                   <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst", "enumerator"]}>
                     {({ userRole }) => {
-                      // Redirect analysts to analytics/population
-                      if (userRole === "analyst") {
+                      console.log("Current user role:", userRole); // Debug log
+                      // Check if the role includes 'analyst' (case-insensitive)
+                      if (userRole?.toLowerCase().includes('analyst')) {
                         return <Navigate to="/analytics/population" replace />;
                       }
                       // Default redirect to dashboard for other roles
