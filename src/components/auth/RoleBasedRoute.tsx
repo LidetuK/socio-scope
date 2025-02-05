@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
 interface RoleBasedRouteProps {
-  children: ReactNode;
+  children: ReactNode | ((props: { userRole: string }) => ReactNode);
   allowedRoles: string[];
 }
 
@@ -140,7 +140,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
   }
 
   console.log("Access granted!");
-  return <>{children}</>;
+  return typeof children === "function" ? children({ userRole }) : children;
 };
 
 export default RoleBasedRoute;

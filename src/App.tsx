@@ -32,8 +32,22 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               
-              {/* Redirect root to dashboard for authenticated users */}
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              {/* Redirect root based on user role */}
+              <Route 
+                path="/" 
+                element={
+                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst", "enumerator"]}>
+                    {({ userRole }) => {
+                      // Redirect analysts to analytics/population
+                      if (userRole === "analyst") {
+                        return <Navigate to="/analytics/population" replace />;
+                      }
+                      // Default redirect to dashboard for other roles
+                      return <Navigate to="/dashboard" replace />;
+                    }}
+                  </RoleBasedRoute>
+                } 
+              />
 
               {/* Protected Dashboard Route */}
               <Route
