@@ -9,22 +9,25 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      // Attempt to sign out
-      await supabase.auth.signOut();
+      // Clear all Supabase local storage data
+      for (const key of Object.keys(localStorage)) {
+        if (key.startsWith('sb-')) {
+          localStorage.removeItem(key);
+        }
+      }
       
-      // Clear any local storage data
-      localStorage.removeItem('supabase.auth.token');
+      // Attempt to sign out - don't wait for response
+      supabase.auth.signOut().catch(console.error);
       
-      // Always navigate to login and show success message
+      // Immediately navigate to login and show success message
       navigate("/login");
       toast({
         title: "Success",
         description: "Logged out successfully",
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error("Logout error:", error);
-      
-      // Even if logout fails, redirect to login page for safety
+      // Ensure user is redirected to login even if there's an error
       navigate("/login");
       toast({
         title: "Notice",
