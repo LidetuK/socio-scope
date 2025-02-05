@@ -11,6 +11,7 @@ const corsHeaders = {
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -39,6 +40,8 @@ serve(async (req) => {
       subject: "Demographic Report",
       html: reportHtml,
     });
+
+    console.log("Email sent successfully:", emailResponse);
 
     return new Response(JSON.stringify(emailResponse), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
