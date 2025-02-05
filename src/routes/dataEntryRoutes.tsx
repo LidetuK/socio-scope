@@ -47,7 +47,7 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics/vital-statistics",
     element: (
-      <RoleBasedRoute allowedRoles={dataEntryRoles}>
+      <RoleBasedRoute allowedRoles={["admin", "data_entry"]}>
         <VitalStatsEntry />
       </RoleBasedRoute>
     ),
@@ -55,7 +55,7 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry/demographics/migration",
     element: (
-      <RoleBasedRoute allowedRoles={dataEntryRoles}>
+      <RoleBasedRoute allowedRoles={["admin", "data_entry"]}>
         <MigrationEntry />
       </RoleBasedRoute>
     ),

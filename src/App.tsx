@@ -39,7 +39,7 @@ const App = () => {
               <Route
                 path="/dashboard"
                 element={
-                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst"]}>
+                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst", "enumerator"]}>
                     <Dashboard />
                   </RoleBasedRoute>
                 }
@@ -50,11 +50,7 @@ const App = () => {
                 <Route 
                   key={route.path} 
                   path={route.path}
-                  element={
-                    <RoleBasedRoute allowedRoles={["admin", "data_entry"]}>
-                      {route.element}
-                    </RoleBasedRoute>
-                  }
+                  element={route.element}
                 />
               ))}
               {analyticsRoutes.map((route) => (
