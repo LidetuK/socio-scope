@@ -9,14 +9,13 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
+      // Attempt to sign out
+      await supabase.auth.signOut();
       
-      // If we get a session_not_found error, that's okay - the user is already logged out
-      if (error && !error.message?.includes("session_not_found")) {
-        throw error;
-      }
-
-      // Always navigate to login page and show success message
+      // Clear any local storage data
+      localStorage.removeItem('supabase.auth.token');
+      
+      // Always navigate to login and show success message
       navigate("/login");
       toast({
         title: "Success",
@@ -24,10 +23,12 @@ const Header = () => {
       });
     } catch (error: any) {
       console.error("Logout error:", error);
+      
+      // Even if logout fails, redirect to login page for safety
+      navigate("/login");
       toast({
-        title: "Error",
-        description: "Failed to sign out properly. Please try again.",
-        variant: "destructive",
+        title: "Notice",
+        description: "You have been logged out",
       });
     }
   };
