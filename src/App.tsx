@@ -32,14 +32,14 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               
-              {/* Redirect root to login */}
-              <Route path="/" element={<Navigate to="/login" replace />} />
+              {/* Redirect root to dashboard for authenticated users */}
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
               {/* Protected Dashboard Route */}
               <Route
                 path="/dashboard"
                 element={
-                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst", "enumerator"]}>
+                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst"]}>
                     <Dashboard />
                   </RoleBasedRoute>
                 }
@@ -51,7 +51,7 @@ const App = () => {
                   key={route.path} 
                   path={route.path}
                   element={
-                    <RoleBasedRoute allowedRoles={["data_entry"]}>
+                    <RoleBasedRoute allowedRoles={["admin", "data_entry"]}>
                       {route.element}
                     </RoleBasedRoute>
                   }

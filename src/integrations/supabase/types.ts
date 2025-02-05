@@ -162,6 +162,45 @@ export type Database = {
         }
         Relationships: []
       }
+      file_uploads: {
+        Row: {
+          created_at: string
+          data_type: string
+          error_message: string | null
+          file_path: string
+          file_type: string
+          filename: string
+          id: string
+          processed_records: number | null
+          status: string | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          data_type: string
+          error_message?: string | null
+          file_path: string
+          file_type: string
+          filename: string
+          id?: string
+          processed_records?: number | null
+          status?: string | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          data_type?: string
+          error_message?: string | null
+          file_path?: string
+          file_type?: string
+          filename?: string
+          id?: string
+          processed_records?: number | null
+          status?: string | null
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
       health: {
         Row: {
           disease_incidence: Json | null
