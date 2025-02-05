@@ -78,23 +78,27 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
         });
         setUserRole(null);
       } else {
-        const userRole = roleData.role;
-        console.log("Found role:", userRole);
+        const role = roleData.role.toLowerCase();
+        console.log("Found role:", role);
+        console.log("Allowed roles:", allowedRoles);
         
-        // Convert both the user's role and allowed roles to lowercase for comparison
+        // Convert allowed roles to lowercase for comparison
         const hasAllowedRole = allowedRoles
-          .map(role => role.toLowerCase())
-          .includes(userRole.toLowerCase());
+          .map(r => r.toLowerCase())
+          .some(allowedRole => {
+            const isAllowed = role.includes(allowedRole) || allowedRole.includes(role);
+            console.log(`Comparing roles: ${role} with ${allowedRole} -> ${isAllowed}`);
+            return isAllowed;
+          });
         
         if (hasAllowedRole) {
-          setUserRole(userRole);
+          setUserRole(role);
           toast({
             title: "Access Granted",
-            description: `Logged in as ${userRole}`,
+            description: `Logged in as ${role}`,
           });
         } else {
-          console.log("User role not allowed:", userRole);
-          console.log("Allowed roles:", allowedRoles);
+          console.log("Role not allowed:", role);
           setUserRole(null);
           toast({
             title: "Unauthorized",
