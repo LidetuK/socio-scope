@@ -23,9 +23,13 @@ const WelcomePanel = () => (
       </div>
       <div className="max-w-lg mx-auto text-center">
         <h1 className="text-3xl font-bold mb-4">
-          Somali National Bureau of Statistics
+          Hay'adda Istaatistikada Qaranka Soomaaliya
+          <br />
+          <span className="text-2xl mt-2 block">
+            Somali National Bureau of Statistics
+          </span>
         </h1>
-        <p className="text-lg opacity-90">
+        <p className="text-lg opacity-90 mt-4">
           Centralized platform for managing and analyzing statistical data for
           informed decision-making.
         </p>
@@ -201,7 +205,12 @@ const Login = () => {
             <div className="flex justify-center mb-8 lg:hidden">
               <Logo className="w-32 h-32 object-contain" />
             </div>
-            <h2 className="text-2xl font-bold">Welcome Back</h2>
+            <h2 className="text-2xl font-bold mb-2">
+              Hay'adda Istaatistikada Qaranka Soomaaliya
+            </h2>
+            <h3 className="text-xl mb-6">
+              Somali National Bureau of Statistics
+            </h3>
             <p className="text-gray-600 mt-2">Please sign in to your account</p>
           </div>
 

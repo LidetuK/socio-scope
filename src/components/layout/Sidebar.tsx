@@ -129,8 +129,19 @@ const Sidebar = () => {
       >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-8">
-            <UserCircle className="w-8 h-8 text-primary" />
-            <h1 className="text-xl font-bold text-primary">SNBS Analytics</h1>
+            <img 
+              src="/lovable-uploads/85ddb6a9-a7f3-4b74-a4b3-867d490e6043.png"
+              alt="SNBS Logo"
+              className="w-8 h-8 object-contain"
+            />
+            <div className="flex flex-col">
+              <h1 className="text-sm font-bold text-primary leading-tight">
+                Hay'adda Istaatistikada Qaranka Soomaaliya
+              </h1>
+              <h2 className="text-xs text-primary">
+                Somali National Bureau of Statistics
+              </h2>
+            </div>
           </div>
           
           <nav className="space-y-1">
