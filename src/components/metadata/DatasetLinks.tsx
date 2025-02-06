@@ -56,7 +56,10 @@ export function DatasetLinks() {
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       const { error } = await supabase
         .from("metadata_dataset_links")
-        .insert([values]);
+        .insert([{
+          metadata_field_id: values.metadata_field_id,
+          dataset_name: values.dataset_name,
+        }]);
       if (error) throw error;
     },
     onSuccess: () => {

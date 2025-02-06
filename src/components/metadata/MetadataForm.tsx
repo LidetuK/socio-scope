@@ -39,9 +39,16 @@ export function MetadataForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const insertData = {
+        field_name: values.field_name,
+        data_type: values.data_type,
+        description: values.description || null,
+        default_value: values.default_value || null,
+      };
+
       const { error } = await supabase
         .from("metadata_fields")
-        .insert([values]);
+        .insert([insertData]);
 
       if (error) throw error;
 

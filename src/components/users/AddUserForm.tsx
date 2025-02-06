@@ -49,7 +49,14 @@ const AddUserForm = ({ onSuccess }: AddUserFormProps) => {
 
   const createUserMutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
-      const { error } = await supabase.from("users").insert([values]);
+      const insertData = {
+        full_name: values.full_name,
+        email: values.email,
+        password: values.password,
+        role: values.role,
+      };
+      
+      const { error } = await supabase.from("users").insert([insertData]);
       if (error) throw error;
     },
     onSuccess: () => {
