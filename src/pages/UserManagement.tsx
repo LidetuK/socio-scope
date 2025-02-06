@@ -3,11 +3,10 @@ import Layout from "@/components/layout/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserList from "@/components/users/UserList";
 import AddUserForm from "@/components/users/AddUserForm";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const UserManagement = () => {
   const [activeTab, setActiveTab] = useState("list");
-  const { toast } = useToast();
 
   return (
     <Layout>
@@ -26,18 +25,12 @@ const UserManagement = () => {
           </TabsList>
           <TabsContent value="list" className="mt-6">
             <UserList onEditSuccess={() => {
-              toast({
-                title: "Success",
-                description: "User updated successfully",
-              });
+              toast.success("User updated successfully");
             }} />
           </TabsContent>
           <TabsContent value="add" className="mt-6">
             <AddUserForm onSuccess={() => {
-              toast({
-                title: "Success",
-                description: "User added successfully",
-              });
+              toast.success("User added successfully");
               setActiveTab("list");
             }} />
           </TabsContent>

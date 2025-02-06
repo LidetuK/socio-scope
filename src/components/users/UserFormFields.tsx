@@ -88,4 +88,3 @@ const UserFormFields = ({ form }: UserFormFieldsProps) => {
 };
 
 export default UserFormFields;
-export { formSchema };
