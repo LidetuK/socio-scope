@@ -91,22 +91,34 @@ const Login = () => {
     setLoading(true);
 
     try {
-      console.log("Attempting login with email:", email);
+      console.log("Starting login process...");
+      console.log("Current URL:", window.location.href);
+      
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (authError) {
-        console.error("Authentication error:", authError);
+        console.error("Authentication error details:", {
+          message: authError.message,
+          status: authError.status,
+          name: authError.name
+        });
         throw authError;
       }
 
       if (!authData.user) {
+        console.error("No user data returned from auth");
         throw new Error("No user data returned");
       }
 
-      console.log("Auth successful, fetching user role...");
+      console.log("Auth successful, user data:", {
+        id: authData.user.id,
+        email: authData.user.email,
+        session: !!authData.session
+      });
+
       const { data: roleData, error: roleError } = await supabase
         .from("user_roles")
         .select("role")
@@ -114,20 +126,35 @@ const Login = () => {
         .single();
 
       if (roleError) {
-        console.error("Role fetch error:", roleError);
+        console.error("Role fetch error details:", {
+          message: roleError.message,
+          code: roleError.code,
+          details: roleError.details
+        });
         throw roleError;
       }
 
       if (!roleData) {
+        console.error("No role data found for user");
         throw new Error("No role assigned to user");
       }
 
-      console.log("Role fetched successfully:", roleData.role);
+      console.log("Role fetched successfully:", {
+        role: roleData.role,
+        userId: authData.user.id
+      });
+
       const role = roleData.role.toLowerCase();
 
       toast({
         title: "Success",
         description: "Logged in successfully",
+      });
+
+      // Log navigation attempt
+      console.log("Attempting to navigate based on role:", {
+        role,
+        targetPath: role.includes('analyst') ? "/analytics/population" : "/dashboard"
       });
 
       // Simplified routing logic
@@ -138,10 +165,25 @@ const Login = () => {
       }
 
     } catch (error: any) {
-      console.error("Login error:", error);
+      console.error("Login error full details:", {
+        error,
+        message: error.message,
+        stack: error.stack
+      });
+      
+      // More user-friendly error messages
+      let errorMessage = "Failed to sign in. ";
+      if (error.message?.includes("Invalid login credentials")) {
+        errorMessage = "Invalid email or password. Please try again.";
+      } else if (error.message?.includes("Email not confirmed")) {
+        errorMessage = "Please verify your email address before logging in.";
+      } else if (error.message?.includes("No user found")) {
+        errorMessage = "No account found with this email. Please sign up first.";
+      }
+
       toast({
         title: "Error",
-        description: error.message || "Failed to sign in",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
