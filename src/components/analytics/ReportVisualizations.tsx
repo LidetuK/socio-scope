@@ -18,6 +18,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { supabase } from "@/integrations/supabase/client";
 
 interface ReportVisualizationsProps {
   populationData: any[];
@@ -53,24 +54,72 @@ const ReportVisualizations = ({
 
   // Initialize map
   useEffect(() => {
-    if (!mapContainer.current || map.current) return;
+    const initializeMap = async () => {
+      if (!mapContainer.current || map.current) return;
 
-    mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN'; // You'll need to get this from environment variables
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
-      center: [45.0, 5.0], // Centered on Somalia
-      zoom: 5
-    });
+      try {
+        const { data: { value: mapboxToken }, error } = await supabase
+          .functions.invoke('get-mapbox-token');
 
-    // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+        if (error) throw error;
+
+        mapboxgl.accessToken = mapboxToken;
+        
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current,
+          style: 'mapbox://styles/mapbox/light-v11',
+          center: [45.0, 5.0], // Centered on Somalia
+          zoom: 5
+        });
+
+        // Add navigation controls
+        map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+        // Add markers for each region with population data
+        populationData?.forEach((region) => {
+          // You would need to add actual coordinates for each region
+          const coordinates = getRegionCoordinates(region.region);
+          if (coordinates) {
+            new mapboxgl.Marker()
+              .setLngLat(coordinates)
+              .setPopup(
+                new mapboxgl.Popup({ offset: 25 }).setHTML(
+                  `<h3>${region.region}</h3>
+                   <p>Population: ${region.total_population?.toLocaleString()}</p>`
+                )
+              )
+              .addTo(map.current!);
+          }
+        });
+      } catch (error) {
+        console.error('Error initializing map:', error);
+      }
+    };
+
+    initializeMap();
 
     return () => {
       map.current?.remove();
     };
-  }, []);
+  }, [populationData]);
+
+  // Helper function to get coordinates for regions
+  const getRegionCoordinates = (region: string): [number, number] | null => {
+    const coordinates: { [key: string]: [number, number] } = {
+      'Banadir': [45.3667, 2.0167],
+      'Puntland': [49.1833, 8.4000],
+      'Somaliland': [44.0667, 9.5667],
+      'Galmudug': [47.4333, 6.7667],
+      'Hirshabelle': [45.5000, 4.5000],
+      'Jubaland': [42.5400, 0.5167],
+      'South West State': [44.0950, 2.6185],
+      'Middle Shabelle': [45.8667, 3.8333],
+      'Lower Juba': [41.5700, -0.2542],
+      'Gedo': [42.4800, 3.5000],
+      'Bay': [43.6000, 3.1167],
+    };
+    return coordinates[region] || null;
+  };
 
   return (
     <div className="space-y-6">
