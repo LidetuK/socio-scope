@@ -108,13 +108,20 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    console.log("Attempting login with email:", email);
+
     try {
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        console.error("Auth error:", authError);
+        throw authError;
+      }
+
+      console.log("Auth successful, fetching role for user:", authData.user?.id);
 
       const { data: roleData, error: roleError } = await supabase
         .from("user_roles")
@@ -122,7 +129,12 @@ const Login = () => {
         .eq("user_id", authData.user?.id)
         .single();
 
-      if (roleError) throw roleError;
+      if (roleError) {
+        console.error("Role fetch error:", roleError);
+        throw roleError;
+      }
+
+      console.log("Role data fetched:", roleData);
 
       toast({
         title: "Success",
@@ -130,17 +142,27 @@ const Login = () => {
       });
 
       // Redirect based on role
-      const role = roleData?.role;
-      if (role === "admin") {
-        navigate("/dashboard");
-      } else if (role?.includes("data_entry") || role?.includes("field_enumerator")) {
+      const role = roleData?.role?.toLowerCase();
+      console.log("Redirecting based on role:", role);
+
+      if (role?.includes('analyst')) {
+        console.log("Redirecting analyst to /analytics/population");
+        navigate("/analytics/population");
+      } else if (role?.includes('data_entry')) {
+        console.log("Redirecting data entry to /data-entry");
         navigate("/data-entry");
-      } else if (role?.includes("analyst")) {
-        navigate("/analytics");
+      } else if (role?.includes('enumerator')) {
+        console.log("Redirecting enumerator to /data-entry");
+        navigate("/data-entry");
+      } else if (role?.includes('admin')) {
+        console.log("Redirecting admin to /dashboard");
+        navigate("/dashboard");
       } else {
+        console.log("No specific role match, redirecting to /dashboard");
         navigate("/dashboard");
       }
     } catch (error: any) {
+      console.error("Login error:", error);
       toast({
         title: "Error",
         description: error.message,
