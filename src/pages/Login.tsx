@@ -205,12 +205,7 @@ const Login = () => {
             <div className="flex justify-center mb-8 lg:hidden">
               <Logo className="w-32 h-32 object-contain" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">
-              Hay'adda Istaatistikada Qaranka Soomaaliya
-            </h2>
-            <h3 className="text-xl mb-6">
-              Somali National Bureau of Statistics
-            </h3>
+            <h2 className="text-2xl font-bold">Welcome Back</h2>
             <p className="text-gray-600 mt-2">Please sign in to your account</p>
           </div>
 
