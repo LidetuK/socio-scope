@@ -30,6 +30,7 @@ const AnalyticsPopulation = () => {
       const { data, error } = await query;
 
       if (error) {
+        console.error("Error fetching population data:", error);
         toast.error("Error fetching population data");
         throw error;
       }
@@ -54,22 +55,23 @@ const AnalyticsPopulation = () => {
       const { data, error } = await query;
 
       if (error) {
+        console.error("Error fetching household data:", error);
         toast.error("Error fetching household data");
         throw error;
       }
 
-      return data;
+      // Transform the data to match the expected format
+      return data.map(household => ({
+        region: household.region,
+        household_size: household.household_size,
+      }));
     },
     enabled: showReport,
   });
 
   const handleGenerateReport = () => {
-    if (!region || !gender || !ageGroup || !timePeriod) {
-      toast.error("Please select all filter options");
-      return;
-    }
     setShowReport(true);
-    toast.success("Generating report...");
+    toast.success("Generating report with the latest data...");
   };
 
   const isLoading = isLoadingPopulation || isLoadingHouseholds;
@@ -82,7 +84,7 @@ const AnalyticsPopulation = () => {
             Population Analysis Report
           </h1>
           <p className="mt-2 text-gray-600">
-            Generate detailed demographic reports and analysis
+            Generate detailed demographic reports and analysis based on collected data
           </p>
         </div>
 
@@ -112,6 +114,12 @@ const AnalyticsPopulation = () => {
             populationData={populationData}
             householdData={householdData}
           />
+        )}
+
+        {isLoading && (
+          <div className="text-center py-8">
+            <p className="text-gray-600">Loading report data...</p>
+          </div>
         )}
       </div>
     </Layout>
