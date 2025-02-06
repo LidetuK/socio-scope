@@ -4,7 +4,6 @@ import Layout from "@/components/layout/Layout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import FilterControls from "@/components/analytics/FilterControls";
-import ExportControls from "@/components/analytics/ExportControls";
 import ReportVisualizations from "@/components/analytics/ReportVisualizations";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -17,7 +16,7 @@ const AnalyticsPopulation = () => {
   const [showReport, setShowReport] = useState(false);
 
   const { data: populationData, isLoading: isLoadingPopulation } = useQuery({
-    queryKey: ["population-data", region, gender, ageGroup, timePeriod],
+    queryKey: ["population-data", region, gender, ageGroup, timePeriod, showReport],
     queryFn: async () => {
       let query = supabase
         .from("population_distribution")
@@ -41,7 +40,7 @@ const AnalyticsPopulation = () => {
   });
 
   const { data: householdData, isLoading: isLoadingHouseholds } = useQuery({
-    queryKey: ["household-data", region, timePeriod],
+    queryKey: ["household-data", region, timePeriod, showReport],
     queryFn: async () => {
       let query = supabase
         .from("households")
@@ -73,49 +72,18 @@ const AnalyticsPopulation = () => {
     toast.success("Generating report...");
   };
 
-  const handleEmailReport = async () => {
-    try {
-      const { data, error } = await supabase.functions.invoke('send-report', {
-        body: {
-          region,
-          gender,
-          ageGroup,
-          timePeriod,
-          data: {
-            population: populationData,
-            households: householdData,
-          },
-        },
-      });
-
-      if (error) throw error;
-      toast.success("Report sent to email successfully");
-    } catch (error) {
-      console.error("Error sending report:", error);
-      toast.error("Failed to send report");
-    }
-  };
-
   const isLoading = isLoadingPopulation || isLoadingHouseholds;
 
   return (
     <Layout>
       <div className="space-y-6 animate-fade-up">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Population Analysis Report
-            </h1>
-            <p className="mt-2 text-gray-600">
-              Generate detailed demographic reports and analysis
-            </p>
-          </div>
-          {showReport && (
-            <ExportControls 
-              data={populationData} 
-              onEmailReport={handleEmailReport}
-            />
-          )}
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Population Analysis Report
+          </h1>
+          <p className="mt-2 text-gray-600">
+            Generate detailed demographic reports and analysis
+          </p>
         </div>
 
         <Card className="p-6">
