@@ -383,10 +383,41 @@ export type Database = {
           },
         ]
       }
+      metadata_dataset_links: {
+        Row: {
+          created_at: string | null
+          dataset_name: string
+          id: string
+          metadata_field_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          dataset_name: string
+          id?: string
+          metadata_field_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          dataset_name?: string
+          id?: string
+          metadata_field_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "metadata_dataset_links_metadata_field_id_fkey"
+            columns: ["metadata_field_id"]
+            isOneToOne: false
+            referencedRelation: "metadata_fields"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       metadata_fields: {
         Row: {
           created_at: string | null
           data_type: string
+          default_value: string | null
+          description: string | null
           field_name: string
           id: string
           last_updated: string | null
@@ -395,6 +426,8 @@ export type Database = {
         Insert: {
           created_at?: string | null
           data_type: string
+          default_value?: string | null
+          description?: string | null
           field_name: string
           id?: string
           last_updated?: string | null
@@ -403,6 +436,8 @@ export type Database = {
         Update: {
           created_at?: string | null
           data_type?: string
+          default_value?: string | null
+          description?: string | null
           field_name?: string
           id?: string
           last_updated?: string | null
