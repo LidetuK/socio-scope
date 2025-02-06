@@ -69,25 +69,6 @@ const LoginForm = ({ onSubmit, loading, email, setEmail, password, setPassword }
       />
     </div>
 
-    <div className="flex items-center justify-between">
-      <div className="flex items-center">
-        <input
-          type="checkbox"
-          id="remember"
-          className="h-4 w-4 rounded border-gray-300 text-[#1850E5] focus:ring-[#1850E5]"
-        />
-        <label htmlFor="remember" className="ml-2 text-sm text-gray-600">
-          Remember me
-        </label>
-      </div>
-      <button
-        type="button"
-        className="text-[#1850E5] text-sm hover:underline"
-      >
-        Forgot password?
-      </button>
-    </div>
-
     <Button
       type="submit"
       className="w-full bg-[#1850E5] hover:bg-[#1040C0] text-white py-2 px-4 rounded transition-colors"
@@ -110,7 +91,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Step 1: Sign in with Supabase Auth
+      console.log("Attempting login with email:", email);
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -125,7 +106,7 @@ const Login = () => {
         throw new Error("No user data returned");
       }
 
-      // Step 2: Get user role from user_roles table
+      console.log("Auth successful, fetching user role...");
       const { data: roleData, error: roleError } = await supabase
         .from("user_roles")
         .select("role")
@@ -141,24 +122,21 @@ const Login = () => {
         throw new Error("No role assigned to user");
       }
 
-      // Success notification
+      console.log("Role fetched successfully:", roleData.role);
+      const role = roleData.role.toLowerCase();
+
       toast({
         title: "Success",
         description: "Logged in successfully",
       });
 
-      // Step 3: Route based on role
-      const role = roleData.role.toLowerCase();
-      
+      // Simplified routing logic
       if (role.includes('analyst')) {
         navigate("/analytics/population");
-      } else if (role.includes('data_entry') || role.includes('enumerator')) {
-        navigate("/data-entry");
-      } else if (role.includes('admin')) {
-        navigate("/dashboard");
       } else {
-        navigate("/dashboard"); // Default route
+        navigate("/dashboard");
       }
+
     } catch (error: any) {
       console.error("Login error:", error);
       toast({
