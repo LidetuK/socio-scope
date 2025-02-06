@@ -18,86 +18,89 @@ import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 
 const App = () => {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        staleTime: 5 * 60 * 1000, // 5 minutes
+      },
+    },
+  });
 
   return (
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/unauthorized" element={<Unauthorized />} />
-              
-              {/* Redirect root based on user role */}
-              <Route 
-                path="/" 
-                element={
-                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst", "enumerator"]}>
-                    {({ userRole }) => {
-                      console.log("Current user role:", userRole); // Debug log
-                      // Check if the role includes 'analyst' (case-insensitive)
-                      if (userRole?.toLowerCase().includes('analyst')) {
-                        return <Navigate to="/analytics/population" replace />;
-                      }
-                      // Default redirect to dashboard for other roles
-                      return <Navigate to="/dashboard" replace />;
-                    }}
-                  </RoleBasedRoute>
-                } 
-              />
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter basename="/">
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            
+            {/* Redirect root based on user role */}
+            <Route 
+              path="/" 
+              element={
+                <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst", "enumerator"]}>
+                  {({ userRole }) => {
+                    console.log("Current user role:", userRole);
+                    if (userRole?.toLowerCase().includes('analyst')) {
+                      return <Navigate to="/analytics/population" replace />;
+                    }
+                    return <Navigate to="/dashboard" replace />;
+                  }}
+                </RoleBasedRoute>
+              } 
+            />
 
-              {/* Protected Dashboard Route */}
-              <Route
-                path="/dashboard"
+            {/* Protected Dashboard Route */}
+            <Route
+              path="/dashboard"
+              element={
+                <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst", "enumerator"]}>
+                  <Dashboard />
+                </RoleBasedRoute>
+              }
+            />
+
+            {/* Feature Routes */}
+            {dataEntryRoutes.map((route) => (
+              <Route 
+                key={route.path} 
+                path={route.path}
+                element={route.element}
+              />
+            ))}
+            {analyticsRoutes.map((route) => (
+              <Route 
+                key={route.path} 
+                path={route.path}
                 element={
-                  <RoleBasedRoute allowedRoles={["admin", "data_entry", "analyst", "enumerator"]}>
-                    <Dashboard />
+                  <RoleBasedRoute allowedRoles={["admin", "analyst"]}>
+                    {route.element}
                   </RoleBasedRoute>
                 }
               />
+            ))}
+            {managementRoutes.map((route) => (
+              <Route 
+                key={route.path} 
+                path={route.path}
+                element={
+                  <RoleBasedRoute allowedRoles={["admin"]}>
+                    {route.element}
+                  </RoleBasedRoute>
+                }
+              />
+            ))}
 
-              {/* Feature Routes */}
-              {dataEntryRoutes.map((route) => (
-                <Route 
-                  key={route.path} 
-                  path={route.path}
-                  element={route.element}
-                />
-              ))}
-              {analyticsRoutes.map((route) => (
-                <Route 
-                  key={route.path} 
-                  path={route.path}
-                  element={
-                    <RoleBasedRoute allowedRoles={["admin", "analyst"]}>
-                      {route.element}
-                    </RoleBasedRoute>
-                  }
-                />
-              ))}
-              {managementRoutes.map((route) => (
-                <Route 
-                  key={route.path} 
-                  path={route.path}
-                  element={
-                    <RoleBasedRoute allowedRoles={["admin"]}>
-                      {route.element}
-                    </RoleBasedRoute>
-                  }
-                />
-              ))}
-
-              {/* Catch-all Route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </React.StrictMode>
+            {/* Catch-all Route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 };
 
