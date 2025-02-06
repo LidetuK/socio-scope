@@ -1,85 +1,85 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import Layout from "@/components/layout/Layout";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import FilterControls from "@/components/analytics/FilterControls";
-import ReportVisualizations from "@/components/analytics/ReportVisualizations";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import Layout from "@/components/layout/Layout";
+import FilterControls from "@/components/analytics/FilterControls";
+import ReportVisualizations from "@/components/analytics/ReportVisualizations";
 
-const AnalyticsPopulation = () => {
-  const [region, setRegion] = useState<string>("all");
-  const [gender, setGender] = useState<string>("all");
-  const [ageGroup, setAgeGroup] = useState<string>("all");
-  const [timePeriod, setTimePeriod] = useState<string>("");
+const Population = () => {
   const [showReport, setShowReport] = useState(false);
+  const [filters, setFilters] = useState({
+    region: "",
+    gender: "",
+    ageGroup: "",
+    timePeriod: "",
+  });
 
   const { data: populationData, isLoading: isLoadingPopulation } = useQuery({
-    queryKey: ["population-data", region, gender, ageGroup, timePeriod, showReport],
+    queryKey: ["populationData", showReport],
     queryFn: async () => {
-      let query = supabase
+      console.log("Fetching population data...");
+      const query = supabase
         .from("population_distribution")
         .select("*")
         .order("created_at", { ascending: false });
-
-      if (region !== "all") {
-        query = query.eq("region", region);
-      }
 
       const { data, error } = await query;
 
       if (error) {
         console.error("Error fetching population data:", error);
         toast.error("Error fetching population data");
-        throw error;
+        return []; // Return empty array instead of throwing
       }
 
-      return data;
+      console.log("Population data fetched:", data);
+      return data || [];
     },
     enabled: showReport,
+    retry: 1, // Only retry once on failure
   });
 
   const { data: householdData, isLoading: isLoadingHouseholds } = useQuery({
-    queryKey: ["household-data", region, timePeriod, showReport],
+    queryKey: ["householdData", showReport],
     queryFn: async () => {
-      let query = supabase
+      console.log("Fetching household data...");
+      const query = supabase
         .from("households")
         .select("*")
         .order("created_at", { ascending: false });
-
-      if (region !== "all") {
-        query = query.eq("region", region);
-      }
 
       const { data, error } = await query;
 
       if (error) {
         console.error("Error fetching household data:", error);
         toast.error("Error fetching household data");
-        throw error;
+        return []; // Return empty array instead of throwing
       }
 
-      // Transform the data to match the expected format
-      return data.map(household => ({
+      console.log("Household data fetched:", data);
+      return data?.map((household) => ({
         region: household.region,
         household_size: household.household_size,
-      }));
+        household_type: household.household_type,
+      })) || [];
     },
     enabled: showReport,
+    retry: 1, // Only retry once on failure
   });
 
   const handleGenerateReport = () => {
+    console.log("Generating report...");
     setShowReport(true);
     toast.success("Generating report with the latest data...");
   };
 
   const isLoading = isLoadingPopulation || isLoadingHouseholds;
+  const hasData = populationData?.length > 0 || householdData?.length > 0;
 
   return (
     <Layout>
-      <div className="space-y-6 animate-fade-up">
-        <div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
             Population Analysis Report
           </h1>
@@ -88,42 +88,34 @@ const AnalyticsPopulation = () => {
           </p>
         </div>
 
-        <Card className="p-6">
-          <FilterControls
-            region={region}
-            gender={gender}
-            ageGroup={ageGroup}
-            timePeriod={timePeriod}
-            onRegionChange={setRegion}
-            onGenderChange={setGender}
-            onAgeGroupChange={setAgeGroup}
-            onTimePeriodChange={setTimePeriod}
-          />
-
-          <Button 
-            className="mt-4 bg-primary" 
-            onClick={handleGenerateReport}
-            disabled={isLoading}
-          >
-            Generate Report
-          </Button>
-        </Card>
-
-        {showReport && !isLoading && populationData && householdData && (
-          <ReportVisualizations
-            populationData={populationData}
-            householdData={householdData}
-          />
-        )}
+        <FilterControls
+          filters={filters}
+          setFilters={setFilters}
+          onGenerateReport={handleGenerateReport}
+        />
 
         {isLoading && (
-          <div className="text-center py-8">
-            <p className="text-gray-600">Loading report data...</p>
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            <p className="ml-2 text-gray-600">Loading report data...</p>
           </div>
+        )}
+
+        {!isLoading && showReport && !hasData && (
+          <div className="text-center py-8">
+            <p className="text-gray-600">No data available for the selected filters.</p>
+          </div>
+        )}
+
+        {!isLoading && showReport && hasData && (
+          <ReportVisualizations
+            populationData={populationData || []}
+            householdData={householdData || []}
+          />
         )}
       </div>
     </Layout>
   );
 };
 
-export default AnalyticsPopulation;
+export default Population;
