@@ -108,25 +108,28 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log("Attempting login with email:", email);
 
     try {
+      // Step 1: Sign in with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (authError) {
-        console.error("Auth error:", authError);
+        console.error("Authentication error:", authError);
         throw authError;
       }
 
-      console.log("Auth successful, fetching role for user:", authData.user?.id);
+      if (!authData.user) {
+        throw new Error("No user data returned");
+      }
 
+      // Step 2: Get user role from user_roles table
       const { data: roleData, error: roleError } = await supabase
         .from("user_roles")
         .select("role")
-        .eq("user_id", authData.user?.id)
+        .eq("user_id", authData.user.id)
         .single();
 
       if (roleError) {
@@ -134,38 +137,33 @@ const Login = () => {
         throw roleError;
       }
 
-      console.log("Role data fetched:", roleData);
+      if (!roleData) {
+        throw new Error("No role assigned to user");
+      }
 
+      // Success notification
       toast({
         title: "Success",
         description: "Logged in successfully",
       });
 
-      // Redirect based on role
-      const role = roleData?.role?.toLowerCase();
-      console.log("Redirecting based on role:", role);
-
-      if (role?.includes('analyst')) {
-        console.log("Redirecting analyst to /analytics/population");
+      // Step 3: Route based on role
+      const role = roleData.role.toLowerCase();
+      
+      if (role.includes('analyst')) {
         navigate("/analytics/population");
-      } else if (role?.includes('data_entry')) {
-        console.log("Redirecting data entry to /data-entry");
+      } else if (role.includes('data_entry') || role.includes('enumerator')) {
         navigate("/data-entry");
-      } else if (role?.includes('enumerator')) {
-        console.log("Redirecting enumerator to /data-entry");
-        navigate("/data-entry");
-      } else if (role?.includes('admin')) {
-        console.log("Redirecting admin to /dashboard");
+      } else if (role.includes('admin')) {
         navigate("/dashboard");
       } else {
-        console.log("No specific role match, redirecting to /dashboard");
-        navigate("/dashboard");
+        navigate("/dashboard"); // Default route
       }
     } catch (error: any) {
       console.error("Login error:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to sign in",
         variant: "destructive",
       });
     } finally {
