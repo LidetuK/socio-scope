@@ -45,6 +45,7 @@ const UserList = ({ onEditSuccess }: UserListProps) => {
   const { data: users, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
+      console.log("Fetching users...");
       const { data, error } = await supabase
         .from("users")
         .select("*")
@@ -54,12 +55,14 @@ const UserList = ({ onEditSuccess }: UserListProps) => {
         console.error("Error fetching users:", error);
         throw error;
       }
+      console.log("Fetched users:", data);
       return data;
     },
   });
 
   const deleteUserMutation = useMutation({
     mutationFn: async (userId: string) => {
+      console.log("Deleting user:", userId);
       const { error } = await supabase.from("users").delete().eq("id", userId);
       if (error) throw error;
     },
@@ -81,7 +84,11 @@ const UserList = ({ onEditSuccess }: UserListProps) => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
   }
 
   return (

@@ -49,18 +49,25 @@ const AddUserForm = ({ onSuccess }: AddUserFormProps) => {
 
   const createUserMutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
-      const insertData = {
+      console.log("Creating user with values:", values);
+      const { error } = await supabase.from("users").insert([{
         full_name: values.full_name,
         email: values.email,
         password: values.password,
         role: values.role,
-      };
+      }]);
       
-      const { error } = await supabase.from("users").insert([insertData]);
-      if (error) throw error;
+      if (error) {
+        console.error("Error creating user:", error);
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast({
+        title: "Success",
+        description: "User created successfully",
+      });
       form.reset();
       onSuccess();
     },
