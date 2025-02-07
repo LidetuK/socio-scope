@@ -103,12 +103,29 @@ const Login = () => {
         return;
       }
 
+      // If no role is found, assign a default role
       if (!roleData) {
-        console.error("No role found for user");
+        console.log("No role found, inserting default role...");
+        const { error: insertError } = await supabase
+          .from("user_roles")
+          .insert([
+            { user_id: authData.user.id, role: "data_entry" }
+          ]);
+
+        if (insertError) {
+          console.error("Error inserting default role:", insertError);
+          toast({
+            title: "Error",
+            description: "Failed to assign default role. Please contact support.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        navigate("/dashboard");
         toast({
-          title: "Error",
-          description: "User role not found. Please contact support.",
-          variant: "destructive",
+          title: "Success",
+          description: "Logged in successfully as data entry user",
         });
         return;
       }
