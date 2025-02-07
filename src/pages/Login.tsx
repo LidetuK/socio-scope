@@ -27,8 +27,19 @@ const Login = () => {
         console.error("Authentication error details:", {
           message: authError.message,
           status: authError.status,
-          name: authError.name
+          name: authError.name,
+          details: authError
         });
+
+        // Handle specific error cases
+        if (authError.message?.includes("Failed to fetch")) {
+          toast({
+            title: "Connection Error",
+            description: "Unable to connect to authentication service. Please check your internet connection and try again.",
+            variant: "destructive",
+          });
+          return;
+        }
         throw authError;
       }
 
@@ -47,7 +58,7 @@ const Login = () => {
         .from("user_roles")
         .select("role")
         .eq("user_id", authData.user.id)
-        .single();
+        .maybeSingle();
 
       if (roleError) {
         console.error("Role fetch error details:", {
@@ -60,7 +71,12 @@ const Login = () => {
 
       if (!roleData) {
         console.error("No role data found for user");
-        throw new Error("No role assigned to user");
+        toast({
+          title: "Error",
+          description: "User role not found. Please contact an administrator.",
+          variant: "destructive",
+        });
+        return;
       }
 
       console.log("Role fetched successfully:", {
@@ -90,7 +106,8 @@ const Login = () => {
       console.error("Login error full details:", {
         error,
         message: error.message,
-        stack: error.stack
+        stack: error.stack,
+        details: error
       });
       
       let errorMessage = "Failed to sign in. ";
@@ -100,6 +117,8 @@ const Login = () => {
         errorMessage = "Please verify your email address before logging in.";
       } else if (error.message?.includes("No user found")) {
         errorMessage = "No account found with this email. Please sign up first.";
+      } else if (error.message?.includes("Failed to fetch")) {
+        errorMessage = "Connection error. Please check your internet connection and try again.";
       }
 
       toast({
