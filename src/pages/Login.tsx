@@ -15,8 +15,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      console.log("Starting login process...");
-      console.log("Current URL:", window.location.href);
+      console.log("Starting login process with email:", email);
       
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
@@ -24,35 +23,31 @@ const Login = () => {
       });
 
       if (authError) {
-        console.error("Authentication error details:", {
+        console.error("Authentication error:", {
           message: authError.message,
           status: authError.status,
-          name: authError.name,
-          details: authError
+          name: authError.name
         });
 
-        // Handle specific error cases
+        // Handle network errors separately
         if (authError.message?.includes("Failed to fetch")) {
           toast({
             title: "Connection Error",
-            description: "Unable to connect to authentication service. Please check your internet connection and try again.",
+            description: "Unable to connect to the authentication service. Please check your internet connection and try again.",
             variant: "destructive",
           });
           return;
         }
+
         throw authError;
       }
 
       if (!authData.user) {
         console.error("No user data returned from auth");
-        throw new Error("No user data returned");
+        throw new Error("Authentication failed - no user data returned");
       }
 
-      console.log("Auth successful, user data:", {
-        id: authData.user.id,
-        email: authData.user.email,
-        session: !!authData.session
-      });
+      console.log("Authentication successful, fetching user role...");
 
       const { data: roleData, error: roleError } = await supabase
         .from("user_roles")
@@ -61,41 +56,31 @@ const Login = () => {
         .maybeSingle();
 
       if (roleError) {
-        console.error("Role fetch error details:", {
-          message: roleError.message,
-          code: roleError.code,
-          details: roleError.details
-        });
+        console.error("Role fetch error:", roleError);
         throw roleError;
       }
 
       if (!roleData) {
-        console.error("No role data found for user");
+        console.error("No role found for user");
         toast({
           title: "Error",
-          description: "User role not found. Please contact an administrator.",
+          description: "User role not found. Please contact support.",
           variant: "destructive",
         });
         return;
       }
 
-      console.log("Role fetched successfully:", {
-        role: roleData.role,
-        userId: authData.user.id
-      });
+      console.log("Role fetched successfully:", roleData.role);
 
       const role = roleData.role.toLowerCase();
-
+      
       toast({
         title: "Success",
         description: "Logged in successfully",
       });
 
-      console.log("Attempting to navigate based on role:", {
-        role,
-        targetPath: role.includes('analyst') ? "/analytics/population" : "/dashboard"
-      });
-
+      console.log("Navigating based on role:", role);
+      
       if (role.includes('analyst')) {
         navigate("/analytics/population");
       } else {
@@ -103,22 +88,18 @@ const Login = () => {
       }
 
     } catch (error: any) {
-      console.error("Login error full details:", {
-        error,
-        message: error.message,
-        stack: error.stack,
-        details: error
-      });
+      console.error("Login error:", error);
       
       let errorMessage = "Failed to sign in. ";
+      
       if (error.message?.includes("Invalid login credentials")) {
         errorMessage = "Invalid email or password. Please try again.";
       } else if (error.message?.includes("Email not confirmed")) {
         errorMessage = "Please verify your email address before logging in.";
       } else if (error.message?.includes("No user found")) {
         errorMessage = "No account found with this email. Please sign up first.";
-      } else if (error.message?.includes("Failed to fetch")) {
-        errorMessage = "Connection error. Please check your internet connection and try again.";
+      } else {
+        errorMessage = "An unexpected error occurred. Please try again.";
       }
 
       toast({
