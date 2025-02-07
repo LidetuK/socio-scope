@@ -13,42 +13,80 @@ const Login = () => {
 
   const handleLogin = async (email: string, password: string) => {
     setLoading(true);
+    console.log("Starting login process...");
 
     try {
-      console.log("Starting login process with email:", email);
-      
+      // Check if Supabase client is properly initialized
+      if (!supabase.auth) {
+        throw new Error("Supabase client not properly initialized");
+      }
+
+      // Attempt login
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
+      console.log("Auth response:", { authData, authError });
+
       if (authError) {
-        console.error("Authentication error:", {
+        // Log detailed error information
+        console.error("Authentication error details:", {
           message: authError.message,
           status: authError.status,
           name: authError.name
         });
 
-        // Handle network errors separately
-        if (authError.message?.includes("Failed to fetch")) {
+        // Handle specific error cases
+        if (authError.message.includes("Failed to fetch")) {
           toast({
             title: "Connection Error",
-            description: "Unable to connect to the authentication service. Please check your internet connection and try again.",
+            description: "Unable to connect to authentication service. Please try again.",
             variant: "destructive",
           });
           return;
         }
 
-        throw authError;
+        if (authError.message.includes("Invalid login credentials")) {
+          toast({
+            title: "Login Failed",
+            description: "Invalid email or password. Please check your credentials and try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        if (authError.message.includes("Email not confirmed")) {
+          toast({
+            title: "Email Not Verified",
+            description: "Please verify your email address before logging in.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        // Generic error handler
+        toast({
+          title: "Login Error",
+          description: authError.message,
+          variant: "destructive",
+        });
+        return;
       }
 
       if (!authData.user) {
-        console.error("No user data returned from auth");
-        throw new Error("Authentication failed - no user data returned");
+        console.error("No user data returned");
+        toast({
+          title: "Login Error",
+          description: "No user data returned. Please try again.",
+          variant: "destructive",
+        });
+        return;
       }
 
-      console.log("Authentication successful, fetching user role...");
+      console.log("Login successful, fetching user role...");
 
+      // Fetch user role
       const { data: roleData, error: roleError } = await supabase
         .from("user_roles")
         .select("role")
@@ -57,7 +95,12 @@ const Login = () => {
 
       if (roleError) {
         console.error("Role fetch error:", roleError);
-        throw roleError;
+        toast({
+          title: "Error",
+          description: "Failed to fetch user role. Please try again.",
+          variant: "destructive",
+        });
+        return;
       }
 
       if (!roleData) {
@@ -71,40 +114,24 @@ const Login = () => {
       }
 
       console.log("Role fetched successfully:", roleData.role);
-
-      const role = roleData.role.toLowerCase();
       
       toast({
         title: "Success",
         description: "Logged in successfully",
       });
 
-      console.log("Navigating based on role:", role);
-      
-      if (role.includes('analyst')) {
+      // Navigate based on role
+      if (roleData.role.toLowerCase().includes('analyst')) {
         navigate("/analytics/population");
       } else {
         navigate("/dashboard");
       }
 
     } catch (error: any) {
-      console.error("Login error:", error);
-      
-      let errorMessage = "Failed to sign in. ";
-      
-      if (error.message?.includes("Invalid login credentials")) {
-        errorMessage = "Invalid email or password. Please try again.";
-      } else if (error.message?.includes("Email not confirmed")) {
-        errorMessage = "Please verify your email address before logging in.";
-      } else if (error.message?.includes("No user found")) {
-        errorMessage = "No account found with this email. Please sign up first.";
-      } else {
-        errorMessage = "An unexpected error occurred. Please try again.";
-      }
-
+      console.error("Unexpected error during login:", error);
       toast({
         title: "Error",
-        description: errorMessage,
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {
