@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -19,8 +20,8 @@ const menuItems = [
   {
     icon: LayoutDashboard,
     label: "Dashboard",
-    path: "/",
-    roles: ["admin", "analyst"],
+    path: "/dashboard",
+    roles: ["admin", "analyst", "data_entry", "enumerator"],
   },
   {
     icon: FileSpreadsheet,
@@ -88,27 +89,28 @@ const Sidebar = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const getUserRole = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user?.id) {
-        const { data, error } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", session.user.id)
-          .maybeSingle();
+    const fetchUserRole = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user?.id) return;
 
-        if (data && !error) {
-          setUserRole(data.role);
+        const { data: roleData, error } = await supabase
+          .rpc('get_user_role', { uid: session.user.id });
+
+        if (!error && roleData) {
+          setUserRole(roleData.toLowerCase());
         }
+      } catch (error) {
+        console.error("Error fetching user role:", error);
       }
     };
 
-    getUserRole();
+    fetchUserRole();
   }, []);
 
   // Filter menu items based on user role
-  const filteredMenuItems = menuItems.filter(item => 
-    userRole && item.roles.includes(userRole)
+  const filteredMenuItems = menuItems.filter(item =>
+    userRole && item.roles.map(r => r.toLowerCase()).includes(userRole)
   );
 
   return (
@@ -154,8 +156,9 @@ const Sidebar = () => {
                     location.pathname === item.path && "bg-gray-50 text-primary",
                     item.subItems && expandedItem === item.path && "bg-gray-50"
                   )}
-                  onClick={() => {
+                  onClick={(e) => {
                     if (item.subItems) {
+                      e.preventDefault();
                       setExpandedItem(expandedItem === item.path ? null : item.path);
                     }
                   }}
