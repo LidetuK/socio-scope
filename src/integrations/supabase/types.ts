@@ -913,9 +913,134 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      households: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          district_id: string | null
+          head_age: number | null
+          head_employed: boolean | null
+          head_gender: string | null
+          head_literacy: boolean | null
+          household_size: number | null
+          household_type: Database["public"]["Enums"]["household_type"] | null
+          id: string | null
+          region_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          district_id?: string | null
+          head_age?: number | null
+          head_employed?: boolean | null
+          head_gender?: string | null
+          head_literacy?: boolean | null
+          household_size?: number | null
+          household_type?: Database["public"]["Enums"]["household_type"] | null
+          id?: string | null
+          region_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          district_id?: string | null
+          head_age?: number | null
+          head_employed?: boolean | null
+          head_gender?: string | null
+          head_literacy?: boolean | null
+          household_size?: number | null
+          household_type?: Database["public"]["Enums"]["household_type"] | null
+          id?: string | null
+          region_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "household_data_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "household_data_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      population_distribution: {
+        Row: {
+          age_0_4_years: number | null
+          age_5_9_years: number | null
+          created_at: string | null
+          created_by: string | null
+          district_id: string | null
+          female_count: number | null
+          id: string | null
+          male_count: number | null
+          other_count: number | null
+          region_id: string | null
+          total_population: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          age_0_4_years?: number | null
+          age_5_9_years?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          district_id?: string | null
+          female_count?: number | null
+          id?: string | null
+          male_count?: number | null
+          other_count?: number | null
+          region_id?: string | null
+          total_population?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          age_0_4_years?: number | null
+          age_5_9_years?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          district_id?: string | null
+          female_count?: number | null
+          id?: string | null
+          male_count?: number | null
+          other_count?: number | null
+          region_id?: string | null
+          total_population?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "population_data_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "population_data_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
+      get_user_role: {
+        Args: {
+          uid: string
+        }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
       get_user_roles: {
         Args: {
           user_id?: string
