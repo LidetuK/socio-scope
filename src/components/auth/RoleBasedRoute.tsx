@@ -21,42 +21,54 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
 
     const fetchUserRole = async (userId: string) => {
       try {
-        const { data: roleData, error } = await supabase
-          .rpc('get_user_role', { uid: userId });
+        // First try to get the role from user_roles table directly
+        const { data: roleData, error: directError } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', userId)
+          .single();
 
         if (!mounted) return;
 
-        if (error) {
-          console.error("Error fetching role:", error);
-          // Only show toast for non-network errors
-          if (!error.message.includes("Failed to fetch")) {
-            toast({
-              title: "Error",
-              description: "Failed to fetch user role. Please try again.",
-              variant: "destructive",
-            });
+        if (directError) {
+          console.error("Error fetching role directly:", directError);
+          // If direct fetch fails, try the RPC as fallback
+          const { data: rpcData, error: rpcError } = await supabase
+            .rpc('get_user_role', { uid: userId });
+
+          if (rpcError) {
+            console.error("Error fetching role via RPC:", rpcError);
+            // Set default role if both methods fail
+            setUserRole('data_entry');
+            return;
           }
+
+          if (rpcData) {
+            const role = rpcData.toLowerCase();
+            console.log("Fetched role via RPC:", role);
+            setUserRole(role);
+            return;
+          }
+        }
+
+        if (roleData) {
+          const role = roleData.role.toLowerCase();
+          console.log("Fetched role directly:", role);
+          setUserRole(role);
           return;
         }
 
-        if (!roleData) {
-          console.log("No role found, using default");
-          setUserRole('data_entry');
-          return;
-        }
-
-        const role = roleData.toLowerCase();
-        console.log("Fetched role:", role);
-        
-        const hasAllowedRole = allowedRoles
-          .map(r => r.toLowerCase())
-          .some(allowedRole => role.includes(allowedRole));
-
-        setUserRole(hasAllowedRole ? role : null);
+        // Default fallback
+        console.log("No role found, using default");
+        setUserRole('data_entry');
       } catch (error: any) {
         console.error("Error in fetchUserRole:", error);
         if (mounted) {
-          setUserRole(null);
+          setUserRole('data_entry'); // Fallback to default role
+          toast({
+            title: "Warning",
+            description: "Using default role due to error fetching user role.",
+          });
         }
       }
     };
@@ -123,11 +135,16 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (!userRole) {
+  // Check if user's role is in allowed roles
+  const hasAllowedRole = userRole && allowedRoles
+    .map(r => r.toLowerCase())
+    .includes(userRole.toLowerCase());
+
+  if (!hasAllowedRole) {
     return <Navigate to="/unauthorized" replace />;
   }
 
-  return typeof children === "function" ? children({ userRole }) : children;
+  return typeof children === "function" ? children({ userRole: userRole || 'data_entry' }) : children;
 };
 
 export default RoleBasedRoute;
