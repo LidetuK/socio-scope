@@ -21,22 +21,35 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
 
     const fetchUserRole = async (userId: string) => {
       try {
-        const { data: roleData, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', userId)
-          .maybeSingle();
+        // First try to get the role using the RPC function
+        const { data: roleData, error: rpcError } = await supabase
+          .rpc('get_user_role', { uid: userId });
 
         if (!mounted) return;
 
-        if (error) {
-          console.error("Error fetching role:", error);
-          setUserRole('data_entry'); // Fallback role
-          return;
+        if (rpcError) {
+          console.error("Error fetching role via RPC:", rpcError);
+          // Fallback to direct query
+          const { data: directRoleData, error: directError } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+          if (directError) {
+            console.error("Error in direct role fetch:", directError);
+            setUserRole('data_entry');
+            return;
+          }
+
+          if (directRoleData) {
+            setUserRole(directRoleData.role.toLowerCase());
+            return;
+          }
         }
 
         if (roleData) {
-          const role = roleData.role.toLowerCase();
+          const role = roleData.toLowerCase();
           console.log("Fetched role:", role);
           setUserRole(role);
           return;
