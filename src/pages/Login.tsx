@@ -12,6 +12,15 @@ const Login = () => {
   const { toast } = useToast();
 
   const handleLogin = async (email: string, password: string) => {
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please enter both email and password",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
     console.log("Starting login process...");
 
@@ -24,7 +33,15 @@ const Login = () => {
       if (authError) {
         console.error("Authentication error:", authError);
         
-        // Handle specific error cases
+        if (authError.message.includes("Failed to fetch")) {
+          toast({
+            title: "Connection Error",
+            description: "Unable to connect to the authentication service. Please check your internet connection and try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+        
         if (authError.message.includes("Invalid login credentials")) {
           toast({
             title: "Login Failed",
@@ -34,17 +51,6 @@ const Login = () => {
           return;
         }
 
-        // Handle network/CORS errors
-        if (authError.message.includes("Failed to fetch")) {
-          toast({
-            title: "Connection Error",
-            description: "Unable to connect to the authentication service. Please try again later.",
-            variant: "destructive",
-          });
-          return;
-        }
-
-        // Generic error handler
         toast({
           title: "Login Error",
           description: authError.message,
