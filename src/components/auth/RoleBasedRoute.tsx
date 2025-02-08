@@ -21,39 +21,23 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
 
     const fetchUserRole = async (userId: string) => {
       try {
-        // First try to get the role from user_roles table directly
-        const { data: roleData, error: directError } = await supabase
+        const { data: roleData, error } = await supabase
           .from('user_roles')
           .select('role')
           .eq('user_id', userId)
-          .single();
+          .maybeSingle();
 
         if (!mounted) return;
 
-        if (directError) {
-          console.error("Error fetching role directly:", directError);
-          // If direct fetch fails, try the RPC as fallback
-          const { data: rpcData, error: rpcError } = await supabase
-            .rpc('get_user_role', { uid: userId });
-
-          if (rpcError) {
-            console.error("Error fetching role via RPC:", rpcError);
-            // Set default role if both methods fail
-            setUserRole('data_entry');
-            return;
-          }
-
-          if (rpcData) {
-            const role = rpcData.toLowerCase();
-            console.log("Fetched role via RPC:", role);
-            setUserRole(role);
-            return;
-          }
+        if (error) {
+          console.error("Error fetching role:", error);
+          setUserRole('data_entry'); // Fallback role
+          return;
         }
 
         if (roleData) {
           const role = roleData.role.toLowerCase();
-          console.log("Fetched role directly:", role);
+          console.log("Fetched role:", role);
           setUserRole(role);
           return;
         }
@@ -64,7 +48,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
       } catch (error: any) {
         console.error("Error in fetchUserRole:", error);
         if (mounted) {
-          setUserRole('data_entry'); // Fallback to default role
+          setUserRole('data_entry');
           toast({
             title: "Warning",
             description: "Using default role due to error fetching user role.",
