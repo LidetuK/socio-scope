@@ -12,10 +12,38 @@ const Login = () => {
   const { toast } = useToast();
 
   const handleLogin = async (email: string, password: string) => {
+    if (!navigator.onLine) {
+      toast({
+        title: "Network Error",
+        description: "You appear to be offline. Please check your internet connection.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
     console.log("Starting login process...");
 
     try {
+      // First, check if we can reach Supabase
+      try {
+        const response = await fetch("https://pzgwavjonzjliacwdwka.supabase.co/auth/v1/", {
+          method: 'HEAD'
+        });
+        if (!response.ok) {
+          throw new Error("Cannot reach authentication server");
+        }
+      } catch (e) {
+        console.error("Connection test failed:", e);
+        toast({
+          title: "Connection Error",
+          description: "Unable to reach the authentication server. Please try again later.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
