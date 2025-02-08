@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 interface RoleBasedRouteProps {
   children: ReactNode | ((props: { userRole: string }) => ReactNode);
