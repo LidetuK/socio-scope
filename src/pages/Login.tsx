@@ -25,29 +25,6 @@ const Login = () => {
     console.log("Starting login process...");
 
     try {
-      // First, check if we can reach Supabase with proper auth
-      try {
-        const response = await fetch("https://pzgwavjonzjliacwdwka.supabase.co/auth/v1/health", {
-          method: 'GET',
-          headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6Z3dhdmpvbnpqbGlhY3dkd2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgzNTkyMDQsImV4cCI6MjA1MzkzNTIwNH0.c5of4wyeE0M60WBFRcnp7k_NLR2z_nXivL17kgV28tM',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6Z3dhdmpvbnpqbGlhY3dkd2thIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgzNTkyMDQsImV4cCI6MjA1MzkzNTIwNH0.c5of4wyeE0M60WBFRcnp7k_NLR2z_nXivL17kgV28tM'
-          }
-        });
-        if (!response.ok) {
-          throw new Error("Cannot reach authentication server");
-        }
-      } catch (e) {
-        console.error("Connection test failed:", e);
-        toast({
-          title: "Connection Error",
-          description: "Unable to reach the authentication server. Please try again later.",
-          variant: "destructive",
-        });
-        setLoading(false);
-        return;
-      }
-
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
