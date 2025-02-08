@@ -16,12 +16,10 @@ const Login = () => {
     console.log("Starting login process...");
 
     try {
-      // Check if Supabase client is properly initialized
       if (!supabase.auth) {
         throw new Error("Supabase client not properly initialized");
       }
 
-      // Attempt login
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -30,14 +28,12 @@ const Login = () => {
       console.log("Auth response:", { authData, authError });
 
       if (authError) {
-        // Log detailed error information
         console.error("Authentication error details:", {
           message: authError.message,
           status: authError.status,
           name: authError.name
         });
 
-        // Handle specific error cases
         if (authError.message.includes("Failed to fetch")) {
           toast({
             title: "Connection Error",
@@ -65,7 +61,6 @@ const Login = () => {
           return;
         }
 
-        // Generic error handler
         toast({
           title: "Login Error",
           description: authError.message,
@@ -86,26 +81,13 @@ const Login = () => {
 
       console.log("Login successful, fetching user role...");
 
-      // Fetch user role
+      // Get user role using the new RPC function
       const { data: roleData, error: roleError } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", authData.user.id)
-        .maybeSingle();
+        .rpc('get_user_role', { uid: authData.user.id });
 
       if (roleError) {
         console.error("Role fetch error:", roleError);
-        toast({
-          title: "Error",
-          description: "Failed to fetch user role. Please try again.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // If no role is found, assign a default role
-      if (!roleData) {
-        console.log("No role found, inserting default role...");
+        // If no role found, assign default role
         const { error: insertError } = await supabase
           .from("user_roles")
           .insert([
@@ -130,7 +112,7 @@ const Login = () => {
         return;
       }
 
-      console.log("Role fetched successfully:", roleData.role);
+      console.log("Role fetched successfully:", roleData);
       
       toast({
         title: "Success",
@@ -138,7 +120,7 @@ const Login = () => {
       });
 
       // Navigate based on role
-      if (roleData.role.toLowerCase().includes('analyst')) {
+      if (roleData?.toLowerCase().includes('analyst')) {
         navigate("/analytics/population");
       } else {
         navigate("/dashboard");

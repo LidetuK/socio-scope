@@ -1,3 +1,4 @@
+
 import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -54,10 +55,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
     try {
       console.log("Fetching role for user:", userId);
       const { data: roleData, error } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userId)
-        .single();
+        .rpc('get_user_role', { uid: userId });
 
       console.log("Role query result:", { roleData, error });
 
@@ -78,7 +76,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
         });
         setUserRole(null);
       } else {
-        const role = roleData.role.toLowerCase();
+        const role = roleData.toLowerCase();
         console.log("Found role:", role);
         console.log("Allowed roles:", allowedRoles);
         

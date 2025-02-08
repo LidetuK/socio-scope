@@ -657,6 +657,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_user_role: {
+        Args: {
+          uid: string
+        }
+        Returns: string
+      }
       get_user_roles: {
         Args: {
           user_id: string
