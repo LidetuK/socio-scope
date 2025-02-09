@@ -242,6 +242,44 @@ export type Database = {
           },
         ]
       }
+      file_uploads: {
+        Row: {
+          created_at: string
+          data_type: string
+          file_path: string
+          file_type: string
+          filename: string
+          id: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          data_type: string
+          file_path: string
+          file_type: string
+          filename: string
+          id?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          data_type?: string
+          file_path?: string
+          file_type?: string
+          filename?: string
+          id?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_uploads_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       health_facilities: {
         Row: {
           bed_count: number
@@ -628,6 +666,65 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      metadata_dataset_links: {
+        Row: {
+          created_at: string
+          dataset_name: string
+          id: string
+          metadata_field_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          dataset_name: string
+          id?: string
+          metadata_field_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          dataset_name?: string
+          id?: string
+          metadata_field_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "metadata_dataset_links_metadata_field_id_fkey"
+            columns: ["metadata_field_id"]
+            isOneToOne: false
+            referencedRelation: "metadata_fields"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      metadata_fields: {
+        Row: {
+          created_at: string
+          data_type: string
+          default_value: string | null
+          description: string | null
+          field_name: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data_type: string
+          default_value?: string | null
+          description?: string | null
+          field_name: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data_type?: string
+          default_value?: string | null
+          description?: string | null
+          field_name?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       migration_data: {
         Row: {

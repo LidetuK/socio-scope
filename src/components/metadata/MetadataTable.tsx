@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -23,6 +24,7 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import type { MetadataField } from "@/types/database";
 
 export function MetadataTable() {
   const { toast } = useToast();
@@ -37,7 +39,7 @@ export function MetadataTable() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data;
+      return data as MetadataField[];
     },
   });
 

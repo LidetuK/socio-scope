@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
-import { Upload, FileType, AlertCircle } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import type { FileUpload } from '@/types/database';
 
 interface FileUploadProps {
   onUploadComplete?: (filePath: string) => void;
@@ -41,7 +43,7 @@ const FileUpload = ({
           file_type: fileExt,
           data_type: 'demographics',
           uploaded_by: (await supabase.auth.getUser()).data.user?.id
-        });
+        } as FileUpload);
 
       if (dbError) throw dbError;
 
