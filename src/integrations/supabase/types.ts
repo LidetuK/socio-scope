@@ -9,621 +9,1076 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      agriculture: {
-        Row: {
-          crop_production: Json | null
-          id: string
-          irrigation_coverage: number | null
-          land_under_cultivation: number | null
-          region: string
-          total_farmers: number
-          updated_at: string | null
-        }
-        Insert: {
-          crop_production?: Json | null
-          id?: string
-          irrigation_coverage?: number | null
-          land_under_cultivation?: number | null
-          region: string
-          total_farmers: number
-          updated_at?: string | null
-        }
-        Update: {
-          crop_production?: Json | null
-          id?: string
-          irrigation_coverage?: number | null
-          land_under_cultivation?: number | null
-          region?: string
-          total_farmers?: number
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      api_integrations: {
-        Row: {
-          api_key: string
-          api_url: string
-          id: string
-          last_sync: string | null
-          system_name: string
-        }
-        Insert: {
-          api_key: string
-          api_url: string
-          id?: string
-          last_sync?: string | null
-          system_name: string
-        }
-        Update: {
-          api_key?: string
-          api_url?: string
-          id?: string
-          last_sync?: string | null
-          system_name?: string
-        }
-        Relationships: []
-      }
       audit_logs: {
         Row: {
           action: string
-          changes: Json | null
-          created_at: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string
           id: string
-          record_id: string | null
-          table_name: string
+          ip_address: string | null
+          new_data: Json | null
+          old_data: Json | null
           user_id: string | null
         }
         Insert: {
           action: string
-          changes?: Json | null
-          created_at?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
           id?: string
-          record_id?: string | null
-          table_name: string
+          ip_address?: string | null
+          new_data?: Json | null
+          old_data?: Json | null
           user_id?: string | null
         }
         Update: {
           action?: string
-          changes?: Json | null
-          created_at?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
           id?: string
-          record_id?: string | null
-          table_name?: string
+          ip_address?: string | null
+          new_data?: Json | null
+          old_data?: Json | null
           user_id?: string | null
         }
         Relationships: []
       }
-      demographics: {
+      data_entries: {
         Row: {
-          female_population: number
-          household_count: number
+          category: Database["public"]["Enums"]["data_category"]
+          created_at: string
+          created_by: string
+          entry_type: string
           id: string
-          literacy_rate: number | null
-          male_population: number
-          population: number
-          poverty_rate: number | null
-          region: string
-          updated_at: string | null
         }
         Insert: {
-          female_population: number
-          household_count: number
+          category: Database["public"]["Enums"]["data_category"]
+          created_at?: string
+          created_by: string
+          entry_type: string
           id?: string
-          literacy_rate?: number | null
-          male_population: number
-          population: number
-          poverty_rate?: number | null
-          region: string
-          updated_at?: string | null
         }
         Update: {
-          female_population?: number
-          household_count?: number
+          category?: Database["public"]["Enums"]["data_category"]
+          created_at?: string
+          created_by?: string
+          entry_type?: string
           id?: string
-          literacy_rate?: number | null
-          male_population?: number
-          population?: number
-          poverty_rate?: number | null
-          region?: string
-          updated_at?: string | null
         }
         Relationships: []
       }
-      education: {
-        Row: {
-          dropout_rate: number | null
-          id: string
-          literacy_rate: number | null
-          region: string
-          total_schools: number
-          total_students: number
-          total_teachers: number
-          updated_at: string | null
-        }
-        Insert: {
-          dropout_rate?: number | null
-          id?: string
-          literacy_rate?: number | null
-          region: string
-          total_schools: number
-          total_students: number
-          total_teachers: number
-          updated_at?: string | null
-        }
-        Update: {
-          dropout_rate?: number | null
-          id?: string
-          literacy_rate?: number | null
-          region?: string
-          total_schools?: number
-          total_students?: number
-          total_teachers?: number
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      file_uploads: {
+      districts: {
         Row: {
           created_at: string
-          data_type: string
-          error_message: string | null
-          file_path: string
-          file_type: string
-          filename: string
           id: string
-          processed_records: number | null
-          status: string | null
-          uploaded_by: string | null
+          name: string
+          region_id: string
         }
         Insert: {
           created_at?: string
-          data_type: string
-          error_message?: string | null
-          file_path: string
-          file_type: string
-          filename: string
           id?: string
-          processed_records?: number | null
-          status?: string | null
-          uploaded_by?: string | null
+          name: string
+          region_id: string
         }
         Update: {
           created_at?: string
-          data_type?: string
-          error_message?: string | null
-          file_path?: string
-          file_type?: string
-          filename?: string
           id?: string
-          processed_records?: number | null
-          status?: string | null
-          uploaded_by?: string | null
-        }
-        Relationships: []
-      }
-      health: {
-        Row: {
-          disease_incidence: Json | null
-          id: string
-          infant_mortality_rate: number | null
-          life_expectancy: number | null
-          region: string
-          total_clinics: number
-          total_doctors: number
-          total_hospitals: number
-          updated_at: string | null
-        }
-        Insert: {
-          disease_incidence?: Json | null
-          id?: string
-          infant_mortality_rate?: number | null
-          life_expectancy?: number | null
-          region: string
-          total_clinics: number
-          total_doctors: number
-          total_hospitals: number
-          updated_at?: string | null
-        }
-        Update: {
-          disease_incidence?: Json | null
-          id?: string
-          infant_mortality_rate?: number | null
-          life_expectancy?: number | null
-          region?: string
-          total_clinics?: number
-          total_doctors?: number
-          total_hospitals?: number
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      households: {
-        Row: {
-          created_at: string | null
-          created_by: string | null
-          district: string
-          head_age: number | null
-          head_employment_status: string | null
-          head_gender: string | null
-          household_size: number
-          household_type: string
-          id: string
-          locality: string | null
-          region: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          district: string
-          head_age?: number | null
-          head_employment_status?: string | null
-          head_gender?: string | null
-          household_size: number
-          household_type: string
-          id?: string
-          locality?: string | null
-          region: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          district?: string
-          head_age?: number | null
-          head_employment_status?: string | null
-          head_gender?: string | null
-          household_size?: number
-          household_type?: string
-          id?: string
-          locality?: string | null
-          region?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      infrastructure: {
-        Row: {
-          electricity_coverage: number | null
-          id: string
-          region: string
-          total_hospitals: number
-          total_roads_km: number | null
-          total_schools: number
-          updated_at: string | null
-          water_access_rate: number | null
-        }
-        Insert: {
-          electricity_coverage?: number | null
-          id?: string
-          region: string
-          total_hospitals: number
-          total_roads_km?: number | null
-          total_schools: number
-          updated_at?: string | null
-          water_access_rate?: number | null
-        }
-        Update: {
-          electricity_coverage?: number | null
-          id?: string
-          region?: string
-          total_hospitals?: number
-          total_roads_km?: number | null
-          total_schools?: number
-          updated_at?: string | null
-          water_access_rate?: number | null
-        }
-        Relationships: []
-      }
-      labor_employment: {
-        Row: {
-          average_income: number | null
-          employment_rate: number | null
-          id: string
-          industry_distribution: Json | null
-          region: string
-          total_workforce: number
-          unemployment_rate: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          average_income?: number | null
-          employment_rate?: number | null
-          id?: string
-          industry_distribution?: Json | null
-          region: string
-          total_workforce: number
-          unemployment_rate?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          average_income?: number | null
-          employment_rate?: number | null
-          id?: string
-          industry_distribution?: Json | null
-          region?: string
-          total_workforce?: number
-          unemployment_rate?: number | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      logs: {
-        Row: {
-          action: string
-          id: string
-          record_id: string | null
-          table_name: string
-          timestamp: string | null
-          user_id: string | null
-        }
-        Insert: {
-          action: string
-          id?: string
-          record_id?: string | null
-          table_name: string
-          timestamp?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          action?: string
-          id?: string
-          record_id?: string | null
-          table_name?: string
-          timestamp?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      metadata_dataset_links: {
-        Row: {
-          created_at: string | null
-          dataset_name: string
-          id: string
-          metadata_field_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          dataset_name: string
-          id?: string
-          metadata_field_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          dataset_name?: string
-          id?: string
-          metadata_field_id?: string | null
+          name?: string
+          region_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "metadata_dataset_links_metadata_field_id_fkey"
-            columns: ["metadata_field_id"]
+            foreignKeyName: "districts_region_id_fkey"
+            columns: ["region_id"]
             isOneToOne: false
-            referencedRelation: "metadata_fields"
+            referencedRelation: "regions"
             referencedColumns: ["id"]
           },
         ]
       }
-      metadata_fields: {
+      education_enrollment: {
         Row: {
-          created_at: string | null
-          data_type: string
-          default_value: string | null
-          description: string | null
-          field_name: string
+          attendance_rate: number
+          created_at: string
+          created_by: string
+          district_id: string
+          dropout_rate: number
+          education_level: Database["public"]["Enums"]["education_level"]
+          female_enrollment: number
           id: string
-          last_updated: string | null
-          status: string | null
+          male_enrollment: number
+          region_id: string
+          updated_at: string
         }
         Insert: {
-          created_at?: string | null
-          data_type: string
-          default_value?: string | null
-          description?: string | null
-          field_name: string
+          attendance_rate: number
+          created_at?: string
+          created_by: string
+          district_id: string
+          dropout_rate: number
+          education_level: Database["public"]["Enums"]["education_level"]
+          female_enrollment: number
           id?: string
-          last_updated?: string | null
-          status?: string | null
+          male_enrollment: number
+          region_id: string
+          updated_at?: string
         }
         Update: {
-          created_at?: string | null
-          data_type?: string
-          default_value?: string | null
-          description?: string | null
-          field_name?: string
+          attendance_rate?: number
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          dropout_rate?: number
+          education_level?: Database["public"]["Enums"]["education_level"]
+          female_enrollment?: number
           id?: string
-          last_updated?: string | null
-          status?: string | null
+          male_enrollment?: number
+          region_id?: string
+          updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "education_enrollment_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "education_enrollment_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      education_infrastructure: {
+        Row: {
+          classroom_count: number
+          created_at: string
+          created_by: string
+          district_id: string
+          has_electricity: boolean
+          has_internet: boolean
+          id: string
+          region_id: string
+          school_type: Database["public"]["Enums"]["school_type"]
+          toilet_count: number
+          updated_at: string
+        }
+        Insert: {
+          classroom_count: number
+          created_at?: string
+          created_by: string
+          district_id: string
+          has_electricity: boolean
+          has_internet: boolean
+          id?: string
+          region_id: string
+          school_type: Database["public"]["Enums"]["school_type"]
+          toilet_count: number
+          updated_at?: string
+        }
+        Update: {
+          classroom_count?: number
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          has_electricity?: boolean
+          has_internet?: boolean
+          id?: string
+          region_id?: string
+          school_type?: Database["public"]["Enums"]["school_type"]
+          toilet_count?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "education_infrastructure_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "education_infrastructure_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      health_facilities: {
+        Row: {
+          bed_count: number
+          created_at: string
+          created_by: string
+          district_id: string
+          facility_type: Database["public"]["Enums"]["facility_type"]
+          has_icu: boolean
+          has_maternity_ward: boolean
+          has_surgery: boolean
+          id: string
+          region_id: string
+          updated_at: string
+        }
+        Insert: {
+          bed_count: number
+          created_at?: string
+          created_by: string
+          district_id: string
+          facility_type: Database["public"]["Enums"]["facility_type"]
+          has_icu: boolean
+          has_maternity_ward: boolean
+          has_surgery: boolean
+          id?: string
+          region_id: string
+          updated_at?: string
+        }
+        Update: {
+          bed_count?: number
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          facility_type?: Database["public"]["Enums"]["facility_type"]
+          has_icu?: boolean
+          has_maternity_ward?: boolean
+          has_surgery?: boolean
+          id?: string
+          region_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_facilities_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "health_facilities_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      healthcare_workforce: {
+        Row: {
+          community_workers_count: number
+          created_at: string
+          created_by: string
+          district_id: string
+          doctors_count: number
+          id: string
+          midwives_count: number
+          nurses_count: number
+          region_id: string
+          updated_at: string
+        }
+        Insert: {
+          community_workers_count: number
+          created_at?: string
+          created_by: string
+          district_id: string
+          doctors_count: number
+          id?: string
+          midwives_count: number
+          nurses_count: number
+          region_id: string
+          updated_at?: string
+        }
+        Update: {
+          community_workers_count?: number
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          doctors_count?: number
+          id?: string
+          midwives_count?: number
+          nurses_count?: number
+          region_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "healthcare_workforce_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "healthcare_workforce_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      household_data: {
+        Row: {
+          created_at: string
+          created_by: string
+          district_id: string
+          head_age: number
+          head_employed: boolean
+          head_gender: string
+          head_literacy: boolean
+          household_size: number
+          household_type: Database["public"]["Enums"]["household_type"]
+          id: string
+          region_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          district_id: string
+          head_age: number
+          head_employed: boolean
+          head_gender: string
+          head_literacy: boolean
+          household_size: number
+          household_type: Database["public"]["Enums"]["household_type"]
+          id?: string
+          region_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          head_age?: number
+          head_employed?: boolean
+          head_gender?: string
+          head_literacy?: boolean
+          household_size?: number
+          household_type?: Database["public"]["Enums"]["household_type"]
+          id?: string
+          region_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "household_data_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "household_data_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      infrastructure_data: {
+        Row: {
+          created_at: string
+          created_by: string
+          district_id: string
+          id: string
+          public_transport_coverage: number
+          region_id: string
+          road_length_km: number
+          road_type: Database["public"]["Enums"]["road_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          district_id: string
+          id?: string
+          public_transport_coverage: number
+          region_id: string
+          road_length_km: number
+          road_type: Database["public"]["Enums"]["road_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          id?: string
+          public_transport_coverage?: number
+          region_id?: string
+          road_length_km?: number
+          road_type?: Database["public"]["Enums"]["road_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "infrastructure_data_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "infrastructure_data_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      livestock_statistics: {
+        Row: {
+          cattle_count: number
+          created_at: string
+          created_by: string
+          district_id: string
+          goat_count: number
+          id: string
+          meat_production: number
+          milk_yield: number
+          poultry_count: number
+          region_id: string
+          sheep_count: number
+          updated_at: string
+        }
+        Insert: {
+          cattle_count: number
+          created_at?: string
+          created_by: string
+          district_id: string
+          goat_count: number
+          id?: string
+          meat_production: number
+          milk_yield: number
+          poultry_count: number
+          region_id: string
+          sheep_count: number
+          updated_at?: string
+        }
+        Update: {
+          cattle_count?: number
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          goat_count?: number
+          id?: string
+          meat_production?: number
+          milk_yield?: number
+          poultry_count?: number
+          region_id?: string
+          sheep_count?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "livestock_statistics_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "livestock_statistics_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maternal_child_health: {
+        Row: {
+          antenatal_care_coverage: number
+          created_at: string
+          created_by: string
+          district_id: string
+          id: string
+          neonatal_mortality: number
+          region_id: string
+          skilled_birth_attendance: number
+          stunting_rate: number
+          under_five_mortality: number
+          underweight_rate: number
+          updated_at: string
+          wasting_rate: number
+        }
+        Insert: {
+          antenatal_care_coverage: number
+          created_at?: string
+          created_by: string
+          district_id: string
+          id?: string
+          neonatal_mortality: number
+          region_id: string
+          skilled_birth_attendance: number
+          stunting_rate: number
+          under_five_mortality: number
+          underweight_rate: number
+          updated_at?: string
+          wasting_rate: number
+        }
+        Update: {
+          antenatal_care_coverage?: number
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          id?: string
+          neonatal_mortality?: number
+          region_id?: string
+          skilled_birth_attendance?: number
+          stunting_rate?: number
+          under_five_mortality?: number
+          underweight_rate?: number
+          updated_at?: string
+          wasting_rate?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maternal_child_health_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maternal_child_health_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       migration_data: {
         Row: {
-          created_at: string | null
-          created_by: string | null
-          displaced_persons_count: number | null
+          created_at: string
+          created_by: string
+          district_id: string
+          emigration: number
           id: string
-          internal_migration_count: number | null
-          international_migration_count: number | null
-          region: string
-          time_period: string
-          updated_at: string | null
+          idp_count: number
+          immigration: number
+          refugee_count: number
+          region_id: string
+          rural_to_urban: number
+          updated_at: string
+          urban_to_rural: number
         }
         Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          displaced_persons_count?: number | null
+          created_at?: string
+          created_by: string
+          district_id: string
+          emigration: number
           id?: string
-          internal_migration_count?: number | null
-          international_migration_count?: number | null
-          region: string
-          time_period: string
-          updated_at?: string | null
+          idp_count: number
+          immigration: number
+          refugee_count: number
+          region_id: string
+          rural_to_urban: number
+          updated_at?: string
+          urban_to_rural: number
         }
         Update: {
-          created_at?: string | null
-          created_by?: string | null
-          displaced_persons_count?: number | null
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          emigration?: number
           id?: string
-          internal_migration_count?: number | null
-          international_migration_count?: number | null
-          region?: string
-          time_period?: string
-          updated_at?: string | null
+          idp_count?: number
+          immigration?: number
+          refugee_count?: number
+          region_id?: string
+          rural_to_urban?: number
+          updated_at?: string
+          urban_to_rural?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "migration_data_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "migration_data_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      population_distribution: {
+      population_data: {
         Row: {
-          age_groups: Json
-          created_at: string | null
-          created_by: string | null
-          district: string
-          female_population: number
+          age_0_4_years: number
+          age_5_9_years: number
+          created_at: string
+          created_by: string
+          district_id: string
+          female_count: number
           id: string
-          locality: string | null
-          male_population: number
-          other_population: number | null
-          region: string
+          male_count: number
+          other_count: number
+          region_id: string
           total_population: number
-          updated_at: string | null
+          updated_at: string
         }
         Insert: {
-          age_groups: Json
-          created_at?: string | null
-          created_by?: string | null
-          district: string
-          female_population: number
+          age_0_4_years: number
+          age_5_9_years: number
+          created_at?: string
+          created_by: string
+          district_id: string
+          female_count: number
           id?: string
-          locality?: string | null
-          male_population: number
-          other_population?: number | null
-          region: string
+          male_count: number
+          other_count: number
+          region_id: string
           total_population: number
-          updated_at?: string | null
+          updated_at?: string
         }
         Update: {
-          age_groups?: Json
-          created_at?: string | null
-          created_by?: string | null
-          district?: string
-          female_population?: number
+          age_0_4_years?: number
+          age_5_9_years?: number
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          female_count?: number
           id?: string
-          locality?: string | null
-          male_population?: number
-          other_population?: number | null
-          region?: string
+          male_count?: number
+          other_count?: number
+          region_id?: string
           total_population?: number
-          updated_at?: string | null
+          updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "population_data_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "population_data_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      trade_economy: {
+      profiles: {
         Row: {
-          gdp: number | null
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
           id: string
-          inflation_rate: number | null
-          major_exports: Json | null
-          major_imports: Json | null
-          region: string
-          updated_at: string | null
+          updated_at: string
         }
         Insert: {
-          gdp?: number | null
-          id?: string
-          inflation_rate?: number | null
-          major_exports?: Json | null
-          major_imports?: Json | null
-          region: string
-          updated_at?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          updated_at?: string
         }
         Update: {
-          gdp?: number | null
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
           id?: string
-          inflation_rate?: number | null
-          major_exports?: Json | null
-          major_imports?: Json | null
-          region?: string
-          updated_at?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
-      users: {
+      regions: {
         Row: {
           created_at: string
-          email: string
           id: string
+          name: string
         }
         Insert: {
           created_at?: string
-          email: string
           id?: string
+          name: string
         }
         Update: {
           created_at?: string
-          email?: string
           id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: []
       }
       vital_statistics: {
         Row: {
-          birth_rate: number | null
-          created_at: string | null
-          created_by: string | null
-          death_rate: number | null
-          divorce_rate: number | null
-          fertility_rate: number | null
+          birth_rate: number
+          created_at: string
+          created_by: string
+          death_rate: number
+          district_id: string
+          divorce_rate: number
+          fertility_rate: number
           id: string
-          infant_mortality_rate: number | null
-          marriage_rate: number | null
-          maternal_mortality_rate: number | null
-          region: string
-          time_period: string
-          updated_at: string | null
+          infant_mortality_rate: number
+          marriage_rate: number
+          maternal_mortality_rate: number
+          region_id: string
+          updated_at: string
         }
         Insert: {
-          birth_rate?: number | null
-          created_at?: string | null
-          created_by?: string | null
-          death_rate?: number | null
-          divorce_rate?: number | null
-          fertility_rate?: number | null
+          birth_rate: number
+          created_at?: string
+          created_by: string
+          death_rate: number
+          district_id: string
+          divorce_rate: number
+          fertility_rate: number
           id?: string
-          infant_mortality_rate?: number | null
-          marriage_rate?: number | null
-          maternal_mortality_rate?: number | null
-          region: string
-          time_period: string
-          updated_at?: string | null
+          infant_mortality_rate: number
+          marriage_rate: number
+          maternal_mortality_rate: number
+          region_id: string
+          updated_at?: string
         }
         Update: {
-          birth_rate?: number | null
-          created_at?: string | null
-          created_by?: string | null
-          death_rate?: number | null
-          divorce_rate?: number | null
-          fertility_rate?: number | null
+          birth_rate?: number
+          created_at?: string
+          created_by?: string
+          death_rate?: number
+          district_id?: string
+          divorce_rate?: number
+          fertility_rate?: number
           id?: string
-          infant_mortality_rate?: number | null
-          marriage_rate?: number | null
-          maternal_mortality_rate?: number | null
-          region?: string
-          time_period?: string
-          updated_at?: string | null
+          infant_mortality_rate?: number
+          marriage_rate?: number
+          maternal_mortality_rate?: number
+          region_id?: string
+          updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "vital_statistics_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vital_statistics_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wage_statistics: {
+        Row: {
+          average_wage: number
+          created_at: string
+          created_by: string
+          district_id: string
+          gender_pay_gap: number
+          id: string
+          occupation: string
+          region_id: string
+          updated_at: string
+        }
+        Insert: {
+          average_wage: number
+          created_at?: string
+          created_by: string
+          district_id: string
+          gender_pay_gap: number
+          id?: string
+          occupation: string
+          region_id: string
+          updated_at?: string
+        }
+        Update: {
+          average_wage?: number
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          gender_pay_gap?: number
+          id?: string
+          occupation?: string
+          region_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wage_statistics_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wage_statistics_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workforce_statistics: {
+        Row: {
+          created_at: string
+          created_by: string
+          district_id: string
+          female_participation_rate: number
+          id: string
+          male_participation_rate: number
+          region_id: string
+          sector: Database["public"]["Enums"]["employment_sector"]
+          updated_at: string
+          youth_employment_rate: number
+          youth_unemployment_rate: number
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          district_id: string
+          female_participation_rate: number
+          id?: string
+          male_participation_rate: number
+          region_id: string
+          sector: Database["public"]["Enums"]["employment_sector"]
+          updated_at?: string
+          youth_employment_rate: number
+          youth_unemployment_rate: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          district_id?: string
+          female_participation_rate?: number
+          id?: string
+          male_participation_rate?: number
+          region_id?: string
+          sector?: Database["public"]["Enums"]["employment_sector"]
+          updated_at?: string
+          youth_employment_rate?: number
+          youth_unemployment_rate?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workforce_statistics_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workforce_statistics_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
-      [_ in never]: never
+      households: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          district_id: string | null
+          head_age: number | null
+          head_employed: boolean | null
+          head_gender: string | null
+          head_literacy: boolean | null
+          household_size: number | null
+          household_type: Database["public"]["Enums"]["household_type"] | null
+          id: string | null
+          region_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          district_id?: string | null
+          head_age?: number | null
+          head_employed?: boolean | null
+          head_gender?: string | null
+          head_literacy?: boolean | null
+          household_size?: number | null
+          household_type?: Database["public"]["Enums"]["household_type"] | null
+          id?: string | null
+          region_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          district_id?: string | null
+          head_age?: number | null
+          head_employed?: boolean | null
+          head_gender?: string | null
+          head_literacy?: boolean | null
+          household_size?: number | null
+          household_type?: Database["public"]["Enums"]["household_type"] | null
+          id?: string | null
+          region_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "household_data_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "household_data_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      population_distribution: {
+        Row: {
+          age_0_4_years: number | null
+          age_5_9_years: number | null
+          created_at: string | null
+          created_by: string | null
+          district_id: string | null
+          female_count: number | null
+          id: string | null
+          male_count: number | null
+          other_count: number | null
+          region_id: string | null
+          total_population: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          age_0_4_years?: number | null
+          age_5_9_years?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          district_id?: string | null
+          female_count?: number | null
+          id?: string | null
+          male_count?: number | null
+          other_count?: number | null
+          region_id?: string | null
+          total_population?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          age_0_4_years?: number | null
+          age_5_9_years?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          district_id?: string | null
+          female_count?: number | null
+          id?: string | null
+          male_count?: number | null
+          other_count?: number | null
+          region_id?: string | null
+          total_population?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "population_data_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "population_data_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: {
+          uid: string
+        }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
+      get_user_roles: {
+        Args: {
+          user_id?: string
+        }
+        Returns: Database["public"]["Enums"]["app_role"][]
+      }
+      has_role:
+        | {
+            Args: {
+              _role: Database["public"]["Enums"]["app_role"]
+              _user_id?: string
+            }
+            Returns: boolean
+          }
+        | {
+            Args: {
+              _user_id: string
+              _role: Database["public"]["Enums"]["app_role"]
+            }
+            Returns: boolean
+          }
     }
     Enums: {
-      app_role: "admin" | "analyst" | "data_entry" | "enumerator"
-      user_role: "admin" | "data_entry" | "enumerator" | "analyst"
+      app_role: "admin" | "statistician" | "data_entry_officer" | "policy_maker"
+      data_category:
+        | "demographic"
+        | "health"
+        | "education"
+        | "labor_and_employment"
+        | "agriculture"
+        | "trade_and_economy"
+        | "infrastructure"
+      education_level: "primary" | "secondary" | "tertiary"
+      employment_sector: "formal" | "informal"
+      facility_type: "hospital" | "clinic" | "mobile_unit"
+      household_type: "single_family" | "multi_family"
+      road_type: "paved" | "unpaved"
+      school_type: "public" | "private" | "community_based"
     }
     CompositeTypes: {
       [_ in never]: never
