@@ -43,7 +43,15 @@ export type Database = {
           old_data?: Json | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       data_entries: {
         Row: {
@@ -67,7 +75,15 @@ export type Database = {
           entry_type?: string
           id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "data_entries_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       districts: {
         Row: {
@@ -140,6 +156,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "education_enrollment_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "education_enrollment_district_id_fkey"
             columns: ["district_id"]
             isOneToOne: false
@@ -196,6 +219,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "education_infrastructure_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "education_infrastructure_district_id_fkey"
             columns: ["district_id"]
@@ -254,6 +284,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "health_facilities_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "health_facilities_district_id_fkey"
             columns: ["district_id"]
             isOneToOne: false
@@ -307,6 +344,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "healthcare_workforce_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "healthcare_workforce_district_id_fkey"
             columns: ["district_id"]
@@ -368,6 +412,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "household_data_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "household_data_district_id_fkey"
             columns: ["district_id"]
             isOneToOne: false
@@ -418,6 +469,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "infrastructure_data_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "infrastructure_data_district_id_fkey"
             columns: ["district_id"]
@@ -478,6 +536,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "livestock_statistics_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "livestock_statistics_district_id_fkey"
             columns: ["district_id"]
@@ -542,6 +607,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "maternal_child_health_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "maternal_child_health_district_id_fkey"
             columns: ["district_id"]
             isOneToOne: false
@@ -601,6 +673,13 @@ export type Database = {
           urban_to_rural?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "migration_data_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "migration_data_district_id_fkey"
             columns: ["district_id"]
@@ -662,6 +741,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "population_data_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "population_data_district_id_fkey"
             columns: ["district_id"]
             isOneToOne: false
@@ -699,7 +785,15 @@ export type Database = {
           id?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       regions: {
         Row: {
@@ -738,7 +832,15 @@ export type Database = {
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vital_statistics: {
         Row: {
@@ -787,6 +889,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "vital_statistics_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "vital_statistics_district_id_fkey"
             columns: ["district_id"]
@@ -838,6 +947,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "wage_statistics_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "wage_statistics_district_id_fkey"
             columns: ["district_id"]
@@ -895,6 +1011,13 @@ export type Database = {
           youth_unemployment_rate?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "workforce_statistics_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "workforce_statistics_district_id_fkey"
             columns: ["district_id"]
@@ -958,6 +1081,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "household_data_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "household_data_district_id_fkey"
             columns: ["district_id"]
             isOneToOne: false
@@ -1018,6 +1148,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "population_data_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "population_data_district_id_fkey"
             columns: ["district_id"]
             isOneToOne: false
@@ -1032,6 +1169,16 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string | null
+          role: Database["public"]["Enums"]["app_role"] | null
+        }
+        Relationships: []
       }
     }
     Functions: {

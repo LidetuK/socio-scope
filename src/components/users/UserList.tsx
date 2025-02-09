@@ -43,7 +43,7 @@ const UserList = ({ onEditSuccess }: UserListProps) => {
   }
 
   if (error) {
-    return <div>Error loading users</div>;
+    return <div>Error loading users: {error.message}</div>;
   }
 
   return (
@@ -53,6 +53,8 @@ const UserList = ({ onEditSuccess }: UserListProps) => {
           <thead>
             <tr className="border-b bg-muted/50 text-sm">
               <th className="p-4 text-left">Email</th>
+              <th className="p-4 text-left">Full Name</th>
+              <th className="p-4 text-left">Role</th>
               <th className="p-4 text-left">Created At</th>
               <th className="p-4 text-left">Actions</th>
             </tr>
@@ -61,6 +63,8 @@ const UserList = ({ onEditSuccess }: UserListProps) => {
             {users?.map((user) => (
               <tr key={user.id} className="border-b">
                 <td className="p-4">{user.email}</td>
+                <td className="p-4">{user.full_name || '-'}</td>
+                <td className="p-4">{user.role || '-'}</td>
                 <td className="p-4">{new Date(user.created_at).toLocaleDateString()}</td>
                 <td className="p-4">
                   <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
