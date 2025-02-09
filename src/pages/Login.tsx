@@ -61,35 +61,14 @@ const Login = () => {
       }
 
       console.log("User authenticated successfully:", authData.user.id);
-
-      // Get user role using our new RPC function
-      const { data: userRole, error: roleError } = await supabase
-        .rpc('get_user_role', { uid: authData.user.id });
-
-      if (roleError) {
-        console.error("Role fetch error:", roleError);
-        toast({
-          title: "Warning",
-          description: "Logged in successfully but couldn't fetch user role. Using default role.",
-        });
-      }
-
-      const role = (userRole || 'data_entry').toLowerCase();
-      console.log("User role:", role);
       
       toast({
         title: "Success",
         description: "Logged in successfully",
       });
 
-      // Navigate based on role
-      if (role === 'analyst') {
-        navigate("/analytics/population");
-      } else if (role === 'admin') {
-        navigate("/users");
-      } else {
-        navigate("/dashboard");
-      }
+      // Always navigate to dashboard after successful login
+      navigate("/dashboard");
 
     } catch (error) {
       console.error("Unexpected error during login:", error);

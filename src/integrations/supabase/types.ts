@@ -373,15 +373,7 @@ export type Database = {
           timestamp?: string | null
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       metadata_dataset_links: {
         Row: {
@@ -556,51 +548,21 @@ export type Database = {
         }
         Relationships: []
       }
-      user_roles: {
-        Row: {
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       users: {
         Row: {
-          created_at: string | null
+          created_at: string
           email: string
-          full_name: string
           id: string
-          password: string
-          role: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           email: string
-          full_name: string
           id?: string
-          password: string
-          role: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           email?: string
-          full_name?: string
           id?: string
-          password?: string
-          role?: string
         }
         Relationships: []
       }
@@ -657,19 +619,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_user_role: {
-        Args: {
-          uid: string
-        }
-        Returns: string
-      }
-      has_role: {
-        Args: {
-          user_id: string
-          required_role: string
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
       app_role: "admin" | "analyst" | "data_entry" | "enumerator"

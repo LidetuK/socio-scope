@@ -2,73 +2,18 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 
 interface RoleBasedRouteProps {
-  children: ReactNode | ((props: { userRole: string }) => ReactNode);
-  allowedRoles: string[];
+  children: ReactNode;
 }
 
-const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
+const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
   const [session, setSession] = useState<any>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
 
   useEffect(() => {
     let mounted = true;
-
-    const fetchUserRole = async (userId: string) => {
-      try {
-        // First try to get the role using the RPC function
-        const { data: roleData, error: rpcError } = await supabase
-          .rpc('get_user_role', { uid: userId });
-
-        if (!mounted) return;
-
-        if (rpcError) {
-          console.error("Error fetching role via RPC:", rpcError);
-          // Fallback to direct query
-          const { data: directRoleData, error: directError } = await supabase
-            .from('user_roles')
-            .select('role')
-            .eq('user_id', userId)
-            .maybeSingle();
-
-          if (directError) {
-            console.error("Error in direct role fetch:", directError);
-            setUserRole('data_entry');
-            return;
-          }
-
-          if (directRoleData) {
-            setUserRole(directRoleData.role.toLowerCase());
-            return;
-          }
-        }
-
-        if (roleData) {
-          const role = roleData.toLowerCase();
-          console.log("Fetched role:", role);
-          setUserRole(role);
-          return;
-        }
-
-        // Default fallback
-        console.log("No role found, using default");
-        setUserRole('data_entry');
-      } catch (error: any) {
-        console.error("Error in fetchUserRole:", error);
-        if (mounted) {
-          setUserRole('data_entry');
-          toast({
-            title: "Warning",
-            description: "Using default role due to error fetching user role.",
-          });
-        }
-      }
-    };
 
     const setupAuth = async () => {
       try {
@@ -77,22 +22,11 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
         if (!mounted) return;
         
         setSession(initialSession);
-        
-        if (initialSession?.user) {
-          await fetchUserRole(initialSession.user.id);
-        }
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
           async (_event, newSession) => {
             if (!mounted) return;
-            
             setSession(newSession);
-            
-            if (newSession?.user) {
-              await fetchUserRole(newSession.user.id);
-            } else {
-              setUserRole(null);
-            }
           }
         );
 
@@ -107,7 +41,6 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
         console.error("Error in setupAuth:", error);
         if (mounted) {
           setSession(null);
-          setUserRole(null);
           setLoading(false);
         }
       }
@@ -118,7 +51,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
     return () => {
       mounted = false;
     };
-  }, [allowedRoles, toast]);
+  }, []);
 
   if (loading) {
     return (
@@ -132,16 +65,7 @@ const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
     return <Navigate to="/login" replace />;
   }
 
-  // Check if user's role is in allowed roles
-  const hasAllowedRole = userRole && allowedRoles
-    .map(r => r.toLowerCase())
-    .includes(userRole.toLowerCase());
-
-  if (!hasAllowedRole) {
-    return <Navigate to="/unauthorized" replace />;
-  }
-
-  return typeof children === "function" ? children({ userRole: userRole || 'data_entry' }) : children;
+  return children;
 };
 
 export default RoleBasedRoute;
