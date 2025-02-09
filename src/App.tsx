@@ -13,6 +13,11 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 
+// Import route configurations
+import { analyticsRoutes } from "./routes/analyticsRoutes";
+import { dataEntryRoutes } from "./routes/dataEntryRoutes";
+import { managementRoutes } from "./routes/managementRoutes";
+
 const App = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -22,6 +27,16 @@ const App = () => {
       },
     },
   });
+
+  const renderRoutes = (routes: any[]) => {
+    return routes.map((route, index) => (
+      <Route
+        key={index}
+        path={route.path}
+        element={route.element}
+      />
+    ));
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -52,6 +67,11 @@ const App = () => {
                 </RoleBasedRoute>
               }
             />
+
+            {/* Include all route configurations */}
+            {renderRoutes(analyticsRoutes)}
+            {renderRoutes(dataEntryRoutes)}
+            {renderRoutes(managementRoutes)}
 
             {/* Catch-all Route */}
             <Route path="*" element={<NotFound />} />
