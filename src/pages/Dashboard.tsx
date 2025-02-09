@@ -26,9 +26,9 @@ const Dashboard = () => {
         vitalStats: vitalStats.count || 0,
       };
     },
-    // Add caching configuration
+    // Updated caching configuration for React Query v5
     staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
-    cacheTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
+    gcTime: 10 * 60 * 1000,   // Keep in cache for 10 minutes (formerly cacheTime)
   });
 
   return (
