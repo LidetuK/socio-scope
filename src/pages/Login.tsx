@@ -23,7 +23,6 @@ const Login = () => {
 
     setLoading(true);
     console.log("Starting login process...");
-    console.log("Attempting to connect to Supabase...");
 
     try {
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
@@ -32,20 +31,7 @@ const Login = () => {
       });
 
       if (authError) {
-        console.error("Authentication error details:", {
-          message: authError.message,
-          status: authError.status,
-          name: authError.name
-        });
-        
-        if (authError.message.includes("Failed to fetch")) {
-          toast({
-            title: "Connection Error",
-            description: "Unable to connect to the authentication service. Please try again in a few moments.",
-            variant: "destructive",
-          });
-          return;
-        }
+        console.error("Authentication error:", authError);
         
         if (authError.message.includes("Invalid login credentials")) {
           toast({
@@ -76,8 +62,8 @@ const Login = () => {
 
       console.log("User authenticated successfully:", authData.user.id);
 
-      // Get user role
-      const { data: role, error: roleError } = await supabase
+      // Get user role using our new RPC function
+      const { data: userRole, error: roleError } = await supabase
         .rpc('get_user_role', { uid: authData.user.id });
 
       if (roleError) {
@@ -88,8 +74,8 @@ const Login = () => {
         });
       }
 
-      const userRole = (role || 'data_entry').toLowerCase();
-      console.log("User role:", userRole);
+      const role = (userRole || 'data_entry').toLowerCase();
+      console.log("User role:", role);
       
       toast({
         title: "Success",
@@ -97,13 +83,15 @@ const Login = () => {
       });
 
       // Navigate based on role
-      if (userRole.includes('analyst')) {
+      if (role === 'analyst') {
         navigate("/analytics/population");
+      } else if (role === 'admin') {
+        navigate("/users");
       } else {
         navigate("/dashboard");
       }
 
-    } catch (error: any) {
+    } catch (error) {
       console.error("Unexpected error during login:", error);
       toast({
         title: "Error",

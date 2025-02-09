@@ -561,19 +561,19 @@ export type Database = {
           created_at: string
           id: string
           role: Database["public"]["Enums"]["app_role"]
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           role: Database["public"]["Enums"]["app_role"]
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -663,24 +663,16 @@ export type Database = {
         }
         Returns: string
       }
-      has_role:
-        | {
-            Args: {
-              user_id: string
-              required_role: Database["public"]["Enums"]["app_role"]
-            }
-            Returns: boolean
-          }
-        | {
-            Args: {
-              user_id: string
-              required_role: string
-            }
-            Returns: boolean
-          }
+      has_role: {
+        Args: {
+          user_id: string
+          required_role: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      app_role: "admin" | "data_entry" | "enumerator" | "analyst"
+      app_role: "admin" | "analyst" | "data_entry" | "enumerator"
       user_role: "admin" | "data_entry" | "enumerator" | "analyst"
     }
     CompositeTypes: {
