@@ -23,7 +23,7 @@ const Login = () => {
 
     setLoading(true);
     console.log("Starting login process...");
-    console.log("Attempting to connect to Supabase URL:", supabase.supabaseUrl);
+    console.log("Attempting to connect to Supabase...");
 
     try {
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
