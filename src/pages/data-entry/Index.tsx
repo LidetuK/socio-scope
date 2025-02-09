@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { 
@@ -60,7 +61,7 @@ const DataEntryIndex = () => {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-6 p-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Data Entry</h1>
           <p className="mt-2 text-gray-600">
@@ -75,7 +76,7 @@ const DataEntryIndex = () => {
               to={entity.href}
               className="block"
             >
-              <Card className="p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer group">
+              <Card className="p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer group border-0 shadow-sm">
                 <div className="flex items-start space-x-4">
                   <div className="p-2 rounded-lg bg-gray-50 group-hover:bg-gray-100 transition-colors">
                     {entity.icon}
