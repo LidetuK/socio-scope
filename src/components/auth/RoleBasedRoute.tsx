@@ -1,8 +1,9 @@
 
 import { ReactNode, useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import { toast } from "sonner";
 
 interface RoleBasedRouteProps {
   children: ReactNode;
@@ -11,20 +12,37 @@ interface RoleBasedRouteProps {
 const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
 
     const setupAuth = async () => {
       try {
-        const { data: { session: initialSession } } = await supabase.auth.getSession();
+        // Get initial session
+        const { data: { session: initialSession }, error: sessionError } = await supabase.auth.getSession();
         
+        if (sessionError) {
+          console.error("Error getting session:", sessionError);
+          toast.error("Authentication error. Please try logging in again.");
+          navigate("/login");
+          return;
+        }
+
         if (!mounted) return;
         setSession(initialSession);
 
+        // Set up auth state listener
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
-          (_event, newSession) => {
+          async (_event, newSession) => {
             if (!mounted) return;
+            
+            if (!newSession) {
+              toast.error("Your session has expired. Please log in again.");
+              navigate("/login");
+              return;
+            }
+
             setSession(newSession);
           }
         );
@@ -41,6 +59,7 @@ const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
         if (mounted) {
           setSession(null);
           setLoading(false);
+          toast.error("Authentication error occurred. Please try logging in again.");
         }
       }
     };
@@ -50,7 +69,7 @@ const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [navigate]);
 
   if (loading) {
     return (
@@ -60,8 +79,9 @@ const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
     );
   }
 
-  // Only check if user is authenticated
+  // Check if user is authenticated
   if (!session) {
+    toast.error("Please log in to access this page");
     return <Navigate to="/login" replace />;
   }
 
