@@ -23,6 +23,7 @@ const Login = () => {
 
     setLoading(true);
     console.log("Starting login process...");
+    console.log("Attempting to connect to Supabase URL:", supabase.supabaseUrl);
 
     try {
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
@@ -31,12 +32,16 @@ const Login = () => {
       });
 
       if (authError) {
-        console.error("Authentication error:", authError);
+        console.error("Authentication error details:", {
+          message: authError.message,
+          status: authError.status,
+          name: authError.name
+        });
         
         if (authError.message.includes("Failed to fetch")) {
           toast({
             title: "Connection Error",
-            description: "Unable to connect to the authentication service. Please check your internet connection and try again.",
+            description: "Unable to connect to the authentication service. Please try again in a few moments.",
             variant: "destructive",
           });
           return;
@@ -60,6 +65,7 @@ const Login = () => {
       }
 
       if (!authData.user) {
+        console.error("No user data returned from authentication");
         toast({
           title: "Login Error",
           description: "No user data returned. Please try again.",
@@ -67,6 +73,8 @@ const Login = () => {
         });
         return;
       }
+
+      console.log("User authenticated successfully:", authData.user.id);
 
       // Get user role
       const { data: role, error: roleError } = await supabase
