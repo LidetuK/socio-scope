@@ -1,7 +1,7 @@
 
 import { RouteObject } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
+import AuthRoute from "@/components/auth/RoleBasedRoute";
 import AnalyticsPopulation from "@/pages/analytics/Population";
 import AnalyticsDemographics from "@/pages/analytics/Demographics";
 import AnalyticsReports from "@/pages/analytics/Reports";
@@ -14,25 +14,25 @@ export const analyticsRoutes: RouteObject[] = [
   {
     path: "/analytics/population",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <AnalyticsPopulation />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
   {
     path: "/analytics/demographics",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <AnalyticsDemographics />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
   {
     path: "/analytics/reports",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <AnalyticsReports />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
 ];

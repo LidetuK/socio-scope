@@ -5,11 +5,11 @@ import { supabase } from "@/integrations/supabase/client";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
 
-interface RoleBasedRouteProps {
+interface AuthRouteProps {
   children: ReactNode;
 }
 
-const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
+const AuthRoute = ({ children }: AuthRouteProps) => {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -36,13 +36,6 @@ const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
           async (_event, newSession) => {
             if (!mounted) return;
-            
-            if (!newSession) {
-              toast.error("Your session has expired. Please log in again.");
-              navigate("/login");
-              return;
-            }
-
             setSession(newSession);
           }
         );
@@ -79,13 +72,11 @@ const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
     );
   }
 
-  // Check if user is authenticated
   if (!session) {
-    toast.error("Please log in to access this page");
     return <Navigate to="/login" replace />;
   }
 
   return children;
 };
 
-export default RoleBasedRoute;
+export default AuthRoute;

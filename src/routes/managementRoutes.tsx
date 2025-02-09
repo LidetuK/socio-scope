@@ -1,6 +1,6 @@
 
 import { RouteObject } from "react-router-dom";
-import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
+import AuthRoute from "@/components/auth/RoleBasedRoute";
 import Metadata from "@/pages/Metadata";
 import UserManagement from "@/pages/UserManagement";
 import Settings from "@/pages/Settings";
@@ -9,25 +9,25 @@ export const managementRoutes: RouteObject[] = [
   {
     path: "/metadata",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <Metadata />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
   {
     path: "/users",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <UserManagement />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
   {
     path: "/settings",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <Settings />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
 ];

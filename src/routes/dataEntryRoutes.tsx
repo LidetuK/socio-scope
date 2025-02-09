@@ -1,6 +1,6 @@
 
 import { RouteObject } from "react-router-dom";
-import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
+import AuthRoute from "@/components/auth/RoleBasedRoute";
 
 // Pages
 import DataEntryIndex from "@/pages/data-entry/Index";
@@ -14,49 +14,49 @@ export const dataEntryRoutes: RouteObject[] = [
   {
     path: "/data-entry",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <DataEntryIndex />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
   {
     path: "/data-entry/demographics",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <DataEntryDemographics />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
   {
     path: "/data-entry/demographics/population",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <PopulationEntry />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
   {
     path: "/data-entry/demographics/households",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <HouseholdEntry />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
   {
     path: "/data-entry/demographics/vital-statistics",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <VitalStatsEntry />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
   {
     path: "/data-entry/demographics/migration",
     element: (
-      <RoleBasedRoute>
+      <AuthRoute>
         <MigrationEntry />
-      </RoleBasedRoute>
+      </AuthRoute>
     ),
   },
 ];
