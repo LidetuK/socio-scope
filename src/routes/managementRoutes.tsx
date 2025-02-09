@@ -1,3 +1,4 @@
+
 import { RouteObject } from "react-router-dom";
 import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
 import Metadata from "@/pages/Metadata";
@@ -8,7 +9,7 @@ export const managementRoutes: RouteObject[] = [
   {
     path: "/metadata",
     element: (
-      <RoleBasedRoute allowedRoles={["admin"]}>
+      <RoleBasedRoute>
         <Metadata />
       </RoleBasedRoute>
     ),
@@ -16,7 +17,7 @@ export const managementRoutes: RouteObject[] = [
   {
     path: "/users",
     element: (
-      <RoleBasedRoute allowedRoles={["admin"]}>
+      <RoleBasedRoute>
         <UserManagement />
       </RoleBasedRoute>
     ),
@@ -24,7 +25,7 @@ export const managementRoutes: RouteObject[] = [
   {
     path: "/settings",
     element: (
-      <RoleBasedRoute allowedRoles={["admin"]}>
+      <RoleBasedRoute>
         <Settings />
       </RoleBasedRoute>
     ),

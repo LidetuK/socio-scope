@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -8,46 +8,37 @@ import {
   BarChart3,
   Settings,
   Database,
-  ClipboardList,
-  UserCircle,
   Menu,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
 
 const menuItems = [
   {
     icon: LayoutDashboard,
     label: "Dashboard",
     path: "/dashboard",
-    roles: ["admin", "analyst", "data_entry", "enumerator"],
   },
   {
     icon: FileSpreadsheet,
     label: "Data Entry",
     path: "/data-entry",
-    roles: ["admin", "data_entry", "enumerator"],
     subItems: [
       { 
         label: "Households", 
         path: "/data-entry/demographics/households",
-        roles: ["admin", "data_entry", "enumerator"]
       },
       { 
         label: "Population", 
         path: "/data-entry/demographics/population",
-        roles: ["admin", "data_entry", "enumerator"]
       },
       { 
         label: "Migration", 
         path: "/data-entry/demographics/migration",
-        roles: ["admin", "data_entry", "enumerator"]
       },
       { 
         label: "Vital Statistics", 
         path: "/data-entry/demographics/vital-statistics",
-        roles: ["admin", "data_entry"]
       },
     ],
   },
@@ -55,7 +46,6 @@ const menuItems = [
     icon: BarChart3,
     label: "Analytics",
     path: "/analytics",
-    roles: ["admin", "analyst"],
     subItems: [
       { label: "Population Trends", path: "/analytics/population" },
       { label: "Demographics", path: "/analytics/demographics" },
@@ -66,52 +56,23 @@ const menuItems = [
     icon: Database,
     label: "Metadata",
     path: "/metadata",
-    roles: ["admin"],
   },
   {
     icon: Users,
     label: "User Management",
     path: "/users",
-    roles: ["admin"],
   },
   {
     icon: Settings,
     label: "Settings",
     path: "/settings",
-    roles: ["admin"],
   },
 ];
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [userRole, setUserRole] = useState<string | null>(null);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const location = useLocation();
-
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.user?.id) return;
-
-        const { data: roleData, error } = await supabase
-          .rpc('get_user_role', { uid: session.user.id });
-
-        if (!error && roleData) {
-          setUserRole(roleData.toLowerCase());
-        }
-      } catch (error) {
-        console.error("Error fetching user role:", error);
-      }
-    };
-
-    fetchUserRole();
-  }, []);
-
-  // Filter menu items based on user role
-  const filteredMenuItems = menuItems.filter(item =>
-    userRole && item.roles.map(r => r.toLowerCase()).includes(userRole)
-  );
 
   return (
     <>
@@ -147,7 +108,7 @@ const Sidebar = () => {
           </div>
           
           <nav className="space-y-1">
-            {filteredMenuItems.map((item) => (
+            {menuItems.map((item) => (
               <div key={item.path}>
                 <Link
                   to={item.path}
@@ -169,20 +130,18 @@ const Sidebar = () => {
                 
                 {item.subItems && expandedItem === item.path && (
                   <div className="ml-12 mt-1 space-y-1">
-                    {item.subItems
-                      .filter(subItem => !subItem.roles || (userRole && subItem.roles.includes(userRole)))
-                      .map((subItem) => (
-                        <Link
-                          key={subItem.path}
-                          to={subItem.path}
-                          className={cn(
-                            "block px-4 py-2 text-sm text-gray-600 hover:text-primary rounded-md transition-colors",
-                            location.pathname === subItem.path && "text-primary font-medium"
-                          )}
-                        >
-                          {subItem.label}
-                        </Link>
-                      ))}
+                    {item.subItems.map((subItem) => (
+                      <Link
+                        key={subItem.path}
+                        to={subItem.path}
+                        className={cn(
+                          "block px-4 py-2 text-sm text-gray-600 hover:text-primary rounded-md transition-colors",
+                          location.pathname === subItem.path && "text-primary font-medium"
+                        )}
+                      >
+                        {subItem.label}
+                      </Link>
+                    ))}
                   </div>
                 )}
               </div>

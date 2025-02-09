@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -51,18 +52,16 @@ const UserList = ({ onEditSuccess }: UserListProps) => {
         <table className="w-full">
           <thead>
             <tr className="border-b bg-muted/50 text-sm">
-              <th className="p-4 text-left">Name</th>
               <th className="p-4 text-left">Email</th>
-              <th className="p-4 text-left">Role</th>
+              <th className="p-4 text-left">Created At</th>
               <th className="p-4 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {users?.map((user) => (
               <tr key={user.id} className="border-b">
-                <td className="p-4">{user.full_name}</td>
                 <td className="p-4">{user.email}</td>
-                <td className="p-4">{user.role}</td>
+                <td className="p-4">{new Date(user.created_at).toLocaleDateString()}</td>
                 <td className="p-4">
                   <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                     <DialogTrigger asChild>
