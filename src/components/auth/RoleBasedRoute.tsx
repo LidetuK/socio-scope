@@ -20,11 +20,10 @@ const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
         const { data: { session: initialSession } } = await supabase.auth.getSession();
         
         if (!mounted) return;
-        
         setSession(initialSession);
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
-          async (_event, newSession) => {
+          (_event, newSession) => {
             if (!mounted) return;
             setSession(newSession);
           }
@@ -61,6 +60,7 @@ const RoleBasedRoute = ({ children }: RoleBasedRouteProps) => {
     );
   }
 
+  // Only check if user is authenticated
   if (!session) {
     return <Navigate to="/login" replace />;
   }
