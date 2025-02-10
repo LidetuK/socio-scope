@@ -18,10 +18,13 @@ import {
 import { UseFormReturn } from "react-hook-form";
 import { PopulationFormValues } from "./types";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 
 interface Props {
   form: UseFormReturn<PopulationFormValues>;
 }
+
+type District = Database["public"]["Tables"]["districts"]["Row"];
 
 const DistrictSelector = ({ form }: Props) => {
   const selectedRegion = form.watch('region');
@@ -38,7 +41,7 @@ const DistrictSelector = ({ form }: Props) => {
         .order('name');
       
       if (error) throw error;
-      return data;
+      return data as District[];
     },
     enabled: !!selectedRegion
   });

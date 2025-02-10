@@ -18,10 +18,13 @@ import {
 import { UseFormReturn } from "react-hook-form";
 import { PopulationFormValues } from "./types";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 
 interface Props {
   form: UseFormReturn<PopulationFormValues>;
 }
+
+type Region = Database["public"]["Tables"]["regions"]["Row"];
 
 const RegionSelector = ({ form }: Props) => {
   const { data: regions, isLoading } = useQuery({
@@ -33,7 +36,7 @@ const RegionSelector = ({ form }: Props) => {
         .order('name');
       
       if (error) throw error;
-      return data;
+      return data as Region[];
     }
   });
 
