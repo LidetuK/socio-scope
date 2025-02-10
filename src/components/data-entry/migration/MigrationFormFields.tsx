@@ -1,3 +1,4 @@
+
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { NumberField } from "../shared/FormFields";
@@ -8,13 +9,13 @@ interface MigrationFormFieldsProps {
 }
 
 const regions = [
-  { value: "Banadir", label: "Banadir" },
-  { value: "Puntland", label: "Puntland" },
-  { value: "Somaliland", label: "Somaliland" },
-  { value: "Galmudug", label: "Galmudug" },
-  { value: "Hirshabelle", label: "Hirshabelle" },
-  { value: "Jubaland", label: "Jubaland" },
-  { value: "South West State", label: "South West State" }
+  { value: "banadir", label: "Banadir" },
+  { value: "puntland", label: "Puntland" },
+  { value: "somaliland", label: "Somaliland" },
+  { value: "galmudug", label: "Galmudug" },
+  { value: "hirshabelle", label: "Hirshabelle" },
+  { value: "jubaland", label: "Jubaland" },
+  { value: "south_west", label: "South West State" }
 ];
 
 const MigrationFormFields = ({ form }: MigrationFormFieldsProps) => {
@@ -23,7 +24,7 @@ const MigrationFormFields = ({ form }: MigrationFormFieldsProps) => {
       <div className="grid grid-cols-2 gap-4">
         <SelectField
           form={form}
-          name="region"
+          name="region_id"
           label="Region"
           options={regions}
         />
@@ -66,12 +67,12 @@ const MigrationFormFields = ({ form }: MigrationFormFieldsProps) => {
         <div className="grid grid-cols-2 gap-4">
           <NumberField
             form={form}
-            name="refugeeCount"
+            name="refugee_count"
             label="Refugee Count"
           />
           <NumberField
             form={form}
-            name="idpCount"
+            name="idp_count"
             label="IDP Count"
           />
         </div>
