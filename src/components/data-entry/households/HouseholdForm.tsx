@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
   householdSize: z.number().min(1, "Household size must be at least 1"),
-  householdType: z.string().min(1, "Household type is required"),
+  householdType: z.enum(["single_family", "multi_family"] as const),
   headAge: z.number().min(18, "Head must be at least 18 years old"),
   headGender: z.string().min(1, "Gender is required"),
   headEmploymentStatus: z.string().min(1, "Employment status is required"),
@@ -26,7 +26,7 @@ const HouseholdForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       householdSize: 1,
-      householdType: "",
+      householdType: "single_family",
       headAge: 18,
       headGender: "",
       headEmploymentStatus: "",
@@ -43,17 +43,17 @@ const HouseholdForm = () => {
         household_type: values.householdType,
         head_age: values.headAge,
         head_gender: values.headGender,
-        head_employment_status: values.headEmploymentStatus,
+        head_employed: values.headEmploymentStatus === "employed",
+        head_literacy: true, // Default value since it's required
         region_id: values.region,
         district_id: values.district,
-        locality: values.locality,
         created_by: (await supabase.auth.getUser()).data.user?.id,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       };
 
       const { error } = await supabase
-        .from('households')
+        .from('household_data')
         .insert(dbValues);
 
       if (error) throw error;
