@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -27,12 +28,12 @@ const AddUserForm = ({ onSuccess }: AddUserFormProps) => {
   const createUserMutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       console.log("Creating user with values:", values);
-      const { error } = await supabase.from("users").insert([{
+      const { error } = await supabase.from("user_management").insert({
         full_name: values.full_name,
         email: values.email,
         password: values.password,
         role: values.role,
-      }]);
+      });
       
       if (error) {
         console.error("Error creating user:", error);

@@ -19,11 +19,11 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
-  const { data: demographicsData, isLoading: isDemographicsLoading } = useQuery({
+  const { data: demographicsData } = useQuery({
     queryKey: ['demographics'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('demographics')
+        .from('demographics_summary')
         .select('*')
         .limit(1)
         .maybeSingle();
@@ -32,11 +32,11 @@ const Index = () => {
     },
   });
 
-  const { data: healthData, isLoading: isHealthLoading } = useQuery({
+  const { data: healthData } = useQuery({
     queryKey: ['health'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('health')
+        .from('health_summary')
         .select('*')
         .limit(1)
         .maybeSingle();
@@ -45,11 +45,11 @@ const Index = () => {
     },
   });
 
-  const { data: educationData, isLoading: isEducationLoading } = useQuery({
+  const { data: educationData } = useQuery({
     queryKey: ['education'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('education')
+        .from('education_summary')
         .select('*')
         .limit(1)
         .maybeSingle();
@@ -58,11 +58,11 @@ const Index = () => {
     },
   });
 
-  const { data: laborData, isLoading: isLaborLoading } = useQuery({
+  const { data: laborData } = useQuery({
     queryKey: ['labor_employment'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('labor_employment')
+        .from('labor_employment_summary')
         .select('*')
         .limit(1)
         .maybeSingle();
@@ -79,20 +79,6 @@ const Index = () => {
     { name: "May", value: 700 },
     { name: "Jun", value: 900 },
   ];
-
-  if (isDemographicsLoading || isHealthLoading || isEducationLoading || isLaborLoading) {
-    return (
-      <Layout>
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-[140px] rounded-xl" />
-            ))}
-          </div>
-        </div>
-      </Layout>
-    );
-  }
 
   if (!demographicsData && !healthData && !educationData && !laborData) {
     return (

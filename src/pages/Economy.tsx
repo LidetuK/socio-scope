@@ -21,7 +21,7 @@ const Economy = () => {
     queryKey: ["trade_economy"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("trade_economy")
+        .from("trade_economy_summary")
         .select("*")
         .order("updated_at", { ascending: false })
         .limit(1)

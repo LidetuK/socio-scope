@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { Sprout, TreePine, Droplets, Map } from "lucide-react";
+import { LineChart, TrendingUp, Sprout, Map } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import StatCard from "@/components/dashboard/StatCard";
 import ChartCard from "@/components/dashboard/ChartCard";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  LineChart,
+  LineChart as RechartsLineChart,
   Line,
   XAxis,
   YAxis,
@@ -21,7 +21,7 @@ const Agriculture = () => {
     queryKey: ["agriculture"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("agriculture")
+        .from("agriculture_summary")
         .select("*")
         .order("updated_at", { ascending: false })
         .limit(1)
@@ -72,15 +72,15 @@ const Agriculture = () => {
             trend={{ value: 1.8, isPositive: true }}
           />
           <StatCard
-            title="Crop Production"
-            value={`${cropProductionData.totalProduction || 0} tons`}
-            icon={<TreePine size={24} />}
+            title="Irrigation Coverage"
+            value={`${agricultureData?.irrigation_coverage || 0}%`}
+            icon={<TrendingUp size={24} />}
             trend={{ value: 3.2, isPositive: true }}
           />
           <StatCard
-            title="Irrigation Coverage"
-            value={`${agricultureData?.irrigation_coverage || 0}%`}
-            icon={<Droplets size={24} />}
+            title="Crop Production"
+            value={`${cropProductionData.totalProduction || 0} tons`}
+            icon={<LineChart size={24} />}
             trend={{ value: 1.5, isPositive: true }}
           />
         </div>

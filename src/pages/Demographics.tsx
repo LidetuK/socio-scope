@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { Users, TrendingUp, Home, UserCheck } from "lucide-react";
 import Layout from "@/components/layout/Layout";
@@ -21,7 +22,7 @@ const Demographics = () => {
     queryKey: ["demographics"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("demographics")
+        .from("demographics_summary")
         .select("*")
         .order("updated_at", { ascending: false })
         .limit(1)
