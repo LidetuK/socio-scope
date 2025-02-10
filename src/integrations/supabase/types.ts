@@ -1171,6 +1171,30 @@ export type Database = {
         }
         Relationships: []
       }
+      summary_stats: {
+        Row: {
+          category: string
+          created_at: string
+          data: Json
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          data?: Json
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          data?: Json
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       trade_economy_summary: {
         Row: {
           created_at: string
@@ -1211,6 +1235,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_management: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          password: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          password: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          password?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
