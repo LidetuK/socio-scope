@@ -1,4 +1,6 @@
+
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   FormField,
   FormItem,
@@ -15,26 +17,26 @@ import {
 } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
 import { PopulationFormValues } from "./types";
-
-const regions = [
-  "Banadir",
-  "Puntland",
-  "Somaliland",
-  "Galmudug",
-  "Hirshabelle",
-  "Jubaland",
-  "South West State",
-  "Middle Shabelle",
-  "Lower Juba",
-  "Gedo",
-  "Bay"
-];
+import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   form: UseFormReturn<PopulationFormValues>;
 }
 
 const RegionSelector = ({ form }: Props) => {
+  const { data: regions, isLoading } = useQuery({
+    queryKey: ['regions'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('regions')
+        .select('id, name')
+        .order('name');
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
   return (
     <FormField
       control={form.control}
@@ -42,20 +44,24 @@ const RegionSelector = ({ form }: Props) => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>Region</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select 
+            onValueChange={field.onChange} 
+            value={field.value}
+            disabled={isLoading}
+          >
             <FormControl>
               <SelectTrigger className="bg-white">
                 <SelectValue placeholder="Select Region" />
               </SelectTrigger>
             </FormControl>
             <SelectContent className="bg-white">
-              {regions.map((region) => (
+              {regions?.map((region) => (
                 <SelectItem 
-                  key={region} 
-                  value={region}
+                  key={region.id} 
+                  value={region.id}
                   className="hover:bg-gray-100"
                 >
-                  {region}
+                  {region.name}
                 </SelectItem>
               ))}
             </SelectContent>

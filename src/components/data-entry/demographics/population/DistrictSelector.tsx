@@ -1,4 +1,6 @@
+
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   FormField,
   FormItem,
@@ -15,18 +17,32 @@ import {
 } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
 import { PopulationFormValues } from "./types";
-
-const districts = [
-  "District 1",
-  "District 2",
-  "District 3"
-];
+import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   form: UseFormReturn<PopulationFormValues>;
 }
 
 const DistrictSelector = ({ form }: Props) => {
+  const selectedRegion = form.watch('region');
+
+  const { data: districts, isLoading } = useQuery({
+    queryKey: ['districts', selectedRegion],
+    queryFn: async () => {
+      if (!selectedRegion) return [];
+      
+      const { data, error } = await supabase
+        .from('districts')
+        .select('id, name')
+        .eq('region_id', selectedRegion)
+        .order('name');
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!selectedRegion
+  });
+
   return (
     <FormField
       control={form.control}
@@ -34,20 +50,24 @@ const DistrictSelector = ({ form }: Props) => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>District</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select 
+            onValueChange={field.onChange} 
+            value={field.value}
+            disabled={isLoading || !selectedRegion}
+          >
             <FormControl>
               <SelectTrigger className="bg-white">
                 <SelectValue placeholder="Select District" />
               </SelectTrigger>
             </FormControl>
             <SelectContent className="bg-white">
-              {districts.map((district) => (
+              {districts?.map((district) => (
                 <SelectItem 
-                  key={district} 
-                  value={district}
+                  key={district.id} 
+                  value={district.id}
                   className="hover:bg-gray-100"
                 >
-                  {district}
+                  {district.name}
                 </SelectItem>
               ))}
             </SelectContent>
