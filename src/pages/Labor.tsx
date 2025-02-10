@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { Briefcase, TrendingUp, Users, Building } from "lucide-react";
 import Layout from "@/components/layout/Layout";
@@ -23,7 +24,7 @@ const Labor = () => {
     queryKey: ["labor"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("labor_employment")
+        .from("labor_employment_summary")
         .select("*")
         .order("updated_at", { ascending: false })
         .limit(1)

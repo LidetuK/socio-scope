@@ -9,6 +9,47 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      agriculture_summary: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          crop_production: Json
+          id: string
+          irrigation_coverage: number
+          land_under_cultivation: number
+          total_farmers: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          crop_production?: Json
+          id?: string
+          irrigation_coverage?: number
+          land_under_cultivation?: number
+          total_farmers?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          crop_production?: Json
+          id?: string
+          irrigation_coverage?: number
+          land_under_cultivation?: number
+          total_farmers?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agriculture_summary_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_logs: {
         Row: {
           action: string
@@ -78,6 +119,53 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "data_entries_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      demographics_summary: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          female_population: number
+          household_count: number
+          id: string
+          literacy_rate: number
+          male_population: number
+          population: number
+          poverty_rate: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          female_population?: number
+          household_count?: number
+          id?: string
+          literacy_rate?: number
+          male_population?: number
+          population?: number
+          poverty_rate?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          female_population?: number
+          household_count?: number
+          id?: string
+          literacy_rate?: number
+          male_population?: number
+          population?: number
+          poverty_rate?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demographics_summary_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "users"
@@ -242,6 +330,47 @@ export type Database = {
           },
         ]
       }
+      education_summary: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          literacy_rate: number
+          total_schools: number
+          total_students: number
+          total_teachers: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          literacy_rate?: number
+          total_schools?: number
+          total_students?: number
+          total_teachers?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          literacy_rate?: number
+          total_schools?: number
+          total_students?: number
+          total_teachers?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "education_summary_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       file_uploads: {
         Row: {
           created_at: string
@@ -340,6 +469,47 @@ export type Database = {
             columns: ["region_id"]
             isOneToOne: false
             referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      health_summary: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          life_expectancy: number
+          total_clinics: number
+          total_doctors: number
+          total_hospitals: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          life_expectancy?: number
+          total_clinics?: number
+          total_doctors?: number
+          total_hospitals?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          life_expectancy?: number
+          total_clinics?: number
+          total_doctors?: number
+          total_hospitals?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_summary_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -526,6 +696,94 @@ export type Database = {
             columns: ["region_id"]
             isOneToOne: false
             referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      infrastructure_summary: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          electricity_coverage: number
+          id: string
+          total_hospitals: number
+          total_roads_km: number
+          total_schools: number
+          updated_at: string
+          water_access_rate: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          electricity_coverage?: number
+          id?: string
+          total_hospitals?: number
+          total_roads_km?: number
+          total_schools?: number
+          updated_at?: string
+          water_access_rate?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          electricity_coverage?: number
+          id?: string
+          total_hospitals?: number
+          total_roads_km?: number
+          total_schools?: number
+          updated_at?: string
+          water_access_rate?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "infrastructure_summary_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      labor_employment_summary: {
+        Row: {
+          average_income: number
+          created_at: string
+          created_by: string | null
+          employment_rate: number
+          id: string
+          industry_distribution: Json
+          total_workforce: number
+          unemployment_rate: number
+          updated_at: string
+        }
+        Insert: {
+          average_income?: number
+          created_at?: string
+          created_by?: string | null
+          employment_rate?: number
+          id?: string
+          industry_distribution?: Json
+          total_workforce?: number
+          unemployment_rate?: number
+          updated_at?: string
+        }
+        Update: {
+          average_income?: number
+          created_at?: string
+          created_by?: string | null
+          employment_rate?: number
+          id?: string
+          industry_distribution?: Json
+          total_workforce?: number
+          unemployment_rate?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "labor_employment_summary_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -909,6 +1167,47 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      trade_economy_summary: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          gdp: number
+          id: string
+          inflation_rate: number
+          major_exports: Json
+          major_imports: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          gdp?: number
+          id?: string
+          inflation_rate?: number
+          major_exports?: Json
+          major_imports?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          gdp?: number
+          id?: string
+          inflation_rate?: number
+          major_exports?: Json
+          major_imports?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trade_economy_summary_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
