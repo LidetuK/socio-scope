@@ -16,9 +16,8 @@ const formSchema = z.object({
   headAge: z.number().min(18, "Head must be at least 18 years old"),
   headGender: z.string().min(1, "Gender is required"),
   headEmploymentStatus: z.string().min(1, "Employment status is required"),
-  region: z.string().min(1, "Region is required"),
-  district: z.string().min(1, "District is required"),
-  locality: z.string().optional(),
+  region_id: z.string().uuid("Please select a region"),
+  district_id: z.string().uuid("Please select a district"),
 });
 
 const HouseholdForm = () => {
@@ -30,15 +29,13 @@ const HouseholdForm = () => {
       headAge: 18,
       headGender: "",
       headEmploymentStatus: "",
-      region: "",
-      district: "",
-      locality: "",
+      region_id: "",
+      district_id: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // Get the current user's ID
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         toast.error("You must be logged in to submit data");
@@ -47,13 +44,13 @@ const HouseholdForm = () => {
 
       const dbValues = {
         household_size: values.householdSize,
-        household_type: values.householdType, // Using the enum value directly
+        household_type: values.householdType,
         head_age: values.headAge,
         head_gender: values.headGender,
         head_employed: values.headEmploymentStatus === "employed",
-        head_literacy: true, // Default value since it's required
-        region_id: values.region,
-        district_id: values.district,
+        head_literacy: true,
+        region_id: values.region_id,
+        district_id: values.district_id,
         created_by: user.id,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
