@@ -1503,6 +1503,7 @@ export type Database = {
         Row: {
           age_0_4_years: number | null
           age_5_9_years: number | null
+          age_groups: Json | null
           created_at: string | null
           created_by: string | null
           district_id: string | null
@@ -1517,6 +1518,7 @@ export type Database = {
         Insert: {
           age_0_4_years?: number | null
           age_5_9_years?: number | null
+          age_groups?: never
           created_at?: string | null
           created_by?: string | null
           district_id?: string | null
@@ -1531,6 +1533,7 @@ export type Database = {
         Update: {
           age_0_4_years?: number | null
           age_5_9_years?: number | null
+          age_groups?: never
           created_at?: string | null
           created_by?: string | null
           district_id?: string | null

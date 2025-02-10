@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,19 +31,20 @@ const PopulationForm = () => {
   const onSubmit = async (values: PopulationFormValues) => {
     try {
       const dbValues = {
-        region: values.region,
-        district: values.district,
+        region_id: values.region,
+        district_id: values.district,
         locality: values.locality,
         total_population: values.totalPopulation,
-        male_population: values.malePopulation,
-        female_population: values.femalePopulation,
-        other_population: values.otherPopulation,
-        age_groups: values.ageGroups,
+        male_count: values.malePopulation,
+        female_count: values.femalePopulation,
+        other_count: values.otherPopulation,
+        age_0_4_years: values.ageGroups["0-4"],
+        age_5_9_years: values.ageGroups["5-9"],
         created_by: (await supabase.auth.getUser()).data.user?.id
       };
 
       const { error } = await supabase
-        .from('population_distribution')
+        .from('population_data')
         .insert(dbValues);
 
       if (error) throw error;
