@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   FormField,
@@ -21,16 +22,17 @@ interface SelectFieldProps {
   label: string;
   options: { value: string; label: string }[];
   placeholder?: string;
+  disabled?: boolean;
 }
 
-export const SelectField = ({ form, name, label, options, placeholder }: SelectFieldProps) => (
+export const SelectField = ({ form, name, label, options, placeholder, disabled }: SelectFieldProps) => (
   <FormField
     control={form.control}
     name={name}
     render={({ field }) => (
       <FormItem>
         <FormLabel>{label}</FormLabel>
-        <Select onValueChange={field.onChange} defaultValue={field.value}>
+        <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
           <FormControl>
             <SelectTrigger className="bg-white">
               <SelectValue placeholder={placeholder || `Select ${label.toLowerCase()}`} />

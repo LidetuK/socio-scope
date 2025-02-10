@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +19,7 @@ const formSchema = z.object({
   marriageRate: z.number().min(0, "Marriage rate must be a positive number"),
   divorceRate: z.number().min(0, "Divorce rate must be a positive number"),
   region: z.string().min(1, "Region is required"),
+  district: z.string().min(1, "District is required"),
 });
 
 const VitalStatsForm = () => {
@@ -32,6 +34,7 @@ const VitalStatsForm = () => {
       marriageRate: 0,
       divorceRate: 0,
       region: "",
+      district: "",
     },
   });
 
@@ -45,8 +48,8 @@ const VitalStatsForm = () => {
         fertility_rate: values.fertilityRate,
         marriage_rate: values.marriageRate,
         divorce_rate: values.divorceRate,
-        region: values.region,
-        time_period: new Date().toISOString(),
+        region_id: values.region,
+        district_id: values.district,
         created_by: (await supabase.auth.getUser()).data.user?.id
       };
 
