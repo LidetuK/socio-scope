@@ -1,9 +1,12 @@
+
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { PopulationFormValues } from "./types";
 import { NumberField } from "../../shared/FormFields";
 import RegionSelector from "./RegionSelector";
 import DistrictSelector from "./DistrictSelector";
+import { Input } from "@/components/ui/input";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 interface Props {
   form: UseFormReturn<PopulationFormValues>;
@@ -16,6 +19,20 @@ const PopulationFormFields = ({ form }: Props) => {
         <RegionSelector form={form} />
         <DistrictSelector form={form} />
       </div>
+
+      <FormField
+        control={form.control}
+        name="locality"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Locality (Optional)</FormLabel>
+            <FormControl>
+              <Input placeholder="Enter locality name" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
       <div className="space-y-4">
         <NumberField

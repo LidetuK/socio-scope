@@ -1060,6 +1060,7 @@ export type Database = {
           district_id: string
           female_count: number
           id: string
+          locality: string | null
           male_count: number
           other_count: number
           region_id: string
@@ -1074,6 +1075,7 @@ export type Database = {
           district_id: string
           female_count: number
           id?: string
+          locality?: string | null
           male_count: number
           other_count: number
           region_id: string
@@ -1088,6 +1090,7 @@ export type Database = {
           district_id?: string
           female_count?: number
           id?: string
+          locality?: string | null
           male_count?: number
           other_count?: number
           region_id?: string
