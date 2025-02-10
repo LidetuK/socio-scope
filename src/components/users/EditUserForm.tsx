@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -26,7 +27,7 @@ const formSchema = z.object({
   full_name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters").optional(),
-  role: z.enum(["admin", "data_entry", "analyst", "enumerator"]),
+  role: z.enum(["admin", "statistician", "data_entry_officer", "policy_maker"]),
 });
 
 interface EditUserFormProps {
@@ -48,20 +49,21 @@ const EditUserForm = ({ user, onSuccess }: EditUserFormProps) => {
     defaultValues: {
       full_name: user.full_name,
       email: user.email,
-      role: user.role as "admin" | "data_entry" | "analyst" | "enumerator",
+      role: user.role as "admin" | "statistician" | "data_entry_officer" | "policy_maker",
     },
   });
 
   const updateUserMutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       const updateData = {
-        ...values,
-        // Only include password if it was provided
-        ...(values.password && { password: values.password }),
+        full_name: values.full_name,
+        email: values.email,
+        role: values.role,
+        ...(values.password ? { password: values.password } : {}),
       };
       
       const { error } = await supabase
-        .from("users")
+        .from("user_management")
         .update(updateData)
         .eq("id", user.id);
         
@@ -144,9 +146,9 @@ const EditUserForm = ({ user, onSuccess }: EditUserFormProps) => {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="data_entry">Data Entry</SelectItem>
-                  <SelectItem value="analyst">Analyst</SelectItem>
-                  <SelectItem value="enumerator">Enumerator</SelectItem>
+                  <SelectItem value="statistician">Statistician</SelectItem>
+                  <SelectItem value="data_entry_officer">Data Entry Officer</SelectItem>
+                  <SelectItem value="policy_maker">Policy Maker</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

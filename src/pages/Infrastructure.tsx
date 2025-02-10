@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { Building2, Map, Zap, Droplet } from "lucide-react";
 import Layout from "@/components/layout/Layout";
@@ -21,7 +22,7 @@ const Infrastructure = () => {
     queryKey: ["infrastructure"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("infrastructure")
+        .from("infrastructure_summary")
         .select("*")
         .order("updated_at", { ascending: false })
         .limit(1)

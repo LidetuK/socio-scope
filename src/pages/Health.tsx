@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { Heart, Hospital, Stethoscope, Activity } from "lucide-react";
 import Layout from "@/components/layout/Layout";
@@ -21,7 +22,7 @@ const Health = () => {
     queryKey: ["health"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("health")
+        .from("health_summary")
         .select("*")
         .order("updated_at", { ascending: false })
         .limit(1)
