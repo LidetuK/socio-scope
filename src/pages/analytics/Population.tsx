@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,6 +7,28 @@ import Layout from "@/components/layout/Layout";
 import FilterControls from "@/components/analytics/FilterControls";
 import ReportVisualizations from "@/components/analytics/ReportVisualizations";
 import ExportControls from "@/components/analytics/ExportControls";
+
+type PopulationData = {
+  id: string;
+  region_id: string;
+  district_id: string;
+  total_population: number;
+  male_count: number;
+  female_count: number;
+  other_count: number;
+  age_0_4_years: number;
+  age_5_9_years: number;
+  created_at: string;
+};
+
+type HouseholdData = {
+  id: string;
+  region_id: string;
+  district_id: string;
+  household_size: number;
+  household_type: "single_family" | "multi_family";
+  created_at: string;
+};
 
 const Population = () => {
   const [showReport, setShowReport] = useState(false);
@@ -16,7 +39,7 @@ const Population = () => {
     timePeriod: "",
   });
 
-  const { data: populationData, isLoading: isLoadingPopulation } = useQuery({
+  const { data: populationData, isLoading: isLoadingPopulation } = useQuery<PopulationData[]>({
     queryKey: ["populationData", showReport, filters],
     queryFn: async () => {
       console.log("Fetching population data with filters:", filters);
@@ -26,7 +49,7 @@ const Population = () => {
         .order("created_at", { ascending: false });
 
       if (filters.region && filters.region !== "all") {
-        query = query.eq("region", filters.region);
+        query = query.eq("region_id", filters.region);
       }
 
       const { data, error } = await query;
@@ -44,17 +67,17 @@ const Population = () => {
     retry: 1,
   });
 
-  const { data: householdData, isLoading: isLoadingHouseholds } = useQuery({
+  const { data: householdData, isLoading: isLoadingHouseholds } = useQuery<HouseholdData[]>({
     queryKey: ["householdData", showReport, filters],
     queryFn: async () => {
       console.log("Fetching household data with filters:", filters);
       let query = supabase
-        .from("households")
-        .select("*")
+        .from("household_data")
+        .select("id, region_id, district_id, household_size, household_type, created_at")
         .order("created_at", { ascending: false });
 
       if (filters.region && filters.region !== "all") {
-        query = query.eq("region", filters.region);
+        query = query.eq("region_id", filters.region);
       }
 
       const { data, error } = await query;
@@ -66,11 +89,7 @@ const Population = () => {
       }
 
       console.log("Household data fetched:", data);
-      return data?.map((household) => ({
-        region: household.region,
-        household_size: household.household_size,
-        household_type: household.household_type,
-      })) || [];
+      return data || [];
     },
     enabled: showReport,
     retry: 1,
