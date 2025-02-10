@@ -1,11 +1,12 @@
+
 import { useQuery } from "@tanstack/react-query";
-import { LineChart, TrendingUp, Sprout, Map } from "lucide-react";
+import { LineChart as LineChartIcon, TrendingUp, Sprout, Map } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import StatCard from "@/components/dashboard/StatCard";
 import ChartCard from "@/components/dashboard/ChartCard";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  LineChart as RechartsLineChart,
+  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -80,7 +81,7 @@ const Agriculture = () => {
           <StatCard
             title="Crop Production"
             value={`${cropProductionData.totalProduction || 0} tons`}
-            icon={<LineChart size={24} />}
+            icon={<LineChartIcon size={24} />}
             trend={{ value: 1.5, isPositive: true }}
           />
         </div>
