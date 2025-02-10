@@ -5,9 +5,23 @@ import { NumberField } from "../shared/FormFields";
 import { SelectField } from "../shared/SelectField";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import * as z from "zod";
+
+// Define the form schema type
+const formSchema = z.object({
+  householdSize: z.number(),
+  householdType: z.enum(["single_family", "multi_family"] as const),
+  headAge: z.number(),
+  headGender: z.string(),
+  headEmploymentStatus: z.string(),
+  region_id: z.string().uuid(),
+  district_id: z.string().uuid(),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 interface HouseholdFormFieldsProps {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<FormValues>;
 }
 
 const householdTypes = [

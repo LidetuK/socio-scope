@@ -20,8 +20,10 @@ const formSchema = z.object({
   district_id: z.string().uuid("Please select a district"),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const HouseholdForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       householdSize: 1,
@@ -34,7 +36,7 @@ const HouseholdForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: FormValues) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
