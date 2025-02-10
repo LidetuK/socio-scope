@@ -21,13 +21,12 @@ const AddUserForm = ({ onSuccess }: AddUserFormProps) => {
       full_name: "",
       email: "",
       password: "",
-      role: "data_entry",
+      role: "data_entry_officer",
     },
   });
 
   const createUserMutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
-      console.log("Creating user with values:", values);
       const { error } = await supabase.from("user_management").insert({
         full_name: values.full_name,
         email: values.email,

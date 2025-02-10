@@ -1,3 +1,4 @@
+
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -8,7 +9,7 @@ export const formSchema = z.object({
   full_name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["admin", "data_entry", "enumerator", "analyst"]),
+  role: z.enum(["admin", "statistician", "data_entry_officer", "policy_maker"]),
 });
 
 interface UserFormFieldsProps {
@@ -74,9 +75,9 @@ const UserFormFields = ({ form }: UserFormFieldsProps) => {
               </FormControl>
               <SelectContent>
                 <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="data_entry">Data Entry</SelectItem>
-                <SelectItem value="enumerator">Enumerator</SelectItem>
-                <SelectItem value="analyst">Analyst</SelectItem>
+                <SelectItem value="statistician">Statistician</SelectItem>
+                <SelectItem value="data_entry_officer">Data Entry Officer</SelectItem>
+                <SelectItem value="policy_maker">Policy Maker</SelectItem>
               </SelectContent>
             </Select>
             <FormMessage />

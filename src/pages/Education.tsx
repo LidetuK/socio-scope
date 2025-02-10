@@ -1,11 +1,12 @@
+
 import { useQuery } from "@tanstack/react-query";
-import { GraduationCap, School, Users, BookOpen } from "lucide-react";
+import { LineChart, TrendingUp, Users, GraduationCap } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import StatCard from "@/components/dashboard/StatCard";
 import ChartCard from "@/components/dashboard/ChartCard";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  LineChart,
+  LineChart as RechartsLineChart,
   Line,
   XAxis,
   YAxis,
@@ -18,10 +19,10 @@ import {
 
 const Education = () => {
   const { data: educationData } = useQuery({
-    queryKey: ["education"],
+    queryKey: ["education_summary"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("education")
+        .from("education_summary")
         .select("*")
         .order("updated_at", { ascending: false })
         .limit(1)
@@ -55,7 +56,7 @@ const Education = () => {
           <StatCard
             title="Total Schools"
             value={educationData?.total_schools?.toLocaleString() || "Loading..."}
-            icon={<School size={24} />}
+            icon={<GraduationCap size={24} />}
             trend={{ value: 2.4, isPositive: true }}
           />
           <StatCard
@@ -73,7 +74,7 @@ const Education = () => {
           <StatCard
             title="Literacy Rate"
             value={`${educationData?.literacy_rate || 0}%`}
-            icon={<BookOpen size={24} />}
+            icon={<TrendingUp size={24} />}
             trend={{ value: 1.5, isPositive: true }}
           />
         </div>
@@ -81,7 +82,7 @@ const Education = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <ChartCard title="Student Enrollment Trends">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={enrollmentTrends}>
+              <RechartsLineChart data={enrollmentTrends}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="year" />
                 <YAxis />
@@ -92,7 +93,7 @@ const Education = () => {
                   stroke="#1850E5"
                   strokeWidth={2}
                 />
-              </LineChart>
+              </RechartsLineChart>
             </ResponsiveContainer>
           </ChartCard>
 
