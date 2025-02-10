@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
   region_id: z.string().min(1, "Region is required"),
+  district_id: z.string().min(1, "District is required"),
   ruralToUrban: z.number().min(0, "Must be a positive number"),
   urbanToRural: z.number().min(0, "Must be a positive number"),
   emigration: z.number().min(0, "Must be a positive number"),
@@ -25,6 +26,7 @@ const MigrationForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       region_id: "",
+      district_id: "",
       ruralToUrban: 0,
       urbanToRural: 0,
       emigration: 0,
@@ -40,6 +42,7 @@ const MigrationForm = () => {
         .from('migration_data')
         .insert({
           region_id: values.region_id,
+          district_id: values.district_id,
           rural_to_urban: values.ruralToUrban,
           urban_to_rural: values.urbanToRural,
           emigration: values.emigration,
