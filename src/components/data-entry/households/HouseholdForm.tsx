@@ -38,16 +38,23 @@ const HouseholdForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      // Get the current user's ID
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("You must be logged in to submit data");
+        return;
+      }
+
       const dbValues = {
         household_size: values.householdSize,
-        household_type: values.householdType,
+        household_type: values.householdType.toLowerCase(), // Ensure correct case
         head_age: values.headAge,
         head_gender: values.headGender,
         head_employed: values.headEmploymentStatus === "employed",
         head_literacy: true, // Default value since it's required
         region_id: values.region,
         district_id: values.district,
-        created_by: (await supabase.auth.getUser()).data.user?.id,
+        created_by: user.id,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       };
