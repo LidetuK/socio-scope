@@ -7,7 +7,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import * as z from "zod";
 
-// Define the form schema type
 const formSchema = z.object({
   householdSize: z.number(),
   householdType: z.enum(["single_family", "multi_family"] as const),
@@ -45,7 +44,7 @@ const employmentOptions = [
 
 const HouseholdFormFields = ({ form }: HouseholdFormFieldsProps) => {
   // Fetch regions
-  const { data: regions } = useQuery({
+  const { data: regions = [] } = useQuery({
     queryKey: ["regions"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -57,14 +56,17 @@ const HouseholdFormFields = ({ form }: HouseholdFormFieldsProps) => {
   });
 
   // Fetch districts based on selected region
-  const { data: districts } = useQuery({
+  const { data: districts = [] } = useQuery({
     queryKey: ["districts", form.watch("region_id")],
     queryFn: async () => {
-      if (!form.watch("region_id")) return [];
+      const selectedRegionId = form.watch("region_id");
+      if (!selectedRegionId) return [];
+      
       const { data, error } = await supabase
         .from("districts")
         .select("id, name")
-        .eq("region_id", form.watch("region_id"));
+        .eq("region_id", selectedRegionId);
+      
       if (error) throw error;
       return data;
     },
@@ -83,6 +85,7 @@ const HouseholdFormFields = ({ form }: HouseholdFormFieldsProps) => {
           form={form}
           name="region_id"
           label="Region"
+          placeholder="Select a region"
           options={regions?.map(region => ({
             value: region.id,
             label: region.name
@@ -92,6 +95,7 @@ const HouseholdFormFields = ({ form }: HouseholdFormFieldsProps) => {
           form={form}
           name="district_id"
           label="District"
+          placeholder="Select a district"
           options={districts?.map(district => ({
             value: district.id,
             label: district.name
