@@ -47,7 +47,7 @@ const HouseholdForm = () => {
 
       const dbValues = {
         household_size: values.householdSize,
-        household_type: values.householdType.toLowerCase(), // Ensure correct case
+        household_type: values.householdType, // Using the enum value directly
         head_age: values.headAge,
         head_gender: values.headGender,
         head_employed: values.headEmploymentStatus === "employed",

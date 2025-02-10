@@ -1,3 +1,4 @@
+
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { NumberField, TextField } from "../shared/FormFields";
@@ -8,8 +9,8 @@ interface HouseholdFormFieldsProps {
 }
 
 const householdTypes = [
-  { value: "Single-family", label: "Single-family" },
-  { value: "Multi-family", label: "Multi-family" }
+  { value: "single_family", label: "Single-family" },
+  { value: "multi_family", label: "Multi-family" }
 ];
 
 const genderOptions = [
@@ -19,11 +20,11 @@ const genderOptions = [
 ];
 
 const employmentOptions = [
-  { value: "Employed", label: "Employed" },
-  { value: "Unemployed", label: "Unemployed" },
-  { value: "Self-employed", label: "Self-employed" },
-  { value: "Student", label: "Student" },
-  { value: "Retired", label: "Retired" }
+  { value: "employed", label: "Employed" },
+  { value: "unemployed", label: "Unemployed" },
+  { value: "self_employed", label: "Self-employed" },
+  { value: "student", label: "Student" },
+  { value: "retired", label: "Retired" }
 ];
 
 const HouseholdFormFields = ({ form }: HouseholdFormFieldsProps) => {
