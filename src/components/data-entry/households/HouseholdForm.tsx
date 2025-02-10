@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,10 +44,12 @@ const HouseholdForm = () => {
         head_age: values.headAge,
         head_gender: values.headGender,
         head_employment_status: values.headEmploymentStatus,
-        region: values.region,
-        district: values.district,
+        region_id: values.region,
+        district_id: values.district,
         locality: values.locality,
-        created_by: (await supabase.auth.getUser()).data.user?.id
+        created_by: (await supabase.auth.getUser()).data.user?.id,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       };
 
       const { error } = await supabase
