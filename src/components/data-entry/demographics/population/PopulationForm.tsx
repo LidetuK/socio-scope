@@ -14,40 +14,36 @@ const PopulationForm = () => {
   const form = useForm<PopulationFormValues>({
     resolver: zodResolver(populationFormSchema),
     defaultValues: {
-      region: "",
-      district: "",
+      region_id: "",
+      district_id: "",
       locality: "",
-      totalPopulation: 0,
-      malePopulation: 0,
-      femalePopulation: 0,
-      otherPopulation: 0,
-      ageGroups: {
-        "0-4": 0,
-        "5-9": 0,
-      },
+      total_population: 0,
+      male_count: 0,
+      female_count: 0,
+      other_count: 0,
+      age_0_4_years: 0,
+      age_5_9_years: 0,
     },
   });
 
   const onSubmit = async (values: PopulationFormValues) => {
     try {
-      const dbValues = {
-        region_id: values.region,
-        district_id: values.district,
-        locality: values.locality,
-        total_population: values.totalPopulation,
-        male_count: values.malePopulation,
-        female_count: values.femalePopulation,
-        other_count: values.otherPopulation,
-        age_0_4_years: values.ageGroups["0-4"],
-        age_5_9_years: values.ageGroups["5-9"],
-        created_by: (await supabase.auth.getUser()).data.user?.id
-      };
+      const user = await supabase.auth.getUser();
+      if (!user.data.user) {
+        throw new Error("User not authenticated");
+      }
 
       const { error } = await supabase
         .from('population_data')
-        .insert(dbValues);
+        .insert({
+          ...values,
+          created_by: user.data.user.id
+        });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Submission error:', error);
+        throw error;
+      }
 
       toast.success("Population data saved successfully");
       form.reset();
