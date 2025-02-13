@@ -40,6 +40,8 @@ const VitalStatsForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const { data: userData } = await supabase.auth.getUser();
+      
       const dbValues = {
         region_id: values.region_id,
         district_id: values.district_id,
@@ -50,7 +52,7 @@ const VitalStatsForm = () => {
         fertility_rate: values.fertilityRate,
         marriage_rate: values.marriageRate,
         divorce_rate: values.divorceRate,
-        created_by: (await supabase.auth.getUser()).data.user?.id
+        created_by: userData.user?.id
       };
 
       const { error } = await supabase
