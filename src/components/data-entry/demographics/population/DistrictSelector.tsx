@@ -27,7 +27,7 @@ interface Props {
 type District = Database["public"]["Tables"]["districts"]["Row"];
 
 const DistrictSelector = ({ form }: Props) => {
-  const selectedRegion = form.watch('region');
+  const selectedRegion = form.watch('region_id');
 
   const { data: districts, isLoading } = useQuery({
     queryKey: ['districts', selectedRegion],
@@ -49,7 +49,7 @@ const DistrictSelector = ({ form }: Props) => {
   return (
     <FormField
       control={form.control}
-      name="district"
+      name="district_id"
       render={({ field }) => (
         <FormItem>
           <FormLabel>District</FormLabel>

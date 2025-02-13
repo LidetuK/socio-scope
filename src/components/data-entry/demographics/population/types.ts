@@ -14,3 +14,9 @@ export const populationFormSchema = z.object({
 });
 
 export type PopulationFormValues = z.infer<typeof populationFormSchema>;
+
+// Make all fields required for database insertion
+export type PopulationDataInsert = Required<Omit<PopulationFormValues, 'locality'>> & {
+  locality?: string;
+  created_by: string;
+};

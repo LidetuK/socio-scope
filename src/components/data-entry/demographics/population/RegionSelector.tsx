@@ -43,7 +43,7 @@ const RegionSelector = ({ form }: Props) => {
   return (
     <FormField
       control={form.control}
-      name="region"
+      name="region_id"
       render={({ field }) => (
         <FormItem>
           <FormLabel>Region</FormLabel>

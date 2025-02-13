@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { populationFormSchema, type PopulationFormValues } from "./types";
+import { populationFormSchema, type PopulationFormValues, type PopulationDataInsert } from "./types";
 import PopulationFormFields from "./PopulationFormFields";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -33,12 +33,14 @@ const PopulationForm = () => {
         throw new Error("User not authenticated");
       }
 
+      const insertData: PopulationDataInsert = {
+        ...values,
+        created_by: user.data.user.id,
+      };
+
       const { error } = await supabase
         .from('population_data')
-        .insert({
-          ...values,
-          created_by: user.data.user.id
-        });
+        .insert(insertData);
 
       if (error) {
         console.error('Submission error:', error);
