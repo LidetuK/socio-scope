@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { populationFormSchema, type PopulationFormValues, type PopulationDataInsert } from "./types";
+import { populationFormSchema, type PopulationFormValues } from "./types";
 import PopulationFormFields from "./PopulationFormFields";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -30,30 +30,21 @@ const PopulationForm = () => {
     try {
       const user = await supabase.auth.getUser();
       if (!user.data.user) {
-        throw new Error("User not authenticated");
+        toast.error("You must be logged in to submit data");
+        return;
       }
-
-      // All required fields are present due to form validation
-      const insertData: PopulationDataInsert = {
-        region_id: values.region_id,
-        district_id: values.district_id,
-        locality: values.locality,
-        total_population: values.total_population,
-        male_count: values.male_count,
-        female_count: values.female_count,
-        other_count: values.other_count,
-        age_0_4_years: values.age_0_4_years,
-        age_5_9_years: values.age_5_9_years,
-        created_by: user.data.user.id,
-      };
 
       const { error } = await supabase
         .from('population_data')
-        .insert(insertData);
+        .insert({
+          ...values,
+          created_by: user.data.user.id
+        });
 
       if (error) {
         console.error('Submission error:', error);
-        throw error;
+        toast.error(error.message);
+        return;
       }
 
       toast.success("Population data saved successfully");

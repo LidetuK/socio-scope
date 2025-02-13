@@ -3,11 +3,17 @@ import React, { useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { PopulationFormValues } from "./types";
 import { NumberField } from "../../shared/FormFields";
-import { SelectField } from "../../shared/SelectField";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Props {
   form: UseFormReturn<PopulationFormValues>;
@@ -20,7 +26,8 @@ const PopulationFormFields = ({ form }: Props) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("regions")
-        .select("id, name");
+        .select("id, name")
+        .order('name');
       if (error) throw error;
       return data;
     }
@@ -36,7 +43,8 @@ const PopulationFormFields = ({ form }: Props) => {
       const { data, error } = await supabase
         .from("districts")
         .select("id, name")
-        .eq("region_id", selectedRegionId);
+        .eq("region_id", selectedRegionId)
+        .order('name');
       
       if (error) throw error;
       return data;
@@ -46,32 +54,69 @@ const PopulationFormFields = ({ form }: Props) => {
 
   // Reset district when region changes
   useEffect(() => {
-    form.setValue("district_id", "");
+    if (form.watch("region_id")) {
+      form.setValue("district_id", "");
+    }
   }, [form.watch("region_id")]);
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
-        <SelectField
-          form={form}
+        <FormField
+          control={form.control}
           name="region_id"
-          label="Region"
-          placeholder="Select a region"
-          options={regions?.map(region => ({
-            value: region.id,
-            label: region.name
-          })) || []}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Region</FormLabel>
+              <Select 
+                onValueChange={field.onChange} 
+                value={field.value}
+              >
+                <FormControl>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Select a region" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {regions.map((region) => (
+                    <SelectItem key={region.id} value={region.id}>
+                      {region.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <SelectField
-          form={form}
+
+        <FormField
+          control={form.control}
           name="district_id"
-          label="District"
-          placeholder="Select a district"
-          options={districts?.map(district => ({
-            value: district.id,
-            label: district.name
-          })) || []}
-          disabled={!form.watch("region_id")}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>District</FormLabel>
+              <Select 
+                onValueChange={field.onChange} 
+                value={field.value}
+                disabled={!form.watch("region_id")}
+              >
+                <FormControl>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="Select a district" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {districts.map((district) => (
+                    <SelectItem key={district.id} value={district.id}>
+                      {district.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
         />
       </div>
 
