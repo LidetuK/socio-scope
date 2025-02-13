@@ -32,18 +32,18 @@ export const SelectField = ({ form, name, label, options, placeholder, disabled 
     render={({ field }) => (
       <FormItem>
         <FormLabel>{label}</FormLabel>
-        <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
+        <Select onValueChange={field.onChange} value={field.value} disabled={disabled}>
           <FormControl>
             <SelectTrigger className="bg-white">
               <SelectValue placeholder={placeholder || `Select ${label.toLowerCase()}`} />
             </SelectTrigger>
           </FormControl>
-          <SelectContent className="bg-white">
+          <SelectContent className="bg-white z-50">
             {options.map((option) => (
               <SelectItem 
                 key={option.value} 
                 value={option.value}
-                className="hover:bg-gray-100"
+                className="cursor-pointer hover:bg-gray-100"
               >
                 {option.label}
               </SelectItem>

@@ -18,7 +18,8 @@ const MigrationFormFields = ({ form }: MigrationFormFieldsProps) => {
     const fetchRegions = async () => {
       const { data, error } = await supabase
         .from('regions')
-        .select('id, name');
+        .select('id, name')
+        .order('name');
       
       if (error) {
         console.error('Error fetching regions:', error);
@@ -44,7 +45,8 @@ const MigrationFormFields = ({ form }: MigrationFormFieldsProps) => {
       const { data, error } = await supabase
         .from('districts')
         .select('id, name')
-        .eq('region_id', selectedRegion);
+        .eq('region_id', selectedRegion)
+        .order('name');
       
       if (error) {
         console.error('Error fetching districts:', error);
@@ -58,6 +60,8 @@ const MigrationFormFields = ({ form }: MigrationFormFieldsProps) => {
     };
 
     fetchDistricts();
+    // Reset district when region changes
+    form.setValue("district_id", "");
   }, [selectedRegion]);
 
   return (
