@@ -12,7 +12,7 @@ interface VitalStatsFormFieldsProps {
 const VitalStatsFormFields = ({ form }: VitalStatsFormFieldsProps) => {
   const [regions, setRegions] = useState<{ value: string; label: string; }[]>([]);
   const [districts, setDistricts] = useState<{ value: string; label: string; }[]>([]);
-  const selectedRegion = form.watch("region");
+  const selectedRegion = form.watch("region_id"); // Changed from "region" to "region_id"
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -61,7 +61,7 @@ const VitalStatsFormFields = ({ form }: VitalStatsFormFieldsProps) => {
 
     fetchDistricts();
     // Reset district when region changes
-    form.setValue("district", "");
+    form.setValue("district_id", ""); // Changed from "district" to "district_id"
   }, [selectedRegion]);
 
   return (
@@ -69,13 +69,13 @@ const VitalStatsFormFields = ({ form }: VitalStatsFormFieldsProps) => {
       <div className="grid grid-cols-2 gap-4">
         <SelectField
           form={form}
-          name="region"
+          name="region_id" // Changed from "region" to "region_id"
           label="Region"
           options={regions}
         />
         <SelectField
           form={form}
-          name="district"
+          name="district_id" // Changed from "district" to "district_id"
           label="District"
           options={districts}
           disabled={!selectedRegion}
