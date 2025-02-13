@@ -77,7 +77,7 @@ const PopulationFormFields = ({ form }: Props) => {
                     <SelectValue placeholder="Select a region" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="bg-white z-50">
                   {regions.map((region) => (
                     <SelectItem key={region.id} value={region.id}>
                       {region.name}
@@ -106,9 +106,13 @@ const PopulationFormFields = ({ form }: Props) => {
                     <SelectValue placeholder="Select a district" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="bg-white z-50">
                   {districts.map((district) => (
-                    <SelectItem key={district.id} value={district.id}>
+                    <SelectItem 
+                      key={district.id} 
+                      value={district.id}
+                      className="cursor-pointer hover:bg-gray-100"
+                    >
                       {district.name}
                     </SelectItem>
                   ))}
