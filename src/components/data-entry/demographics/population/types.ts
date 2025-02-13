@@ -1,6 +1,7 @@
 
 import { z } from "zod";
 
+// Form validation schema - all fields required except locality
 export const populationFormSchema = z.object({
   region_id: z.string().min(1, "Region is required"),
   district_id: z.string().min(1, "District is required"),
@@ -13,10 +14,20 @@ export const populationFormSchema = z.object({
   age_5_9_years: z.number().min(0),
 });
 
-export type PopulationFormValues = z.infer<typeof populationFormSchema>;
-
-// Make all fields required for database insertion
-export type PopulationDataInsert = Required<Omit<PopulationFormValues, 'locality'>> & {
+// Base type for form values
+export type PopulationFormValues = {
+  region_id: string;
+  district_id: string;
   locality?: string;
+  total_population: number;
+  male_count: number;
+  female_count: number;
+  other_count: number;
+  age_0_4_years: number;
+  age_5_9_years: number;
+};
+
+// Database insert type - all fields required except locality
+export type PopulationDataInsert = PopulationFormValues & {
   created_by: string;
 };

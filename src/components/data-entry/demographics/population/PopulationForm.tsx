@@ -33,8 +33,17 @@ const PopulationForm = () => {
         throw new Error("User not authenticated");
       }
 
+      // All required fields are present due to form validation
       const insertData: PopulationDataInsert = {
-        ...values,
+        region_id: values.region_id,
+        district_id: values.district_id,
+        locality: values.locality,
+        total_population: values.total_population,
+        male_count: values.male_count,
+        female_count: values.female_count,
+        other_count: values.other_count,
+        age_0_4_years: values.age_0_4_years,
+        age_5_9_years: values.age_5_9_years,
         created_by: user.data.user.id,
       };
 
