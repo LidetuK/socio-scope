@@ -28,11 +28,15 @@ type District = Database["public"]["Tables"]["districts"]["Row"];
 
 const DistrictSelector = ({ form }: Props) => {
   const selectedRegion = form.watch('region_id');
+  
+  console.log('Selected Region:', selectedRegion); // Debug log
 
   const { data: districts, isLoading } = useQuery({
     queryKey: ['districts', selectedRegion],
     queryFn: async () => {
       if (!selectedRegion) return [];
+      
+      console.log('Fetching districts for region:', selectedRegion); // Debug log
       
       const { data, error } = await supabase
         .from('districts')
@@ -45,6 +49,7 @@ const DistrictSelector = ({ form }: Props) => {
         throw error;
       }
       
+      console.log('Fetched districts:', data); // Debug log
       return data as District[];
     },
     enabled: !!selectedRegion
@@ -52,8 +57,11 @@ const DistrictSelector = ({ form }: Props) => {
 
   // Reset district when region changes
   React.useEffect(() => {
-    form.setValue('district_id', '');
-  }, [selectedRegion]);
+    if (selectedRegion) {
+      console.log('Resetting district selection for new region:', selectedRegion); // Debug log
+      form.setValue('district_id', '');
+    }
+  }, [selectedRegion, form]);
 
   return (
     <FormField
@@ -63,7 +71,10 @@ const DistrictSelector = ({ form }: Props) => {
         <FormItem>
           <FormLabel>District</FormLabel>
           <Select 
-            onValueChange={field.onChange} 
+            onValueChange={(value) => {
+              console.log('District selected:', value); // Debug log
+              field.onChange(value);
+            }} 
             value={field.value}
             disabled={isLoading || !selectedRegion}
           >
@@ -72,7 +83,11 @@ const DistrictSelector = ({ form }: Props) => {
                 <SelectValue placeholder="Select District" />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className="bg-white z-50">
+            <SelectContent 
+              className="bg-white z-50"
+              position="popper"
+              sideOffset={4}
+            >
               {districts?.map((district) => (
                 <SelectItem 
                   key={district.id} 
