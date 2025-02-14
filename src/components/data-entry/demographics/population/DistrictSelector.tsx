@@ -40,11 +40,20 @@ const DistrictSelector = ({ form }: Props) => {
         .eq('region_id', selectedRegion)
         .order('name');
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching districts:', error);
+        throw error;
+      }
+      
       return data as District[];
     },
     enabled: !!selectedRegion
   });
+
+  // Reset district when region changes
+  React.useEffect(() => {
+    form.setValue('district_id', '');
+  }, [selectedRegion]);
 
   return (
     <FormField
@@ -63,7 +72,7 @@ const DistrictSelector = ({ form }: Props) => {
                 <SelectValue placeholder="Select District" />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className="bg-white">
+            <SelectContent className="bg-white z-50">
               {districts?.map((district) => (
                 <SelectItem 
                   key={district.id} 
