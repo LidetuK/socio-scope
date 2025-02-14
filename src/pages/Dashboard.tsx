@@ -6,30 +6,45 @@ import ChartCard from "@/components/dashboard/ChartCard";
 import { Users, Home, FileSpreadsheet, ClipboardCheck } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Dashboard = () => {
-  const { data: stats, isLoading } = useQuery({
+  const { data: stats, isLoading, error } = useQuery({
     queryKey: ['dashboard-stats'],
     queryFn: async () => {
       // Use Promise.all for parallel requests
-      const [households, population, migration, vitalStats] = await Promise.all([
-        supabase.from('households').select('count'),
-        supabase.from('population_distribution').select('count'),
-        supabase.from('migration_data').select('count'),
-        supabase.from('vital_statistics').select('count'),
+      const [householdData, populationData, migrationData, vitalStatsData] = await Promise.all([
+        supabase.from('household_data').select('*', { count: 'exact', head: true }),
+        supabase.from('population_data').select('*', { count: 'exact', head: true }),
+        supabase.from('migration_data').select('*', { count: 'exact', head: true }),
+        supabase.from('vital_statistics').select('*', { count: 'exact', head: true })
       ]);
 
       return {
-        households: households.count || 0,
-        population: population.count || 0,
-        migration: migration.count || 0,
-        vitalStats: vitalStats.count || 0,
+        households: householdData.count || 0,
+        population: populationData.count || 0,
+        migration: migrationData.count || 0,
+        vitalStats: vitalStatsData.count || 0
       };
     },
     // Updated caching configuration for React Query v5
     staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
-    gcTime: 10 * 60 * 1000,   // Keep in cache for 10 minutes (formerly cacheTime)
+    gcTime: 10 * 60 * 1000,   // Keep in cache for 10 minutes
+    retry: 1 // Only retry once if the request fails
   });
+
+  if (error) {
+    console.error('Error fetching dashboard stats:', error);
+    return (
+      <Layout>
+        <Alert variant="destructive">
+          <AlertDescription>
+            Failed to load dashboard statistics. Please try again later.
+          </AlertDescription>
+        </Alert>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
