@@ -9,6 +9,12 @@ import PopulationEntry from "@/pages/data-entry/demographics/Population";
 import HouseholdEntry from "@/pages/data-entry/demographics/Households";
 import VitalStatsEntry from "@/pages/data-entry/demographics/VitalStatistics";
 import MigrationEntry from "@/pages/data-entry/demographics/Migration";
+import HealthEntry from "@/pages/data-entry/Health";
+import EducationEntry from "@/pages/data-entry/Education";
+import LaborEntry from "@/pages/data-entry/Labor";
+import AgricultureEntry from "@/pages/data-entry/Agriculture";
+import EconomyEntry from "@/pages/data-entry/Economy";
+import InfrastructureEntry from "@/pages/data-entry/Infrastructure";
 
 export const dataEntryRoutes: RouteObject[] = [
   {
@@ -56,6 +62,54 @@ export const dataEntryRoutes: RouteObject[] = [
     element: (
       <AuthRoute>
         <MigrationEntry />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: "/data-entry/health",
+    element: (
+      <AuthRoute>
+        <HealthEntry />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: "/data-entry/education",
+    element: (
+      <AuthRoute>
+        <EducationEntry />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: "/data-entry/labor",
+    element: (
+      <AuthRoute>
+        <LaborEntry />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: "/data-entry/agriculture",
+    element: (
+      <AuthRoute>
+        <AgricultureEntry />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: "/data-entry/economy",
+    element: (
+      <AuthRoute>
+        <EconomyEntry />
+      </AuthRoute>
+    ),
+  },
+  {
+    path: "/data-entry/infrastructure",
+    element: (
+      <AuthRoute>
+        <InfrastructureEntry />
       </AuthRoute>
     ),
   },

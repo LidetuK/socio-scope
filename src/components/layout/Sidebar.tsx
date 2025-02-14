@@ -23,24 +23,6 @@ const menuItems = [
     icon: FileSpreadsheet,
     label: "Data Entry",
     path: "/data-entry",
-    subItems: [
-      { 
-        label: "Households", 
-        path: "/data-entry/demographics/households",
-      },
-      { 
-        label: "Population", 
-        path: "/data-entry/demographics/population",
-      },
-      { 
-        label: "Migration", 
-        path: "/data-entry/demographics/migration",
-      },
-      { 
-        label: "Vital Statistics", 
-        path: "/data-entry/demographics/vital-statistics",
-      },
-    ],
   },
   {
     icon: BarChart3,
