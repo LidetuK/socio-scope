@@ -2,22 +2,26 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export interface DHIS2Config {
-  baseUrl: string;
+  id: string;
+  platform: string;
+  base_url: string;
   username: string;
   password: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export const fetchDHIS2Data = async (dataSetId: string) => {
   try {
     const { data: config, error: configError } = await supabase
       .from('integration_config')
-      .select('*')
+      .select()
       .eq('platform', 'dhis2')
-      .single();
+      .maybeSingle();
 
     if (configError) throw configError;
+    if (!config) throw new Error('DHIS2 configuration not found');
 
-    // Implement DHIS2 API call here
     const response = await fetch(`${config.base_url}/api/dataSets/${dataSetId}`, {
       headers: {
         'Authorization': `Basic ${btoa(`${config.username}:${config.password}`)}`,

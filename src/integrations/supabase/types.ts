@@ -744,6 +744,42 @@ export type Database = {
           },
         ]
       }
+      integration_config: {
+        Row: {
+          api_key: string | null
+          base_url: string
+          created_at: string
+          id: string
+          password: string | null
+          platform: string
+          updated_at: string
+          username: string | null
+          workspace_id: string | null
+        }
+        Insert: {
+          api_key?: string | null
+          base_url: string
+          created_at?: string
+          id?: string
+          password?: string | null
+          platform: string
+          updated_at?: string
+          username?: string | null
+          workspace_id?: string | null
+        }
+        Update: {
+          api_key?: string | null
+          base_url?: string
+          created_at?: string
+          id?: string
+          password?: string | null
+          platform?: string
+          updated_at?: string
+          username?: string | null
+          workspace_id?: string | null
+        }
+        Relationships: []
+      }
       labor_employment_summary: {
         Row: {
           average_income: number

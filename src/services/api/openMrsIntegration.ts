@@ -2,22 +2,26 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export interface OpenMRSConfig {
-  baseUrl: string;
+  id: string;
+  platform: string;
+  base_url: string;
   username: string;
   password: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export const fetchOpenMRSData = async (resourceType: string) => {
   try {
     const { data: config, error: configError } = await supabase
       .from('integration_config')
-      .select('*')
+      .select()
       .eq('platform', 'openmrs')
-      .single();
+      .maybeSingle();
 
     if (configError) throw configError;
+    if (!config) throw new Error('OpenMRS configuration not found');
 
-    // Implement OpenMRS API call here
     const response = await fetch(`${config.base_url}/ws/rest/v1/${resourceType}`, {
       headers: {
         'Authorization': `Basic ${btoa(`${config.username}:${config.password}`)}`,

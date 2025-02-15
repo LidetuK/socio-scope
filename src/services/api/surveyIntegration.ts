@@ -2,22 +2,26 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export interface SurveySolutionsConfig {
-  baseUrl: string;
-  apiKey: string;
-  workspaceId: string;
+  id: string;
+  platform: string;
+  base_url: string;
+  api_key: string;
+  workspace_id: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export const fetchSurveySolutionsData = async (surveyId: string) => {
   try {
     const { data: config, error: configError } = await supabase
       .from('integration_config')
-      .select('*')
+      .select()
       .eq('platform', 'survey_solutions')
-      .single();
+      .maybeSingle();
 
     if (configError) throw configError;
+    if (!config) throw new Error('Survey Solutions configuration not found');
 
-    // Implement Survey Solutions API call here
     const response = await fetch(`${config.base_url}/api/v1/surveys/${surveyId}`, {
       headers: {
         'Authorization': `Bearer ${config.api_key}`,
