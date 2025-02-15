@@ -1525,6 +1525,52 @@ export type Database = {
       }
     }
     Views: {
+      demographic_reports: {
+        Row: {
+          age_0_4_years: number | null
+          age_5_9_years: number | null
+          created_at: string | null
+          created_by: string | null
+          district_id: string | null
+          district_name: string | null
+          female_count: number | null
+          head_age: number | null
+          head_employed: boolean | null
+          head_gender: string | null
+          head_literacy: boolean | null
+          household_size: number | null
+          household_type: Database["public"]["Enums"]["household_type"] | null
+          id: string | null
+          male_count: number | null
+          other_count: number | null
+          region_id: string | null
+          region_name: string | null
+          total_population: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "population_data_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "population_data_district_id_fkey"
+            columns: ["district_id"]
+            isOneToOne: false
+            referencedRelation: "districts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "population_data_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       households: {
         Row: {
           created_at: string | null
