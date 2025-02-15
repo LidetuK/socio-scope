@@ -5,50 +5,50 @@ import { Users, Heart, GraduationCap, Briefcase, LeafyGreen, DollarSign, Buildin
 
 const analyticsCategories = [
   {
-    title: "DEMOGRAPHIC",
-    description: "Population and household statistics",
+    title: "Demographics",
+    description: "Population and household statistics analysis",
     icon: Users,
     path: "/analytics/demographics",
     color: "text-blue-500",
   },
   {
-    title: "HEALTH",
-    description: "Healthcare and medical data",
+    title: "Health",
+    description: "Healthcare and medical data analysis",
     icon: Heart,
     path: "/analytics/health",
     color: "text-red-500",
   },
   {
-    title: "EDUCATION",
-    description: "Schools and student information",
+    title: "Education",
+    description: "Schools and student information analysis",
     icon: GraduationCap,
     path: "/analytics/education",
     color: "text-green-500",
   },
   {
-    title: "LABOR AND EMPLOYMENT",
-    description: "Workforce and job statistics",
+    title: "Labor & Employment",
+    description: "Workforce and job statistics analysis",
     icon: Briefcase,
     path: "/analytics/labor",
     color: "text-purple-500",
   },
   {
-    title: "AGRICULTURE",
-    description: "Farming and crop data",
+    title: "Agriculture",
+    description: "Farming and crop data analysis",
     icon: LeafyGreen,
     path: "/analytics/agriculture",
     color: "text-yellow-500",
   },
   {
-    title: "TRADE AND ECONOMY",
-    description: "Economic indicators and trade",
+    title: "Trade & Economy",
+    description: "Economic indicators and trade analysis",
     icon: DollarSign,
     path: "/analytics/economy",
     color: "text-emerald-500",
   },
   {
-    title: "INFRASTRUCTURE",
-    description: "Public facilities and services",
+    title: "Infrastructure",
+    description: "Public facilities and services analysis",
     icon: Building2,
     path: "/analytics/infrastructure",
     color: "text-orange-500",
@@ -61,7 +61,7 @@ const AnalyticsIndex = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Analytics</h1>
-          <p className="text-gray-600 mt-2">Select a category to view analysis and reports</p>
+          <p className="text-gray-600 mt-2">Select a category to view analysis reports</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -82,6 +82,39 @@ const AnalyticsIndex = () => {
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* Quick Access Links */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">Quick Access</h2>
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Link 
+                to="/analytics/demographics"
+                className="text-sm text-gray-600 hover:text-primary"
+              >
+                Demographics Report
+              </Link>
+              <Link 
+                to="/analytics/health"
+                className="text-sm text-gray-600 hover:text-primary"
+              >
+                Health Statistics
+              </Link>
+              <Link 
+                to="/analytics/education"
+                className="text-sm text-gray-600 hover:text-primary"
+              >
+                Education Metrics
+              </Link>
+              <Link 
+                to="/analytics/labor"
+                className="text-sm text-gray-600 hover:text-primary"
+              >
+                Employment Data
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
