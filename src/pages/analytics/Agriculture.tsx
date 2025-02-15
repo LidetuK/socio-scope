@@ -1,6 +1,7 @@
 
 import Layout from "@/components/layout/Layout";
 import FilterControls from "@/components/analytics/FilterControls";
+import Breadcrumb from "@/components/analytics/shared/Breadcrumb";
 import { useState } from "react";
 
 const AnalyticsAgriculture = () => {
@@ -18,6 +19,8 @@ const AnalyticsAgriculture = () => {
   return (
     <Layout>
       <div className="space-y-6">
+        <Breadcrumb currentPage="Agriculture Analysis" />
+
         <h1 className="text-3xl font-bold">Agriculture Analysis Report</h1>
         <p className="text-gray-600">
           Generate detailed farming and crop reports based on collected data

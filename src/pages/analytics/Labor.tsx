@@ -1,6 +1,7 @@
 
 import Layout from "@/components/layout/Layout";
 import FilterControls from "@/components/analytics/FilterControls";
+import Breadcrumb from "@/components/analytics/shared/Breadcrumb";
 import { useState } from "react";
 
 const AnalyticsLabor = () => {
@@ -18,6 +19,8 @@ const AnalyticsLabor = () => {
   return (
     <Layout>
       <div className="space-y-6">
+        <Breadcrumb currentPage="Labor Analysis" />
+
         <h1 className="text-3xl font-bold">Labor and Employment Analysis Report</h1>
         <p className="text-gray-600">
           Generate detailed workforce and employment reports based on collected data

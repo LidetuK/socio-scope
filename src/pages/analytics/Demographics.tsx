@@ -1,6 +1,7 @@
 
 import Layout from "@/components/layout/Layout";
 import FilterControls from "@/components/analytics/FilterControls";
+import Breadcrumb from "@/components/analytics/shared/Breadcrumb";
 import { useState } from "react";
 
 const AnalyticsDemographics = () => {
@@ -18,6 +19,8 @@ const AnalyticsDemographics = () => {
   return (
     <Layout>
       <div className="space-y-6">
+        <Breadcrumb currentPage="Demographics Analysis" />
+        
         <div>
           <h1 className="text-3xl font-bold">Demographics Analysis Report</h1>
           <p className="text-gray-600">
