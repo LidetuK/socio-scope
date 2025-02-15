@@ -1,3 +1,4 @@
+
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 
 const corsHeaders = {
@@ -12,28 +13,36 @@ serve(async (req) => {
   }
 
   try {
-    // Return the Mapbox token
+    // Get the token from environment variables
+    const mapboxToken = Deno.env.get('MAPBOX_TOKEN')
+    
+    if (!mapboxToken) {
+      console.error('MAPBOX_TOKEN not found in environment variables')
+      return new Response(
+        JSON.stringify({ error: 'Mapbox token not configured' }), 
+        { 
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+
+    // Return the token
     return new Response(
-      JSON.stringify({
-        value: Deno.env.get('MAPBOX_PUBLIC_TOKEN'),
-      }),
-      {
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        },
-      },
+      JSON.stringify({ value: mapboxToken }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200 
+      }
     )
   } catch (error) {
+    console.error('Error in get-mapbox-token function:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        },
-      },
+      JSON.stringify({ error: 'Internal Server Error' }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 500 
+      }
     )
   }
 })
