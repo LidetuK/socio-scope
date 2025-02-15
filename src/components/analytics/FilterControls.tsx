@@ -1,3 +1,4 @@
+
 import {
   Select,
   SelectContent,
@@ -84,10 +85,10 @@ const FilterControls = ({
         <div className="space-y-2">
           <label className="text-sm font-medium">Region</label>
           <Select value={filters.region} onValueChange={handleRegionChange}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-white">
               <SelectValue placeholder="Select Region" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               <SelectItem value="all">All Regions</SelectItem>
               {regions.map((region) => (
                 <SelectItem key={region} value={region.toLowerCase()}>
@@ -101,10 +102,10 @@ const FilterControls = ({
         <div className="space-y-2">
           <label className="text-sm font-medium">Gender</label>
           <Select value={filters.gender} onValueChange={handleGenderChange}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-white">
               <SelectValue placeholder="Select Gender" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="male">Male</SelectItem>
               <SelectItem value="female">Female</SelectItem>
@@ -116,10 +117,10 @@ const FilterControls = ({
         <div className="space-y-2">
           <label className="text-sm font-medium">Age Group</label>
           <Select value={filters.ageGroup} onValueChange={handleAgeGroupChange}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-white">
               <SelectValue placeholder="Select Age Group" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               {ageGroups.map((group) => (
                 <SelectItem key={group.value} value={group.value}>
                   {group.label}
@@ -132,10 +133,10 @@ const FilterControls = ({
         <div className="space-y-2">
           <label className="text-sm font-medium">Time Period</label>
           <Select value={filters.timePeriod} onValueChange={handleTimePeriodChange}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-white">
               <SelectValue placeholder="Select Year" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               {years.map((year) => (
                 <SelectItem key={year} value={year.toString()}>
                   {year}

@@ -28,11 +28,6 @@ const menuItems = [
     icon: BarChart3,
     label: "Analytics",
     path: "/analytics",
-    subItems: [
-      { label: "Population Trends", path: "/analytics/population" },
-      { label: "Demographics", path: "/analytics/demographics" },
-      { label: "Reports", path: "/analytics/reports" },
-    ],
   },
   {
     icon: Database,
@@ -53,7 +48,6 @@ const menuItems = [
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const location = useLocation();
 
   return (
@@ -91,42 +85,17 @@ const Sidebar = () => {
           
           <nav className="space-y-1">
             {menuItems.map((item) => (
-              <div key={item.path}>
-                <Link
-                  to={item.path}
-                  className={cn(
-                    "flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-primary transition-colors duration-200",
-                    location.pathname === item.path && "bg-gray-50 text-primary",
-                    item.subItems && expandedItem === item.path && "bg-gray-50"
-                  )}
-                  onClick={(e) => {
-                    if (item.subItems) {
-                      e.preventDefault();
-                      setExpandedItem(expandedItem === item.path ? null : item.path);
-                    }
-                  }}
-                >
-                  <item.icon size={20} />
-                  <span>{item.label}</span>
-                </Link>
-                
-                {item.subItems && expandedItem === item.path && (
-                  <div className="ml-12 mt-1 space-y-1">
-                    {item.subItems.map((subItem) => (
-                      <Link
-                        key={subItem.path}
-                        to={subItem.path}
-                        className={cn(
-                          "block px-4 py-2 text-sm text-gray-600 hover:text-primary rounded-md transition-colors",
-                          location.pathname === subItem.path && "text-primary font-medium"
-                        )}
-                      >
-                        {subItem.label}
-                      </Link>
-                    ))}
-                  </div>
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-primary transition-colors duration-200",
+                  location.pathname === item.path && "bg-gray-50 text-primary"
                 )}
-              </div>
+              >
+                <item.icon size={20} />
+                <span>{item.label}</span>
+              </Link>
             ))}
           </nav>
         </div>
