@@ -19,12 +19,14 @@ const AnalyticsAgriculture = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <Breadcrumb currentPage="Agriculture Analysis" />
+        <div>
+          <h1 className="text-3xl font-bold">Agriculture Analysis Report</h1>
+          <p className="text-gray-600">
+            Generate detailed farming and crop reports based on collected data
+          </p>
+        </div>
 
-        <h1 className="text-3xl font-bold">Agriculture Analysis Report</h1>
-        <p className="text-gray-600">
-          Generate detailed farming and crop reports based on collected data
-        </p>
+        <Breadcrumb currentPage="Agriculture Analysis" />
 
         <FilterControls
           filters={filters}

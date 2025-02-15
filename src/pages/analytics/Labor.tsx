@@ -19,12 +19,14 @@ const AnalyticsLabor = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <Breadcrumb currentPage="Labor Analysis" />
+        <div>
+          <h1 className="text-3xl font-bold">Labor and Employment Analysis Report</h1>
+          <p className="text-gray-600">
+            Generate detailed workforce and employment reports based on collected data
+          </p>
+        </div>
 
-        <h1 className="text-3xl font-bold">Labor and Employment Analysis Report</h1>
-        <p className="text-gray-600">
-          Generate detailed workforce and employment reports based on collected data
-        </p>
+        <Breadcrumb currentPage="Labor Analysis" />
 
         <FilterControls
           filters={filters}

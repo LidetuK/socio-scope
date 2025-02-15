@@ -19,12 +19,14 @@ const AnalyticsEducation = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <Breadcrumb currentPage="Education Analysis" />
+        <div>
+          <h1 className="text-3xl font-bold">Education Analysis Report</h1>
+          <p className="text-gray-600">
+            Generate detailed education and school reports based on collected data
+          </p>
+        </div>
 
-        <h1 className="text-3xl font-bold">Education Analysis Report</h1>
-        <p className="text-gray-600">
-          Generate detailed education and school reports based on collected data
-        </p>
+        <Breadcrumb currentPage="Education Analysis" />
 
         <FilterControls
           filters={filters}

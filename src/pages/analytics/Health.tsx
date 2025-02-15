@@ -19,12 +19,14 @@ const AnalyticsHealth = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <Breadcrumb currentPage="Health Analysis" />
+        <div>
+          <h1 className="text-3xl font-bold">Health Analysis Report</h1>
+          <p className="text-gray-600">
+            Generate detailed healthcare and medical reports based on collected data
+          </p>
+        </div>
 
-        <h1 className="text-3xl font-bold">Health Analysis Report</h1>
-        <p className="text-gray-600">
-          Generate detailed healthcare and medical reports based on collected data
-        </p>
+        <Breadcrumb currentPage="Health Analysis" />
 
         <FilterControls
           filters={filters}

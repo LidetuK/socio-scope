@@ -19,14 +19,14 @@ const AnalyticsDemographics = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <Breadcrumb currentPage="Demographics Analysis" />
-        
         <div>
           <h1 className="text-3xl font-bold">Demographics Analysis Report</h1>
           <p className="text-gray-600">
             Generate detailed population and demographic reports based on collected data
           </p>
         </div>
+
+        <Breadcrumb currentPage="Demographics Analysis" />
 
         <FilterControls
           filters={filters}
