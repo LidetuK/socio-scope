@@ -1,91 +1,76 @@
 
 import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { Syringe, Users, Building2, Microscope, Baby } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const formSchema = z.object({
-  bed_count: z.number().min(0),
-  district_id: z.string().uuid(),
-  facility_type: z.enum(["hospital", "clinic", "mobile_unit"]),
-  has_icu: z.boolean(),
-  has_maternity_ward: z.boolean(),
-  has_surgery: z.boolean(),
-  region_id: z.string().uuid(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+const categories = [
+  {
+    title: "Vaccination Coverage",
+    description: "Record and manage vaccination data and immunization records",
+    icon: Syringe,
+    link: "/data-entry/health/vaccination"
+  },
+  {
+    title: "Workforce",
+    description: "Track healthcare workers distribution and specializations",
+    icon: Users,
+    link: "/data-entry/health/workforce"
+  },
+  {
+    title: "Health Infrastructure",
+    description: "Monitor healthcare facilities and medical equipment",
+    icon: Building2,
+    link: "/data-entry/health/infrastructure"
+  },
+  {
+    title: "Epidemiological",
+    description: "Track disease surveillance and outbreak monitoring",
+    icon: Microscope,
+    link: "/data-entry/health/epidemiological"
+  },
+  {
+    title: "Maternal and Child",
+    description: "Record maternal health and child healthcare indicators",
+    icon: Baby,
+    link: "/data-entry/health/maternal-child"
+  }
+];
 
 const HealthForm = () => {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      bed_count: 0,
-      district_id: "", // This will be populated from a dropdown
-      facility_type: "clinic",
-      has_icu: false,
-      has_maternity_ward: false,
-      has_surgery: false,
-      region_id: "", // This will be populated from a dropdown
-    },
-  });
-
-  const onSubmit = async (values: FormValues) => {
-    try {
-      const user = await supabase.auth.getUser();
-      if (!user.data.user?.id) {
-        throw new Error("User not authenticated");
-      }
-
-      const { error } = await supabase
-        .from('health_facilities')
-        .insert({
-          bed_count: values.bed_count,
-          district_id: values.district_id,
-          facility_type: values.facility_type,
-          has_icu: values.has_icu,
-          has_maternity_ward: values.has_maternity_ward,
-          has_surgery: values.has_surgery,
-          region_id: values.region_id,
-          created_by: user.data.user.id
-        });
-
-      if (error) throw error;
-
-      toast.success("Health data saved successfully");
-      form.reset();
-    } catch (error) {
-      console.error('Error saving health data:', error);
-      toast.error("Failed to save health data");
-    }
-  };
+  const navigate = useNavigate();
 
   return (
-    <Card className="p-6">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* We'll add form fields here based on your requirements */}
-          
-          <div className="flex justify-end gap-4">
-            <Button type="submit" className="bg-[#9b87f5] hover:bg-[#8b77e5]">
-              Submit Data
-            </Button>
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={() => form.reset()}
-            >
-              Clear Form
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </Card>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-[#1A1F2C]">Health Data Entry</h1>
+        <p className="text-gray-600 mt-2">Select a category to begin entering health data</p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        {categories.map((category) => (
+          <Card
+            key={category.title}
+            className="p-6 hover:border-[#9b87f5] cursor-pointer transition-all"
+            onClick={() => navigate(category.link)}
+          >
+            <div className="flex items-start space-x-4">
+              <div className="p-2 bg-[#9b87f5]/10 rounded-lg">
+                <category.icon className="w-6 h-6 text-[#9b87f5]" />
+              </div>
+              <div>
+                <h3 className="font-medium text-lg text-[#1A1F2C]">
+                  {category.title}
+                </h3>
+                <p className="text-gray-500 text-sm mt-1">
+                  {category.description}
+                </p>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 };
 
