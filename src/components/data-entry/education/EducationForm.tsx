@@ -38,12 +38,18 @@ const EducationForm = () => {
   const onSubmit = async (values: FormValues) => {
     try {
       const user = await supabase.auth.getUser();
+      if (!user.data.user?.id) {
+        throw new Error("User not authenticated");
+      }
+
+      const insertData = {
+        ...values,
+        created_by: user.data.user.id,
+      } as const;
+
       const { error } = await supabase
         .from('education_enrollment')
-        .insert({
-          ...values,
-          created_by: user.data.user?.id,
-        });
+        .insert(insertData);
 
       if (error) throw error;
 
