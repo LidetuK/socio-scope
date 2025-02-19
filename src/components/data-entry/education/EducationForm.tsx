@@ -1,91 +1,76 @@
 
 import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { BookOpen, Building2, BarChart2, Users, Heart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const formSchema = z.object({
-  attendance_rate: z.number().min(0).max(100),
-  dropout_rate: z.number().min(0).max(100),
-  education_level: z.enum(["primary", "secondary", "tertiary"]),
-  female_enrollment: z.number().min(0),
-  male_enrollment: z.number().min(0),
-  district_id: z.string().uuid(),
-  region_id: z.string().uuid(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+const categories = [
+  {
+    title: "Enrollment and Attendance",
+    description: "Track student enrollment, attendance rates and dropout statistics",
+    icon: BookOpen,
+    link: "/data-entry/education/enrollment"
+  },
+  {
+    title: "Educational Infrastructure",
+    description: "Monitor school facilities, classrooms and educational resources",
+    icon: Building2,
+    link: "/data-entry/education/infrastructure"
+  },
+  {
+    title: "Performance Metrics",
+    description: "Record academic performance, test scores and learning outcomes",
+    icon: BarChart2,
+    link: "/data-entry/education/performance"
+  },
+  {
+    title: "Teacher Metrics Management",
+    description: "Track teacher qualifications, distribution and performance",
+    icon: Users,
+    link: "/data-entry/education/teachers"
+  },
+  {
+    title: "Special Education",
+    description: "Monitor special education programs and inclusive learning initiatives",
+    icon: Heart,
+    link: "/data-entry/education/special"
+  }
+];
 
 const EducationForm = () => {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      attendance_rate: 0,
-      dropout_rate: 0,
-      education_level: "primary",
-      female_enrollment: 0,
-      male_enrollment: 0,
-      district_id: "", // This will be populated from a dropdown
-      region_id: "", // This will be populated from a dropdown
-    },
-  });
-
-  const onSubmit = async (values: FormValues) => {
-    try {
-      const user = await supabase.auth.getUser();
-      if (!user.data.user?.id) {
-        throw new Error("User not authenticated");
-      }
-
-      const { error } = await supabase
-        .from('education_enrollment')
-        .insert({
-          attendance_rate: values.attendance_rate,
-          dropout_rate: values.dropout_rate,
-          education_level: values.education_level,
-          female_enrollment: values.female_enrollment,
-          male_enrollment: values.male_enrollment,
-          district_id: values.district_id,
-          region_id: values.region_id,
-          created_by: user.data.user.id
-        });
-
-      if (error) throw error;
-
-      toast.success("Education data saved successfully");
-      form.reset();
-    } catch (error) {
-      console.error('Error saving education data:', error);
-      toast.error("Failed to save education data");
-    }
-  };
+  const navigate = useNavigate();
 
   return (
-    <Card className="p-6">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* We'll add form fields here based on your requirements */}
-          
-          <div className="flex justify-end gap-4">
-            <Button type="submit" className="bg-[#9b87f5] hover:bg-[#8b77e5]">
-              Submit Data
-            </Button>
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={() => form.reset()}
-            >
-              Clear Form
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </Card>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-[#1A1F2C]">Education Data Entry</h1>
+        <p className="text-gray-600 mt-2">Select a category to begin entering education data</p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        {categories.map((category) => (
+          <Card
+            key={category.title}
+            className="p-6 hover:border-[#9b87f5] cursor-pointer transition-all"
+            onClick={() => navigate(category.link)}
+          >
+            <div className="flex items-start space-x-4">
+              <div className="p-2 bg-[#9b87f5]/10 rounded-lg">
+                <category.icon className="w-6 h-6 text-[#9b87f5]" />
+              </div>
+              <div>
+                <h3 className="font-medium text-lg text-[#1A1F2C]">
+                  {category.title}
+                </h3>
+                <p className="text-gray-500 text-sm mt-1">
+                  {category.description}
+                </p>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 };
 
