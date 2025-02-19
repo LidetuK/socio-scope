@@ -42,14 +42,18 @@ const EducationForm = () => {
         throw new Error("User not authenticated");
       }
 
-      const insertData = {
-        ...values,
-        created_by: user.data.user.id,
-      } as const;
-
       const { error } = await supabase
         .from('education_enrollment')
-        .insert(insertData);
+        .insert({
+          attendance_rate: values.attendance_rate,
+          dropout_rate: values.dropout_rate,
+          education_level: values.education_level,
+          female_enrollment: values.female_enrollment,
+          male_enrollment: values.male_enrollment,
+          district_id: values.district_id,
+          region_id: values.region_id,
+          created_by: user.data.user.id
+        });
 
       if (error) throw error;
 

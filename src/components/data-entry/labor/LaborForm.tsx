@@ -42,14 +42,18 @@ const LaborForm = () => {
         throw new Error("User not authenticated");
       }
 
-      const insertData = {
-        ...values,
-        created_by: user.data.user.id,
-      } as const;
-
       const { error } = await supabase
         .from('workforce_statistics')
-        .insert(insertData);
+        .insert({
+          district_id: values.district_id,
+          female_participation_rate: values.female_participation_rate,
+          male_participation_rate: values.male_participation_rate,
+          region_id: values.region_id,
+          sector: values.sector,
+          youth_employment_rate: values.youth_employment_rate,
+          youth_unemployment_rate: values.youth_unemployment_rate,
+          created_by: user.data.user.id
+        });
 
       if (error) throw error;
 

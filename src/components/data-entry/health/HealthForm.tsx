@@ -42,14 +42,18 @@ const HealthForm = () => {
         throw new Error("User not authenticated");
       }
 
-      const insertData = {
-        ...values,
-        created_by: user.data.user.id,
-      } as const;
-
       const { error } = await supabase
         .from('health_facilities')
-        .insert(insertData);
+        .insert({
+          bed_count: values.bed_count,
+          district_id: values.district_id,
+          facility_type: values.facility_type,
+          has_icu: values.has_icu,
+          has_maternity_ward: values.has_maternity_ward,
+          has_surgery: values.has_surgery,
+          region_id: values.region_id,
+          created_by: user.data.user.id
+        });
 
       if (error) throw error;
 
