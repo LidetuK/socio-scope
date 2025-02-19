@@ -9,9 +9,14 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
-// We'll update this schema with the specific fields you provide
 const formSchema = z.object({
-  // Placeholder for labor-related fields
+  district_id: z.string().uuid(),
+  female_participation_rate: z.number().min(0).max(100),
+  male_participation_rate: z.number().min(0).max(100),
+  region_id: z.string().uuid(),
+  sector: z.enum(["formal", "informal"]),
+  youth_employment_rate: z.number().min(0).max(100),
+  youth_unemployment_rate: z.number().min(0).max(100),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -20,17 +25,24 @@ const LaborForm = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // We'll add default values based on your requirements
+      district_id: "", // This will be populated from a dropdown
+      female_participation_rate: 0,
+      male_participation_rate: 0,
+      region_id: "", // This will be populated from a dropdown
+      sector: "formal",
+      youth_employment_rate: 0,
+      youth_unemployment_rate: 0,
     },
   });
 
   const onSubmit = async (values: FormValues) => {
     try {
+      const user = await supabase.auth.getUser();
       const { error } = await supabase
         .from('workforce_statistics')
         .insert({
           ...values,
-          created_by: (await supabase.auth.getUser()).data.user?.id
+          created_by: user.data.user?.id,
         });
 
       if (error) throw error;

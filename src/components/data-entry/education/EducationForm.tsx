@@ -9,9 +9,14 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
-// We'll update this schema with the specific fields you provide
 const formSchema = z.object({
-  // Placeholder for education-related fields
+  attendance_rate: z.number().min(0).max(100),
+  dropout_rate: z.number().min(0).max(100),
+  education_level: z.enum(["primary", "secondary", "tertiary"]),
+  female_enrollment: z.number().min(0),
+  male_enrollment: z.number().min(0),
+  district_id: z.string().uuid(),
+  region_id: z.string().uuid(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -20,17 +25,24 @@ const EducationForm = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // We'll add default values based on your requirements
+      attendance_rate: 0,
+      dropout_rate: 0,
+      education_level: "primary",
+      female_enrollment: 0,
+      male_enrollment: 0,
+      district_id: "", // This will be populated from a dropdown
+      region_id: "", // This will be populated from a dropdown
     },
   });
 
   const onSubmit = async (values: FormValues) => {
     try {
+      const user = await supabase.auth.getUser();
       const { error } = await supabase
         .from('education_enrollment')
         .insert({
           ...values,
-          created_by: (await supabase.auth.getUser()).data.user?.id
+          created_by: user.data.user?.id,
         });
 
       if (error) throw error;
